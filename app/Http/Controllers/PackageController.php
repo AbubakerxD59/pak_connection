@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Feature;
 use App\Models\Package;
 use Illuminate\Http\Request;
+use Stripe\Product;
+use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class PackageController extends Controller
 {
     private $package;
     private $feature;
+    private $stripe;
     public function __construct(Package $package, Feature $feature)
     {
         // permissions
@@ -21,6 +25,7 @@ class PackageController extends Controller
 
         $this->package = $package;
         $this->feature = $feature;
+        $this->stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
     }
     /**
      * Display a listing of the resource.
@@ -50,18 +55,41 @@ class PackageController extends Controller
             'date_type' => 'required',
             'price' => 'required',
         ]);
-        $package = $this->package->create([
+        // create stripe product
+        $stripe_product = $this->stripe->products->create([
             'name' => $request->name,
-            'icon' => $request->has('icon') ? saveImage($request->File('icon')) : '',
-            'duration' => $request->duration,
-            'date_type' => $request->date_type,
-            'price' => $request->price
+            'active' => true,
         ]);
-        if ($package) {
-            return redirect(route('packages.index'))->with('success', 'Package added Successfully!');
-        } else {
-            return back()->with('error', 'Unable to add Package!');
+        if ($stripe_product->id) {
+            // create stripe price
+            $stripe_amount = $this->stripe->prices->create([
+                'currency' => 'gbp',
+                'active' => true,
+                'product' => $stripe_product->id,
+                'unit_amount_decimal' => $request->price * 100,
+                'recurring' => [
+                    'interval' => $request->date_type,
+                    'interval_count' => $request->duration
+                ]
+            ]);
+            if ($stripe_product->id && $stripe_amount->id) {
+                $package = $this->package->create([
+                    'name' => $request->name,
+                    'icon' => $request->has('icon') ? saveImage($request->File('icon')) : '',
+                    'duration' => $request->duration,
+                    'date_type' => $request->date_type,
+                    'price' => $request->price,
+                    'stripe_product_id' => $stripe_product->id,
+                    'stripe_price_id' => $stripe_amount->id,
+                ]);
+                if ($package) {
+                    return redirect(route('packages.index'))->with('success', 'Package added Successfully!');
+                } else {
+                    return back()->with('error', 'Unable to add Package!');
+                }
+            }
         }
+        return back()->with('error', 'Unable to add Package!');
     }
 
     /**
@@ -96,13 +124,14 @@ class PackageController extends Controller
         ]);
         $package = $this->package->find($id);
         if ($package) {
+            // update stripe product
+            $this->stripe->products->update($package->stripe_product_id, ['name' => $request->name]);
+            // update stripe price
             $data = [
                 'name' => $request->name,
                 'duration' => $request->duration,
                 'date_type' => $request->date_type,
                 'price' => $request->price,
-                'stripe_product_id' => $request->stripe_product_id,
-                'stripe_price_id' => $request->stripe_price_id,
             ];
             if ($request->has('icon')) {
                 $data['icon'] = saveImage($request->File('icon'));

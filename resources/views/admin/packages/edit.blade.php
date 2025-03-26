@@ -81,8 +81,8 @@
                                             </div>
                                             <div class="col-md-5">
                                                 <select class="form-control" name="date_type" id="date_type">
-                                                    <option value="days"
-                                                        {{ $package->date_type == 'days' ? 'selected' : '' }}>Day(s)</option>
+                                                    <option value="day"
+                                                        {{ $package->date_type == 'day' ? 'selected' : '' }}>Day(s)</option>
                                                     <option value="month"
                                                         {{ $package->date_type == 'month' ? 'selected' : '' }}>Month(s)</option>
                                                     <option value="year"
@@ -116,7 +116,7 @@
                                                 <input type="text" class="form-control" name="stripe_product_id"
                                                     id="stripe_product_id"
                                                     value="{{ old('stripe_product_id', $package->stripe_product_id) }}"
-                                                    placeholder="Enter package product ID" required>
+                                                    placeholder="Enter package product ID" disabled>
                                                 @error('stripe_product_id')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
@@ -131,7 +131,7 @@
                                                 <input type="text" class="form-control" name="stripe_price_id"
                                                     id="stripe_price_id"
                                                     value="{{ old('stripe_price_id', $package->stripe_price_id) }}"
-                                                    placeholder="Enter package product ID" required>
+                                                    placeholder="Enter package product ID" disabled>
                                                 @error('stripe_price_id')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror

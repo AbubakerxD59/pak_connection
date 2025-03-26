@@ -77,7 +77,7 @@
                                             </div>
                                             <div class="col-md-5">
                                                 <select class="form-control" name="date_type" id="date_type">
-                                                    <option value="days">Day(s)</option>
+                                                    <option value="day">Day(s)</option>
                                                     <option value="month">Month(s)</option>
                                                     <option value="year">Year(s)</option>
                                                 </select>
