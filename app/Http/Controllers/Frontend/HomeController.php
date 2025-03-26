@@ -54,7 +54,11 @@ class HomeController extends Controller
         if ($package) {
             if (!empty($request->promo)) {
                 $promo = $this->promoCode->search($request->promo)->first();
-                if (!$promo->valid()) {
+                if ($promo) {
+                    if (!$promo->valid()) {
+                        return redirect()->back()->with('error', 'Invalid Promo Code!');
+                    }
+                } else {
                     return redirect()->back()->with('error', 'Invalid Promo Code!');
                 }
             }
