@@ -28,6 +28,7 @@ class User extends Authenticatable
         'city',
         'country',
         'address',
+        'membership_id',
         'status',
     ];
 

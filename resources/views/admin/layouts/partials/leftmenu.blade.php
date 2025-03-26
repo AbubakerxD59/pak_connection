@@ -74,7 +74,7 @@
                 {{-- Manage Packages --}}
                 @if (check_permission('view_package') || check_permission('view_feature'))
                     <?php
-                    $package = in_array(request()->route()->getName(), ['packages.index', 'packages.create', 'packages.edit', 'features.index', 'features.create', 'features.edit']) ? true : false;
+                    $package = in_array(request()->route()->getName(), ['packages.index', 'packages.create', 'packages.edit', 'features.index', 'features.create', 'features.edit', 'promo-code.index', 'promo-code.create', 'promo-code.edit']) ? true : false;
                     ?>
                     <li class="nav-item {{ $package ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ $package ? 'active' : '' }}">
@@ -100,7 +100,8 @@
                                         <p>Services</p>
                                     </a>
                                 @endcan
-                                <a href="{{ route('roles.index') }}" class="nav-link">
+                                <a href="{{ route('promo-code.index') }}"
+                                    class="nav-link {{ in_array(request()->route()->getName(), ['promo-code.index', 'promo-code.create', 'promo-code.edit']) ? 'active' : '' }}">
                                     <i class="nav-icon far fa-dot-circle"></i>
                                     <p>Promo Codes</p>
                                 </a>

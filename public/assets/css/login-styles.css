@@ -38,7 +38,7 @@ img {
 
 a {
     outline: none;
-    color: #e55e26;
+    color: #008100;
 }
 
 a:hover {
@@ -85,7 +85,7 @@ label:not(.form-check-label):not(.custom-file-label) {
     padding: 10px 0 25px;
     font-size: 30px;
     line-height: 1.1;
-    color: #e55e26;
+    color: #008100;
     font-family: 'PoppinsMedium';
 }
 
@@ -110,8 +110,8 @@ label:not(.form-check-label):not(.custom-file-label) {
 
 .btn-primary {
     color: #fff;
-    background-color: #e55e26;
-    border-color: #e55e26;
+    background-color: #008100;
+    border-color: #008100;
     box-shadow: none;
     text-transform: uppercase;
     border-radius: 10px;

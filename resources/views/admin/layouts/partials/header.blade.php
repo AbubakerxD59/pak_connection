@@ -13,11 +13,12 @@
         <li class="nav-item">
             <div class="user-panel d-flex">
                 <div class="image">
-                    <img src="{{ auth()->user()->profile_pic ? getImage('users', auth()->user()->profile_pic) : '' }}" class="userimg" alt="User Image">
+                    <img src="{{ auth()->user()->profile_pic ? getImage('users', auth()->user()->profile_pic) : '' }}"
+                        class="userimg" alt="User Image">
                 </div>
                 <div class="info">
-                    <a class="nav-link" href="{{ route('users.edit', auth()->id()) }}" class="d-block">Super
-                        Admin</a>
+                    <a class="nav-link" href="{{ route('users.edit', auth()->id()) }}"
+                        class="d-block">{{ auth()->user()->full_name }}</a>
                 </div>
             </div>
         </li>

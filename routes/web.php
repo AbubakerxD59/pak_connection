@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\FeatureController;
@@ -65,12 +66,21 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(FeatureController::class)->prefix('features/')->name('features.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
     });
+
+    // Promo Codes
+    Route::resource('promo-code', PromoCodeController::class)->except('show');
+    Route::controller(PromoCodeController::class)->prefix('promo-code/')->name('promo-code.')->group(function () {
+        Route::get('dataTable', 'dataTable')->name('dataTable');
+    });
 });
 
 // Strip routes
 Route::name('frontend.')->group(function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('buy-membership/{id?}', [HomeController::class, 'buyMembership'])->name('buy_memebership');
-    Route::post('checkout', [HomeController::class,'checkout'])->name('checkout');
-    Route::get('success', [HomeController::class,'success'])->name('checkout_success');
+    Route::post('checkout', [HomeController::class, 'checkout'])->name('checkout');
+    Route::get('success', [HomeController::class, 'success'])->name('checkout_success');
 });
+
+// Strip webhook route
+Route::stripeWebhooks('stripe-webhook');

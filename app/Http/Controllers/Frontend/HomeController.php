@@ -6,16 +6,23 @@ use App\Models\User;
 use App\Models\Package;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\PromoCode;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\VarDumper\Caster\RdKafkaCaster;
 
 class HomeController extends Controller
 {
     private $package;
     private $user;
-    public function __construct(Package $package, User $user)
+    private $role;
+    private $promoCode;
+    public function __construct(Package $package, User $user, Role $role, PromoCode $promoCode)
     {
         $this->package = $package;
         $this->user = $user;
+        $this->role = $role;
+        $this->promoCode = $promoCode;
     }
     public function index()
     {
@@ -41,9 +48,16 @@ class HomeController extends Controller
             'whatsapp_number' => 'required',
             'city' => 'required',
             'country' => 'required',
+            'promo' => 'sometimes'
         ]);
         $package = $this->package->find($request->package_id);
         if ($package) {
+            if (!empty($request->promo)) {
+                $promo = $this->promoCode->search($request->promo)->first();
+                if (!$promo->valid()) {
+                    return redirect()->back()->with('error', 'Invalid Promo Code!');
+                }
+            }
             $this->user->create([
                 'full_name' => $request->full_name,
                 'email' => $request->email,
@@ -52,8 +66,14 @@ class HomeController extends Controller
                 'city' => $request->city,
                 'country' => $request->country,
                 'address' => $request->address,
+                'membership_id' => rand(100000, 999999),
+                'status' => 1,
             ]);
             $user = $this->user->where('email', $request->email)->first();
+            $role = $this->role->where('name', 'Customer')->first();
+            if (!empty($role)) {
+                $user->assignRole($role->name);
+            }
             Auth::login($user);
             return auth()->user()
                 ->newSubscription($package->stripe_product_id, $package->stripe_price_id)

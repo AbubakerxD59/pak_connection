@@ -121,7 +121,7 @@
                     {{-- <p class="text-success">Discount -72% <span class="text-danger">-Rs.69,120.00</span></p> --}}
                     <div class="mb-5">
                         <label for="coupon" class="form-label">Have a coupon code?</label>
-                        <input type="text" id="coupon" class="form-control" placeholder="Enter coupon code">
+                        <input type="text" name="promo" class="form-control" placeholder="Enter coupon code">
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Continue</button>
                     {{-- <small class="text-muted d-block mt-3">30-day money-back guarantee</small> --}}

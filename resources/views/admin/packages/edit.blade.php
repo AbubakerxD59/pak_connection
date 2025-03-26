@@ -81,8 +81,8 @@
                                             </div>
                                             <div class="col-md-5">
                                                 <select class="form-control" name="date_type" id="date_type">
-                                                    <option value="day"
-                                                        {{ $package->date_type == 'day' ? 'selected' : '' }}>Day(s)</option>
+                                                    <option value="day" {{ $package->date_type == 'day' ? 'selected' : '' }}>
+                                                        Day(s)</option>
                                                     <option value="month"
                                                         {{ $package->date_type == 'month' ? 'selected' : '' }}>Month(s)</option>
                                                     <option value="year"
@@ -145,7 +145,7 @@
                                     <div class="card-header with-border clearfix">
                                         <div class="card-title">
                                             <i class="fas fa-star"></i>
-                                            Features
+                                            Services
                                         </div>
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse"
@@ -160,7 +160,7 @@
                                                 <div class="float-right">
                                                     <a class="btn btn-primary" data-toggle="modal"
                                                         data-target="#add_features_modal">
-                                                        <i class="fas fa-plus-square"></i> Add Feature</a>
+                                                        <i class="fas fa-plus-square"></i> Add Service</a>
                                                 </div>
                                             </div>
                                         @endcan

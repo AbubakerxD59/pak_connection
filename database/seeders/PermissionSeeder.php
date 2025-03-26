@@ -29,6 +29,8 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'manage_features', 'label' => 'Manage Features', 'parent_id' => '', 'route_name' => 'features'],
 
+            ['name' => 'manage_promocodes', 'label' => 'Manage PromoCodes', 'parent_id' => '', 'route_name' => 'promo-code'],
+
             //Manage Roles
             ['name' => 'view_role', 'label' => 'View Role', 'parent_id' => 'manage_roles', 'route_name' => 'roles.index', 'role_id' => '1'],
 
@@ -75,6 +77,15 @@ class PermissionSeeder extends Seeder
             ['name' => 'edit_feature', 'label' => 'Edit Feature', 'parent_id' => 'manage_features', 'route_name' => 'features.edit'],
 
             ['name' => 'delete_feature', 'label' => 'Delete Feature', 'parent_id' => 'manage_features', 'route_name' => 'features.destroy'],
+
+            // Manage Promo Codes
+            ['name' => 'view_promocode', 'label' => 'View Promo Code', 'parent_id' => 'manage_promocodes', 'route_name' => 'promo-code.index'],
+
+            ['name' => 'add_promocode', 'label' => 'Add Promo Code', 'parent_id' => 'manage_promocodes', 'route_name' => 'promo-code.create'],
+
+            ['name' => 'edit_promocode', 'label' => 'Edit Promo Code', 'parent_id' => 'manage_promocodes', 'route_name' => 'promo-code.edit'],
+
+            ['name' => 'delete_promocode', 'label' => 'Delete Promo Code', 'parent_id' => 'manage_promocodes', 'route_name' => 'promo-code.destroy'],
 
         ];
         try {

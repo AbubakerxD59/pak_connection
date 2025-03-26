@@ -1,12 +1,12 @@
 @extends('admin.layouts.secure')
-@section('page_title', 'Users')
+@section('page_title', 'Promo Codes')
 @section('page_content')
-    @can('view_user')
+    @can('view_promocode')
         <div class="page-content">
             <div class="content-header clearfix">
-                <h1 class="float-left">Users</h1>
+                <h1 class="float-left">Promo Codes</h1>
                 <div class="float-right">
-                    <a class="btn btn-primary" href="{{ route('users.create') }}">
+                    <a class="btn btn-primary" href="{{ route('promo-code.create') }}">
                         <i class="fas fa-plus-square"></i> Add new</a>
                 </div>
             </div>
@@ -22,24 +22,13 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-striped table-bordered" id="dataTable">
                                                         <thead>
-                                                            <th>{{ __('users.id') }}</th>
-                                                            <th>{{ __('users.profile_pic') }}</th>
-                                                            <th>{{ __('users.full_name') }}</th>
-                                                            <th>Membership ID</th>
-                                                            <th>{{ __('users.email_username') }}</th>
-                                                            <th>Whatsapp#</th>
-                                                            <th>City</th>
-                                                            <th>Sargodha</th>
-                                                            <th>{{ __('users.role') }}</th>
-                                                            <th>{{ __('users.status') }}</th>
-                                                            <th>{{ __('users.created_at') }}</th>
-                                                            <th>{{ __('users.action') }}</th>
+                                                            <th>Name</th>
+                                                            <th>Duration</th>
+                                                            <th>Discount Type</th>
+                                                            <th>Discount Amount</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
                                                         </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                            </tr>
-                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -69,40 +58,22 @@
             "processing": true,
             "serverSide": true,
             ajax: {
-                url: "{{ route('users.dataTable') }}",
+                url: "{{ route('promo-code.dataTable') }}",
             },
             columns: [{
-                    data: 'id'
+                    data: 'name'
                 },
                 {
-                    data: 'profile',
+                    data: 'duration_day'
                 },
                 {
-                    data: 'name_link'
+                    data: 'discount_type'
                 },
                 {
-                    data: 'membership_id'
+                    data: 'amount'
                 },
                 {
-                    data: 'email_username'
-                },
-                {
-                    data: 'whatsapp_number'
-                },
-                {
-                    data: 'city'
-                },
-                {
-                    data: 'country'
-                },
-                {
-                    data: 'role'
-                },
-                {
-                    data: 'status_span'
-                },
-                {
-                    data: 'created'
+                    data: 'status_view'
                 },
                 {
                     data: 'action'
