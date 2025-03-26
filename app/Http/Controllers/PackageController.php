@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Feature;
 use App\Models\Package;
 use Illuminate\Http\Request;
-use Stripe\Product;
 use Stripe\Stripe;
-use Stripe\StripeClient;
 
 class PackageController extends Controller
 {

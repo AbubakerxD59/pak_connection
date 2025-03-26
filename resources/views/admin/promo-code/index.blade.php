@@ -23,6 +23,7 @@
                                                     <table class="table table-striped table-bordered" id="dataTable">
                                                         <thead>
                                                             <th>Name</th>
+                                                            <th>Code</th>
                                                             <th>Duration</th>
                                                             <th>Discount Type</th>
                                                             <th>Discount Amount</th>
@@ -62,6 +63,9 @@
             },
             columns: [{
                     data: 'name'
+                },
+                {
+                    data: 'code'
                 },
                 {
                     data: 'duration_day'

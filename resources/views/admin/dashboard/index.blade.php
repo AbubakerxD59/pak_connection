@@ -28,7 +28,7 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>1000</h3>
+                                <h3>10</h3>
                                 <p>Payments</p>
                             </div>
                             <div class="icon">
@@ -42,7 +42,7 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>3000 £</h3>
+                                <h3>500 £</h3>
                                 <p>Earnings</p>
                             </div>
                             <div class="icon">
@@ -56,7 +56,7 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>100</h3>
+                                <h3>5</h3>
                                 <p>Orders</p>
                             </div>
                             <div class="icon">

@@ -53,7 +53,7 @@ class HomeController extends Controller
         $package = $this->package->find($request->package_id);
         if ($package) {
             if (!empty($request->promo)) {
-                $promo = $this->promoCode->search($request->promo)->first();
+                $promo = $this->promoCode->search($request->promo)->active()->first();
                 if ($promo) {
                     if (!$promo->valid()) {
                         return redirect()->back()->with('error', 'Invalid Promo Code!');
@@ -79,12 +79,22 @@ class HomeController extends Controller
                 $user->assignRole($role->name);
             }
             Auth::login($user);
-            return auth()->user()
-                ->newSubscription($package->stripe_product_id, $package->stripe_price_id)
-                ->checkout([
-                    'success_url' => route('frontend.checkout_success'),
-                    'cancel_url' => route('frontend.home'),
-                ]);
+            if (!empty($request->promo)) {
+                return auth()->user()
+                    ->newSubscription($package->stripe_product_id, $package->stripe_price_id)
+                    ->withCoupon($promo->stripe_coupon_id)
+                    ->checkout([
+                        'success_url' => route('frontend.checkout_success'),
+                        'cancel_url' => route('frontend.home'),
+                    ]);
+            } else {
+                return auth()->user()
+                    ->newSubscription($package->stripe_product_id, $package->stripe_price_id)
+                    ->checkout([
+                        'success_url' => route('frontend.checkout_success'),
+                        'cancel_url' => route('frontend.home'),
+                    ]);
+            }
         } else {
             return redirect()->back()->with('error', 'Package not Found!');
         }

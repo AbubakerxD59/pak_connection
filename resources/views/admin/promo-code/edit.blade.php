@@ -54,6 +54,19 @@
 
                                         <div class="form-group row">
                                             <div class="col-md-3">
+                                                <label for="code" class="form-label">Code</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="code" id="code"
+                                                    value="{{ old('code', $promo->code) }}" placeholder="Enter promo code code" required>
+                                                @error('code')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-3">
                                                 <label for="duration" class="form-label">Duration (Days)</label>
                                             </div>
                                             <div class="col-md-9">

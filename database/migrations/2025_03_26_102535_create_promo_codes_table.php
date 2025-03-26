@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('promo_codes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('code');
             $table->string('duration');
             $table->string('discount_type');
             $table->integer('discount_amount');
+            $table->text('stripe_coupon_id');
             $table->integer('status');
             $table->timestamps();
         });

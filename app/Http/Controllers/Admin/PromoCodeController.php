@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class PromoCodeController extends Controller
 {
     private $promoCode;
+    private $stripe;
     public function __construct(PromoCode $promoCode)
     {
         // permissions
@@ -19,6 +20,7 @@ class PromoCodeController extends Controller
         // permissions
 
         $this->promoCode = $promoCode;
+        $this->stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
     }
     /**
      * Display a listing of the resource.
@@ -43,20 +45,42 @@ class PromoCodeController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
+            'code' => 'required',
             'duration' => 'required',
             'discount_type' => 'required',
             'discount_amount' => 'required',
             'active' => 'required',
         ]);
-        $package = $this->promoCode->create([
-            'name' => $request->name,
-            'duration' => $request->duration,
-            'discount_type' => $request->discount_type,
-            'discount_amount' => $request->discount_amount,
-            'status' => $request->active,
-        ]);
-        if ($package) {
-            return redirect(route('promo-code.index'))->with('success', 'Promo Code added Successfully!');
+        // create stripe coupon
+        if ($request->discount_type == 'fix') {
+            $coupon = $this->stripe->coupons->create([
+                "amount_off" => $request->discount_amount * 100,
+                "currency" => "gbp",
+                "duration" => "once",
+                "name" => $request->name,
+            ]);
+        } else {
+            $coupon = $this->stripe->coupons->create([
+                "percent_off" => $request->discount_amount,
+                "duration" => "once",
+                "name" => $request->name,
+            ]);
+        }
+        if ($coupon) {
+            $package = $this->promoCode->create([
+                'name' => $request->name,
+                'code' => $request->code,
+                'duration' => $request->duration,
+                'discount_type' => $request->discount_type,
+                'discount_amount' => $request->discount_amount,
+                'status' => $request->active,
+                'stripe_coupon_id' => $coupon->id,
+            ]);
+            if ($package) {
+                return redirect(route('promo-code.index'))->with('success', 'Promo Code added Successfully!');
+            } else {
+                return back()->with('error', 'Unable to add Package!');
+            }
         } else {
             return back()->with('error', 'Unable to add Package!');
         }
@@ -86,6 +110,7 @@ class PromoCodeController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
+            'code' => 'required',
             'duration' => 'required',
             'discount_type' => 'required',
             'discount_amount' => 'required',
@@ -95,6 +120,7 @@ class PromoCodeController extends Controller
         if ($promo) {
             $data = [
                 'name' => $request->name,
+                'code' => $request->code,
                 'duration' => $request->duration,
                 'discount_type' => $request->discount_type,
                 'discount_amount' => $request->discount_amount,
@@ -113,6 +139,8 @@ class PromoCodeController extends Controller
     public function destroy(string $id)
     {
         $promo = $this->promoCode->find($id);
+        // delete stripe coupon
+        $this->stripe->coupons->delete($promo->stripe_coupon_id);
         if ($promo) {
             if ($promo->delete()) {
                 return back()->with('success', 'Promo Code deleted successfully!');

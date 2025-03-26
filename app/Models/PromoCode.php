@@ -13,17 +13,24 @@ class PromoCode extends Model
 
     protected $fillable = [
         'name',
+        'code',
         'duration',
         'discount_type',
         'discount_amount',
-        'status'
+        'status',
+        'stripe_coupon_id',
     ];
 
     protected $appends = ['expires_at'];
 
     public function scopeSearch($query, $search)
     {
-        $query->where('name', 'LIKE', "%{$search}%");
+        $query->where('name', 'LIKE', "%{$search}%")->orWhere('code', 'LiKE', "%{$search}%");
+    }
+
+    public function scopeActive($query)
+    {
+        $query->where("status", 1);
     }
 
     public function expiresAt(): Attribute
