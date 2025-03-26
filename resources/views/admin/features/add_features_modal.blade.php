@@ -5,7 +5,7 @@
             <input type="hidden" id="feature_id" value="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Feature</h4>
+                    <h4 class="modal-title">Add Service</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>

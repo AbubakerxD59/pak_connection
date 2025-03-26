@@ -97,7 +97,7 @@
                                     <a href="{{ route('features.index') }}"
                                         class="nav-link {{ in_array(request()->route()->getName(), ['features.index', 'features.create', 'features.edit']) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-dot-circle"></i>
-                                        <p>Features</p>
+                                        <p>Services</p>
                                     </a>
                                 @endcan
                                 <a href="{{ route('roles.index') }}" class="nav-link">

@@ -54,6 +54,7 @@ class HomeController extends Controller
                 'address' => $request->address,
             ]);
             $user = $this->user->where('email', $request->email)->first();
+            Auth::login($user);
             return auth()->user()
                 ->newSubscription($package->stripe_product_id, $package->stripe_price_id)
                 ->checkout([

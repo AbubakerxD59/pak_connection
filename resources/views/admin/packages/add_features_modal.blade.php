@@ -5,7 +5,7 @@
             <input type="hidden" id="package_id" value="{{ $package->id }}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Feature</h4>
+                    <h4 class="modal-title">Add Services</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>

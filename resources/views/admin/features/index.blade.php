@@ -1,10 +1,10 @@
 @extends('admin.layouts.secure')
-@section('page_title', 'Features')
+@section('page_title', 'Services')
 @section('page_content')
     @can('view_user')
         <div class="page-content">
             <div class="content-header clearfix">
-                <h1 class="float-left">Features</h1>
+                <h1 class="float-left">Services</h1>
                 <div class="float-right">
                     <a class="btn btn-primary" data-toggle="modal" data-target="#add_features_modal">
                         <i class="fas fa-plus-square"></i> Add new</a>

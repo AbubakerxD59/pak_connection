@@ -1,15 +1,15 @@
 @extends('admin.layouts.secure')
-@section('page_title', 'Add Feature')
+@section('page_title', 'Add Service')
 @section('page_content')
     @can('add_feature')
         <div class="page-content">
             <form method="POST" action="{{ route('features.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="content-header clearfix">
-                    <h1 class="float-left"> Add Feature
+                    <h1 class="float-left"> Add Service
                         <small>
                             <i class="fas fa-arrow-circle-left"></i>
-                            <a href="{{ route('features.index') }}">back to Features list</a>
+                            <a href="{{ route('features.index') }}">back to Services list</a>
                         </small>
                     </h1>
                     <div class="float-right">
