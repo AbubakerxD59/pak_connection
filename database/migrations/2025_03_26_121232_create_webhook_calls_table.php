@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('url');
-            $table->longText('headers')->nullable();
-            $table->longText('payload')->nullable();
+            $table->json('headers')->nullable();
+            $table->json('payload')->nullable();
             $table->text('exception')->nullable();
             $table->timestamps();
         });

@@ -29,7 +29,7 @@
                                                             <th>{{ __('users.email_username') }}</th>
                                                             <th>Whatsapp#</th>
                                                             <th>City</th>
-                                                            <th>Sargodha</th>
+                                                            <th>Country</th>
                                                             <th>{{ __('users.role') }}</th>
                                                             <th>{{ __('users.status') }}</th>
                                                             <th>{{ __('users.created_at') }}</th>
