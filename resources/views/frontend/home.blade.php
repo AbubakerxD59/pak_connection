@@ -1,14 +1,18 @@
 @extends('frontend.main')
 @section('body')
-    <div class="membership-portal">
-        <h1>Membership Portal</h1>
-        <h2>Choose your Package</h2>
+    <section class="membership-portal container">
+        <header class="membership-header">
+            <h2>Welcome to the membership <span class="green-color">Portal</span></h2>
+            <h3>Choose your <span class="green-color">Package</span></h1>
+        </header>
         <div class="packages">
             @foreach ($packages as $package)
-                <div class="package">
+                <article class="package">
                     <div class="package-box">
-                        <h3>{{ $package->name }}</h3>
-                        <p>{{ '£' . $package->price . ' for ' . $package->date_duration }} </p>
+                        <header class="packages-header">
+                            <h3>{{ $package->name }}</h3>
+                            <p>{{ '£' . $package->price . ' for ' . $package->date_duration }} </p>
+                        </header>
                         <ul class="package-list">
                             @foreach ($package->checkFeatures() as $key => $feature)
                                 @if ($key == 'include')
@@ -42,10 +46,13 @@
                             @endforeach
                         </ul>
                     </div>
-                    <a href="{{ route('frontend.buy_memebership', $package->id) }}" class="btn btn-primary">Buy Now</a>
-                </div>
+                    <a href="{{ route('frontend.buy_memebership', $package->id) }}" class="btn btn-primary w-100">Buy Now</a>
+                </article>
             @endforeach
         </div>
-        {{-- <button class="customize-plan">Customize your Plan</button> --}}
-    </div>
+        <!-- {{-- <button class="customize-plan">Customize your Plan</button> --}} -->
+        <div class="customize-button text-center pt-5">
+            <button class="btn btn-primary mt-md-3 w-100">Customize your Plan</button> 
+        </div>
+    </section>
 @endsection

@@ -1,29 +1,87 @@
-.membership-portal {
-    text-align: center;
-    /* Centering the text */
-    padding: 20px;
-}
+
 
 .packages {
-    display: flex;
-    /* Using flexbox for display */
-    flex-wrap: wrap;
-    /* Allowing items to wrap to the next line */
-    justify-content: center;
-    /* Centering the items */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-width: 1150px;
+    margin-inline: auto;
+    width: 100%;
 }
-
 .package {
-    background-color: #f9f9f9;
-    /* Background color */
-    border: 1px solid #ddd;
-    /* Border for each package */
+    background-color: #fff;
     border-radius: 10px;
-    /* Rounded corners */
-    padding: 20px;
-    /* Padding inside the box */
-    margin: 15px;
-    /* Margin for spacing */
+    padding: 30px;
+    box-shadow: 0px 8px 16px rgba(51, 51, 51, 0.2);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.package:hover{
+    color: #fff;
+    background: #008000;
+    box-shadow: 0px 106.667px 106.667px -71.1111px rgba(76, 86, 115, 0.08);
+}
+.package .package-box{margin-bottom: 1.2rem;}
+.customize-button .btn-primary,
+.package .btn-primary {
+    font-family: 'PoppinsBold';
+    font-size: 16px;
+    border-radius: 7px;
+    background: #008000;
+    border: 0.888889px solid #475467;
+    box-shadow: 0px 10.6667px 21.3333px rgba(119, 50, 255, 0.2), 0px 0.888889px 1.77778px rgba(16, 24, 40, 0.05), inset -1.77778px -1.77778px 3.55556px rgba(88, 42, 187, 0.49), inset 1.77778px 1.77778px 2.66667px rgba(198, 180, 238, 0.5);
+}
+.package:hover .btn-primary,
+.package:hover .btn-primary:hover, 
+.package:hover .btn-primary:not(:disabled):not(.disabled).active, 
+.package:hover .btn-primary:not(:disabled):not(.disabled):active, 
+.package:hover .show>.btn-primary.dropdown-toggle {
+    color: #000;
+    background: #FFFFFF;
+    border: 0.888889px solid #101828;
+    box-shadow: 0px 10.6667px 21.3333px rgba(119, 50, 255, 0.2), 0px 0.888889px 1.77778px rgba(16, 24, 40, 0.05), inset -1.77778px -1.77778px 3.55556px rgba(88, 42, 187, 0.49), inset 1.77778px 1.77778px 2.66667px rgba(198, 180, 238, 0.5);
+}
+.customize-button .btn-primary{
+    max-width: 480px;
+    padding-block: 12px;
+    font-size: 20px;
+    text-transform: none;
+}
+.customize-button .btn-primary:hover, 
+.customize-button .btn-primary:not(:disabled):not(.disabled).active, 
+.customize-button .btn-primary:not(:disabled):not(.disabled):active, 
+.customize-button .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background: #0b4423;
+    border-color: #0b4423;
+    box-shadow: 0px 10.6667px 21.3333px rgba(119, 50, 255, 0.2), 0px 0.888889px 1.77778px rgba(16, 24, 40, 0.05), inset -1.77778px -1.77778px 3.55556px rgba(88, 42, 187, 0.49), inset 1.77778px 1.77778px 2.66667px rgba(198, 180, 238, 0.5);
+}
+.packages-header{
+    margin-bottom: 2rem;
+}
+.packages-header h3{
+    font-size: 24px;
+    line-height: 1.4;
+    font-family: 'PoppinsBold';
+    position: relative;
+    padding-bottom: 7px;
+    margin-bottom: 1rem;
+}
+.package .packages-header h3::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #028002;
+    width: 80px;
+    height: 2px;
+}
+.package:hover .packages-header h3::before{background-color: #fff;}
+.packages-header p{
+    font-size: 20px;
+    line-height: 1.4;
 }
 
 .button {
@@ -71,35 +129,47 @@
 
 .package-list {
     text-align: left;
+    font-size: 15px;
+    line-height: 1.8;
+}
+.package-list span > strong {
+    display: block;
+    font-size: 20px;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    font-family: 'PoppinsBold';
 }
 
 .package-list li {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap:15px;
 }
-
+.package-list li.parent-li {
+    font-family: 'PoppinsBold';
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
 .circle-icon {
     font-size: 8px;
     color: #ffff;
     border-radius: 50%;
-    margin-right: 25px;
-    padding: 4px;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
 .bg-primary {
     background-color: #008100 !important;
 }
-
-.parent-li {
-    margin-left: 15px;
+.package:hover .circle-icon {
+    color: #008100;
+    background-color: #fff !important;
 }
 
-.package-box {
-    height: 500px;
-}
-
-body {
-    background-color: #f7f7f8;
-}
 
 .cart-details,
 .cart-summary {
@@ -108,4 +178,359 @@ body {
 
 .cart-summary {
     border-left: 5px solid #6200ea;
+}
+.container{
+    max-width: 1400px;
+}
+.header{
+    padding-block:20px;
+    border-bottom: 1px solid #F1F1F1;
+}
+.header .container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:15px;
+}
+.header .logo{
+    max-width: 300px;
+}
+img{max-width: 100%;}
+.slogan-title h1{
+    font-size: 40px;
+    line-height: 1.2;
+    font-weight: 700;
+    position: relative;
+    text-transform: capitalize;
+    font-family: PoppinsBold;
+    padding-bottom: 10px;
+    text-align: center;
+}
+.slogan-title h1::before{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    content: '';
+    top: 100%;
+    background-color: #028002;
+    height: 2px;
+    width: 200px;
+}
+
+.customer-dropown .dropdown-toggle::after{display: none;}
+.costomer-login{
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 15px;
+    align-items: center;
+    color: #79828D;
+    font-size: 12px;
+}
+.customer-avatar img{
+    min-width: 40px;
+    min-height: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+.costomer-login h3{
+    font-size: 16px;
+    line-height: 1.4;
+    text-transform: capitalize;
+    font-family: 'PoppinsMedium';
+    margin-bottom: 3px;
+    color: #000;
+}
+.costomer-login p{
+    margin-bottom: 0;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.membership-portal {
+    position: relative;
+    padding-block: 3rem 7rem;
+    z-index: 1;
+}
+.membership-portal::after,
+.membership-portal::before {
+    position: absolute;
+    z-index: -1;
+    left: 10px;
+    top: 50px;
+    content: '';
+    width: 335px;
+    height: 365px;
+    background: url(../img/pricing-icon1.png) no-repeat center;
+    background-size: contain;
+}
+.membership-portal::after {
+    left: auto;
+    right: 10px;
+    top: 50px;
+    width: 100px;
+    height: 100px;
+}
+.customize-button{
+    position: relative;
+    z-index: 1;
+}
+.customize-button::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+    background: url(../img/pricing-icon1.png) no-repeat center;
+    background-size: contain;
+    right: 10px;
+    bottom: -50px;
+    width: 100px;
+    height: 100px;
+}
+.membership-header{
+    text-align: center;
+    color: #111;
+}
+.membership-header h3,
+.membership-header h2{
+    font-size: 40px;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    font-family: 'PoppinsMedium';
+}
+.green-color{color: #008000;}
+.membership-header h3{
+    font-size: 36px;
+    font-family: 'PoppinsBold';
+}
+.footer{
+    background-color: #f1f3f580;
+}
+.footer .logo{
+    max-width: 250px;
+    margin-bottom: 1.5rem;
+}
+.footer-top{
+    padding-block: 50px;
+}
+.footer-cols h3{
+    font-family: 'PoppinsBold';
+    font-size: 20px;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+.footer-nav{
+    padding-inline-start: 0;
+    margin-bottom: 0;
+    list-style: none;
+    line-height: 1.5;
+}
+.footer-nav li{
+    margin-bottom: 12px;
+}
+.footer-nav li a{
+    color: #000;
+    display: inline-flex;
+    align-items: center;
+    gap:12px;
+}
+.footer-nav.contact li a{
+    word-break: break-all;
+}
+.footer-nav li a .fa{
+    color: #008000;
+    font-size: 14px;
+}
+.footer-nav li a:focus,
+.footer-nav li a:hover{
+    color: #008000;
+    text-decoration: none;
+}
+.social-networks{
+    padding-inline-start: 0;
+    margin-bottom: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 20px;
+}
+.social-networks li a{color: #008000;}
+.social-networks li a:focus,
+.social-networks li a:hover{
+    color: #000;
+    text-decoration: none;
+}
+.footer-bottom{
+    background-color: #008000;
+    color: #fff;
+    padding-block: 15px;
+}
+.footer-bottom p{
+    margin-bottom:0;
+}
+.footer-botton-nav{
+    padding-inline-start: 0;
+    margin-bottom: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 14px;
+}
+.footer-botton-nav.privacy{justify-content: end;}
+.footer-botton-nav li{
+    position: relative;
+}
+.footer-botton-nav li::before{
+    position: absolute;
+    content: '';
+    left: -7.5px;
+    top:50%;
+    transform: translateY(-50%);
+    height: 15px;
+    border-inline-end: 1px solid #fff;
+}
+.footer-botton-nav li:first-child::before{
+    border-inline-end:0;
+}
+
+.footer-botton-nav li a{
+    color: #fff;
+}
+.membership-heading{
+    font-size: 36px;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    font-family: 'PoppinsBold';
+}
+.membership-form h2{
+    font-size: 28px;
+    line-height: 1.2;
+    font-family: 'PoppinsMedium';
+}
+.cart-summary h4{
+    font-size: 24px;
+    line-height: 1.2;
+    font-family: 'PoppinsBold';
+    margin-bottom: 1rem;
+}
+.summary-price{
+    font-family: 'PoppinsBold';
+    color: #008000;
+}
+@media (min-width:768px){
+    .customer-dropown{display: none;}
+}
+@media (max-width:1199.98px){
+    .slogan-title h1 {
+        font-size: 28px;
+    }
+    .slogan-title h1::before {
+        width: 150px;
+    }
+    .header .logo {
+        max-width: 250px;
+    }
+}
+@media (max-width:991.98px){
+    .membership-header h2 {
+        font-size: 32px;
+        margin-bottom: 1.5rem;
+    }
+    .membership-header h3 {
+        font-size: 30px;
+    }
+    .packages-header h3 {
+        font-size: 20px;
+    }
+    .footer-botton-nav.privacy,
+    .footer-botton-nav{
+        justify-content: center;
+    }
+    .footer-botton-nav.privacy{margin-top: 10px;}
+    .header .logo {
+        max-width: 220px;
+    }
+    .package {
+        padding: 30px 20px;
+    }
+    .package-list span > strong {
+        font-size: 17px;
+    }
+    .package-list li.parent-li {
+        font-size: 15px;
+    }
+    .packages-header p {
+        font-size: 18px;
+    }
+    .package .packages-header h3::before {
+        width: 50px;
+    }
+    .slogan-title h1 {
+        font-size: 24px;
+    }
+    .slogan-title h1::before {
+        width: 100px;
+    }
+}
+@media (max-width:767.98px){
+    .membership-heading {
+        font-size: 32px;
+        margin-bottom: 1.2rem;
+    }
+    .membership-form h2 {
+        font-size: 22px;
+    }
+    .membership-portal {
+        padding-block: 2rem 4rem;
+    }
+    .membership-portal::before {
+        left: -50px;
+        width: 200px;
+        height: 200px;
+    }
+    .membership-portal::after {
+        right: -10px;
+        width: 70px;
+        height: 70px;
+    }
+    .packages {
+        grid-template-columns: 1fr;
+    }
+    .costomer-login,
+    .slogan-title{display: none;}
+    .header .logo {
+        max-width: 180px;
+    }
+    .header {
+        padding-block: 15px;
+    }
+    .customer-dropown .dropdown-menu {
+        left: auto !important;
+        right: 0 !important;
+        transform: translate3d(0, 45px, 0px) !important;
+    }
+    .membership-header h2 {
+        font-size: 26px;
+        margin-bottom: 1rem;
+    }
+    .membership-header h3 {
+        font-size: 25px;
+    }
+    .package {
+        padding-inline: 30px;
+    }
+    .package + .package{margin-top: 2rem;}
+    .packages-header h3 {
+        font-size: 24px;
+    }
+    .packages-header p {
+        font-size: 20px;
+    }
+    .package-list span > strong {
+        font-size: 20px;
+    }
 }

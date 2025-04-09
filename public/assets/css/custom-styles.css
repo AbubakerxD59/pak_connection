@@ -22,11 +22,14 @@
     font-family: 'PoppinsThin';
     src: url('../fonts/Poppins-Thin.ttf');
 }
+@font-face {
+    font-family: 'PoppinsBold';
+    src: url('../fonts/Poppins-Bold.ttf');
+}
 
 body {
     font-family: 'PoppinsRegular';
     font-size: 15px;
-    text-transform: uppercase;
 }
 
 .select2-results__option,

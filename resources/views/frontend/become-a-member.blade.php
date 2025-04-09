@@ -1,8 +1,8 @@
 @extends('frontend.main')
 @section('body')
-    <div class="container mt-5">
-        <h2 class="text-primary">Your cart</h2>
-        <form action="{{ route('frontend.checkout') }}" method="POST" class="col-md-12">
+    <div class="container buy-membership mt-4 mb-5 my-md-5">
+        <h2 class="membership-heading">Your cart</h2>
+        <form action="{{ route('frontend.checkout') }}" method="POST" class="col-md-12 membership-form">
             @csrf
             <input type="hidden" name="package_id" value="{{ $package->id }}">
             <div class="row">
@@ -114,7 +114,7 @@
                         @endforeach
                     </ul>
                     <h4>Subtotal</h4>
-                    <h3 class="text-success">
+                    <h3 class="summary-price">
                         {{ number_format((float) $package->price, 2) . ' £' }}
                         {{-- <span class="text-muted text-decoration-line-through">Rs.35,952.00</span> --}}
                     </h3>
