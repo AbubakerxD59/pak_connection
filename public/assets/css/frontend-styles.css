@@ -1,5 +1,11 @@
 
-
+.content-wrapper{
+    position: relative;
+    overflow: hidden;
+    display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  min-height: 100vh;
+}
 .packages {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -306,6 +312,7 @@ img{max-width: 100%;}
 }
 .footer{
     background-color: #f1f3f580;
+    margin-top: auto;
 }
 .footer .logo{
     max-width: 250px;
@@ -421,6 +428,35 @@ img{max-width: 100%;}
     font-family: 'PoppinsBold';
     color: #008000;
 }
+.success-page-content.container {
+    max-width: 900px;
+}
+.success-page-content{
+    text-align: center;
+    padding-block: 3rem;
+}
+.success-page-content .bi-check-circle{
+    color: #008000;
+    font-size: 120px;
+}
+.success-page-content h2{
+    font-family: 'PoppinsMedium';
+    text-transform: uppercase;
+    font-size: 28px;
+    margin-bottom: 1.5rem;
+}
+.success-page-content h1{
+    font-family: 'PoppinsBold';
+    font-size: 40px;
+    margin-bottom: 1.5rem;
+}
+.success-page-content p{margin-bottom: 1.5rem;}
+.success-page-content .btn-primary{
+    font-size: 20px;
+    text-transform: none;
+    font-family: 'PoppinsMedium';
+    padding: 15px 30px;
+}
 @media (min-width:768px){
     .customer-dropown{display: none;}
 }
@@ -532,5 +568,26 @@ img{max-width: 100%;}
     }
     .package-list span > strong {
         font-size: 20px;
+    }
+    .success-page-content .bi-check-circle {
+        font-size: 100px;
+    }
+    .success-page-content h2 {
+        font-size: 24px;
+        margin-bottom: 1rem;
+    }
+    .success-page-content h1 {
+        font-size: 30px;
+        margin-bottom: 1rem;
+    }
+    .success-page-content p {
+        margin-bottom: 1rem;
+    }
+    .success-page-content .btn-primary {
+        font-size: 16px;
+        padding: 15px 20px;
+    }
+    .success-page-content {
+        padding-block: 2rem 3rem;
     }
 }

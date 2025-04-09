@@ -14,103 +14,105 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <a href="/"><img src="{{ asset('assets/img/site_logo.jpg') }}" alt="Pak Connection"></a>
-            </div>
-            <div class="slogan-title">
-                <h1>Membership Portal</h1>
-            </div>
-            <div class="dropdown customer-dropown">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="content-wrapper">
+        <header class="header">
+            <div class="container">
+                <div class="logo">
+                    <a href="/"><img src="{{ asset('assets/img/site_logo.jpg') }}" alt="Pak Connection"></a>
+                </div>
+                <div class="slogan-title">
+                    <h1>Membership Portal</h1>
+                </div>
+                <div class="dropdown customer-dropown">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="customer-avatar">
+                            <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-item" href="#">Iram Khan</div>
+                        <div class="dropdown-item" href="#">imra.khan@gmail.com</div>
+                    </div>
+                    </div>
+                <div class="costomer-login">
                     <div class="customer-avatar">
                         <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
                     </div>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <div class="dropdown-item" href="#">Iram Khan</div>
-                    <div class="dropdown-item" href="#">imra.khan@gmail.com</div>
-                </div>
-                </div>
-            <div class="costomer-login">
-                <div class="customer-avatar">
-                    <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
-                </div>
-                <div class="txtbox">
-                    <h3>Iram Khan</h3>
-                    <p>imra.khan@gmail.com</p>
-                </div>
-            </div>
-        </div>
-    </header>
-    @yield('body')
-    <footer class="footer">
-        <div class="container footer-top">
-            <div class="row">
-                <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
-                    <div class="logo">
-                        <a href="/"><img src="{{ asset('assets/img/site_logo.jpg') }}" alt="Pak Connection"></a>
-                    </div>
-                    <p>Pak Connections provides a diverse range of services that are customised to cater to your requirements.</p>
-                </div>
-                <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
-                    <div class="holder">
-                        <h3>Company</h3>
-                        <ul class="footer-nav">
-                            <li><a href=""><i class="fa fa-chevron-right"></i> Services</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i> About Us</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i> Membership</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i> Contact Us</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
-                    <div class="holder">
-                        <h3>Services</h3>
-                        <ul class="footer-nav">
-                            <li><a href=""><i class="fa fa-chevron-right"></i> Privacy Policy & GDPR</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i> Terms & Conditions</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
-                    <div class="holder">
-                        <h3>Get in Touch</h3>
-                        <ul class="footer-nav contact">
-                            <li><a href="tel:+9252000111"><i class="fa fa-phone"></i> +92-52-000111</a></li>
-                            <li class="email"><a href="mailto:info@pakconnection.com"><i class="fa fa-envelope"></i> info@pakconnection.com</a></li>
-                        </ul>
-                        <ul class="social-networks">
-                            <li><a href="#"><i class="bi bi-facebook"></i></a></li>
-                            <li><a href="#"><i class="bi bi-twitter"></i></a></li>
-                            <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
-                            <li><a href="#"><i class="bi bi-youtube"></i></a></li>
-                        </ul>
+                    <div class="txtbox">
+                        <h3>Iram Khan</h3>
+                        <p>imra.khan@gmail.com</p>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="container">
+        </header>
+        @yield('body')
+        <footer class="footer">
+            <div class="container footer-top">
                 <div class="row">
-                    <div class="col-xl-6">
-                        <ul class="footer-botton-nav copyright">
-                            <li>&copy; Copyright – 2025</li>
-                            <li><a href="/">PakConnections</a></li>
-                            <li>All Rights Reserved</li>
-                        </ul>
+                    <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
+                        <div class="logo">
+                            <a href="/"><img src="{{ asset('assets/img/site_logo.jpg') }}" alt="Pak Connection"></a>
+                        </div>
+                        <p>Pak Connections provides a diverse range of services that are customised to cater to your requirements.</p>
                     </div>
-                    <div class="col-xl-6">
-                        <ul class="footer-botton-nav privacy">
-                            <li><a href="">Privacy Policy & GDPR</a></li>
-                            <li><a href="">Terms & Conditions</a></li>
-                        </ul>
+                    <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
+                        <div class="holder">
+                            <h3>Company</h3>
+                            <ul class="footer-nav">
+                                <li><a href=""><i class="fa fa-chevron-right"></i> Services</a></li>
+                                <li><a href=""><i class="fa fa-chevron-right"></i> About Us</a></li>
+                                <li><a href=""><i class="fa fa-chevron-right"></i> Membership</a></li>
+                                <li><a href=""><i class="fa fa-chevron-right"></i> Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
+                        <div class="holder">
+                            <h3>Services</h3>
+                            <ul class="footer-nav">
+                                <li><a href=""><i class="fa fa-chevron-right"></i> Privacy Policy & GDPR</a></li>
+                                <li><a href=""><i class="fa fa-chevron-right"></i> Terms & Conditions</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
+                        <div class="holder">
+                            <h3>Get in Touch</h3>
+                            <ul class="footer-nav contact">
+                                <li><a href="tel:+9252000111"><i class="fa fa-phone"></i> +92-52-000111</a></li>
+                                <li class="email"><a href="mailto:info@pakconnection.com"><i class="fa fa-envelope"></i> info@pakconnection.com</a></li>
+                            </ul>
+                            <ul class="social-networks">
+                                <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+                                <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+                                <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
+                                <li><a href="#"><i class="bi bi-youtube"></i></a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <ul class="footer-botton-nav copyright">
+                                <li>&copy; Copyright – 2025</li>
+                                <li><a href="/">PakConnections</a></li>
+                                <li>All Rights Reserved</li>
+                            </ul>
+                        </div>
+                        <div class="col-xl-6">
+                            <ul class="footer-botton-nav privacy">
+                                <li><a href="">Privacy Policy & GDPR</a></li>
+                                <li><a href="">Terms & Conditions</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
     <!-- jQuery -->
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
