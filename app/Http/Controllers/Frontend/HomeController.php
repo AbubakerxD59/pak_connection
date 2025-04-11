@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Frontend;
 use Exception;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Package;
 use Stripe\StripeClient;
 use App\Models\PromoCode;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Models\WebhookCall;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class HomeController extends Controller
@@ -166,12 +167,15 @@ class HomeController extends Controller
                 $endpoint_secret
             );
         } catch (\UnexpectedValueException $e) {
+            Log::info($e);
             // Invalid payload
-            return response("", 400);
+            return response($e, 400);
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
+            Log::info($e);
             // Invalid signature
-            return response("", 400);
+            return response("signature verification", 400);
         }
+        Log::info($event);
         // Handle the event
         switch ($event->type) {
             case 'checkout.session.completed':
