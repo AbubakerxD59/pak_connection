@@ -109,24 +109,31 @@
                         </ul>
                     </li>
                 @endif
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-bookmark"></i>
-                        <p>
-                            ORDERS
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('users.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-dot-circle"></i>
-                                <p>Orders</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @can('view_orders')
+                    <?php
+                    $orders = in_array(request()->route()->getName(), ['orders.index', 'orders.create', 'orders.edit']) ? true : false;
+                    ?>
+                    <li class="nav-item {{ $orders ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ $orders ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-bookmark"></i>
+                            <p>
+                                ORDERS
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        @can('view_orders')
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('orders.index') }}"
+                                        class="nav-link {{ in_array(request()->route()->getName(), ['orders.index', 'orders.create', 'orders.edit']) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-dot-circle"></i>
+                                        <p>Orders</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        @endcan
+                    </li>
+                @endcan
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">

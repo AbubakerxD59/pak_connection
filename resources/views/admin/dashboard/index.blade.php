@@ -42,7 +42,7 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>500 £</h3>
+                                <h3>{{ getEarnings() }}</h3>
                                 <p>Earnings</p>
                             </div>
                             <div class="icon">
@@ -56,13 +56,13 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>5</h3>
+                                <h3>{{ get_total_orders() }}</h3>
                                 <p>Orders</p>
                             </div>
                             <div class="icon">
                                 <i class="fa fa-store"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info
+                            <a href="{{ route('orders.index') }}" class="small-box-footer">More info
                                 <i class="fas fa-arrow-circle-right"></i>
                             </a>
                         </div>
@@ -249,7 +249,7 @@
                     label: 'Users',
                     backgroundColor: 'rgba(60,141,188,0.9)',
                     borderColor: 'rgba(60,141,188,0.8)',
-                    data: [{!! getPreviousWeeksUsers('users') !!}]
+                    data: [{!! getPreviousWeeksData('users') !!}]
                 }]
             }, 'Users');
 
@@ -260,7 +260,7 @@
                     label: 'Users',
                     backgroundColor: 'rgba(60,141,188,0.9)',
                     borderColor: 'rgba(60,141,188,0.8)',
-                    data: [{!! getCurrentMonthUsers('users') !!}]
+                    data: [{!! getCurrentMonthData('users') !!}]
                 }]
             }, 'Users');
 
@@ -271,7 +271,7 @@
                     label: 'Users',
                     backgroundColor: 'rgba(60,141,188,0.9)',
                     borderColor: 'rgba(60,141,188,0.8)',
-                    data: [{!! getPreviousMonthsUsers('users') !!}]
+                    data: [{!! getPreviousMonthsData('users') !!}]
                 }]
             }, 'Users');
 
@@ -282,7 +282,7 @@
                     label: 'Order',
                     backgroundColor: 'rgba(255,159,64,0.9)',
                     borderColor: 'rgba(255,159,64,0.8)',
-                    data: [{!! getPreviousWeeksUsers('users') !!}]
+                    data: [{!! getPreviousWeeksData('orders') !!}]
                 }]
             }, 'Order');
 
@@ -293,7 +293,7 @@
                     label: 'Order',
                     backgroundColor: 'rgba(255,159,64,0.9)',
                     borderColor: 'rgba(255,159,64,0.8)',
-                    data: [{!! getCurrentMonthUsers('users') !!}]
+                    data: [{!! getCurrentMonthData('orders') !!}]
                 }]
             }, 'Order');
 
@@ -304,7 +304,7 @@
                     label: 'Order',
                     backgroundColor: 'rgba(255,159,64,0.9)',
                     borderColor: 'rgba(255,159,64,0.8)',
-                    data: [{!! getPreviousMonthsUsers('users') !!}]
+                    data: [{!! getPreviousMonthsData('orders') !!}]
                 }]
             }, 'Order');
         });

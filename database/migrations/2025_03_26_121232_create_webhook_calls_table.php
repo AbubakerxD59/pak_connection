@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('webhook_calls', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('url');
-            $table->json('headers')->nullable();
-            $table->json('payload')->nullable();
+            $table->string('name')->nullable();
+            $table->string('url')->nullable();
+            $table->longText('headers')->nullable();
+            $table->longText('payload')->nullable();
             $table->text('exception')->nullable();
             $table->timestamps();
         });

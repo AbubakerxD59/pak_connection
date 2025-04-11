@@ -18,13 +18,15 @@
         <header class="header">
             <div class="container">
                 <div class="logo">
-                    <a href="/"><img src="{{ asset('assets/img/site_logo.jpg') }}" alt="Pak Connection"></a>
+                    <a href="{{ route('frontend.home') }}"><img src="{{ asset('assets/img/site_logo.jpg') }}"
+                            alt="Pak Connection"></a>
                 </div>
                 <div class="slogan-title">
                     <h1>Membership Portal</h1>
                 </div>
                 <div class="dropdown customer-dropown">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="customer-avatar">
                             <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
                         </div>
@@ -33,7 +35,7 @@
                         <div class="dropdown-item" href="#">Iram Khan</div>
                         <div class="dropdown-item" href="#">imra.khan@gmail.com</div>
                     </div>
-                    </div>
+                </div>
                 <div class="costomer-login">
                     <div class="customer-avatar">
                         <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
@@ -51,9 +53,11 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
                         <div class="logo">
-                            <a href="/"><img src="{{ asset('assets/img/site_logo.jpg') }}" alt="Pak Connection"></a>
+                            <a href="/"><img src="{{ asset('assets/img/site_logo.jpg') }}"
+                                    alt="Pak Connection"></a>
                         </div>
-                        <p>Pak Connections provides a diverse range of services that are customised to cater to your requirements.</p>
+                        <p>Pak Connections provides a diverse range of services that are customised to cater to your
+                            requirements.</p>
                     </div>
                     <div class="col-sm-6 col-md-3 mb-4 mb-md-0 footer-cols">
                         <div class="holder">
@@ -80,7 +84,8 @@
                             <h3>Get in Touch</h3>
                             <ul class="footer-nav contact">
                                 <li><a href="tel:+9252000111"><i class="fa fa-phone"></i> +92-52-000111</a></li>
-                                <li class="email"><a href="mailto:info@pakconnection.com"><i class="fa fa-envelope"></i> info@pakconnection.com</a></li>
+                                <li class="email"><a href="mailto:info@pakconnection.com"><i
+                                            class="fa fa-envelope"></i> info@pakconnection.com</a></li>
                             </ul>
                             <ul class="social-networks">
                                 <li><a href="#"><i class="bi bi-facebook"></i></a></li>

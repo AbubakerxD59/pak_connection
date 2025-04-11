@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Exception;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Package;
+use Stripe\StripeClient;
+use App\Models\PromoCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\PromoCode;
-use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\VarDumper\Caster\RdKafkaCaster;
+use App\Models\Order;
+use App\Models\WebhookCall;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class HomeController extends Controller
 {
@@ -17,12 +20,18 @@ class HomeController extends Controller
     private $user;
     private $role;
     private $promoCode;
-    public function __construct(Package $package, User $user, Role $role, PromoCode $promoCode)
+    private $stripe;
+    private $order;
+    private $webhook;
+    public function __construct(Package $package, User $user, Role $role, PromoCode $promoCode, Order $order, WebhookCall $webhook)
     {
         $this->package = $package;
         $this->user = $user;
         $this->role = $role;
         $this->promoCode = $promoCode;
+        $this->order = $order;
+        $this->webhook = $webhook;
+        $this->stripe = new StripeClient(env('STRIPE_SECRET'));
     }
     public function index()
     {
@@ -44,7 +53,7 @@ class HomeController extends Controller
     {
         $data = $request->validate([
             'full_name' => 'required',
-            'email' => 'required|unique:users',
+            'email' => 'required',
             'whatsapp_number' => 'required',
             'city' => 'required',
             'country' => 'required',
@@ -52,6 +61,7 @@ class HomeController extends Controller
         ]);
         $package = $this->package->find($request->package_id);
         if ($package) {
+            $promo = '';
             if (!empty($request->promo)) {
                 $promo = $this->promoCode->search($request->promo)->active()->first();
                 if ($promo) {
@@ -62,47 +72,128 @@ class HomeController extends Controller
                     return redirect()->back()->with('error', 'Invalid Promo Code!');
                 }
             }
-            $this->user->create([
-                'full_name' => $request->full_name,
-                'email' => $request->email,
-                'whatsapp_number' => $request->whatsapp_number,
-                'phone_number' => $request->phone_number,
-                'city' => $request->city,
-                'country' => $request->country,
-                'address' => $request->address,
-                'membership_id' => rand(100000, 999999),
-                'status' => 1,
-            ]);
-            $user = $this->user->where('email', $request->email)->first();
+
+            if (empty($promo)) {
+                $session = $this->stripe->checkout->sessions->create([
+                    "line_items" => array(
+                        ["price" => $package->stripe_price_id, "quantity" => "1"]
+                    ),
+                    "mode" => "subscription",
+                    "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
+                    "cancel_url" => route('frontend.home'),
+                ]);
+            } else {
+                $session = $this->stripe->checkout->sessions->create([
+                    "line_items" => array(
+                        ["price" => $package->stripe_price_id, "quantity" => "1"]
+                    ),
+                    "discounts" => array(
+                        ["coupon" => $promo->stripe_coupon_id]
+                    ),
+                    "mode" => "subscription",
+                    "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
+                    "cancel_url" => route('frontend.home'),
+                ]);
+            }
+            $user = $this->user->search($request->email)->first();
+            if ($user) {
+                $user->update([
+                    'full_name' => $request->full_name,
+                    'whatsapp_number' => $request->whatsapp_number,
+                    'phone_number' => $request->phone_number,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                    'address' => $request->address,
+                    'stripe_id' => $session->id,
+                    'status' => 1,
+                ]);
+            } else {
+                $user = $this->user->create([
+                    'full_name' => $request->full_name,
+                    'email' => $request->email,
+                    'whatsapp_number' => $request->whatsapp_number,
+                    'phone_number' => $request->phone_number,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                    'address' => $request->address,
+                    'membership_id' => rand(100000, 999999),
+                    'stripe_id' => $session->id,
+                    'status' => 1,
+                ]);
+            }
             $role = $this->role->where('name', 'Customer')->first();
             if (!empty($role)) {
                 $user->assignRole($role->name);
             }
-            Auth::login($user);
-            if (!empty($request->promo)) {
-                return auth()->user()
-                    ->newSubscription($package->stripe_product_id, $package->stripe_price_id)
-                    ->withCoupon($promo->stripe_coupon_id)
-                    ->checkout([
-                        'success_url' => route('frontend.checkout_success'),
-                        'cancel_url' => route('frontend.home'),
-                    ]);
-            } else {
-                return auth()->user()
-                    ->newSubscription($package->stripe_product_id, $package->stripe_price_id)
-                    ->checkout([
-                        'success_url' => route('frontend.checkout_success'),
-                        'cancel_url' => route('frontend.home'),
-                    ]);
-            }
+
+            $this->order->create([
+                "user_id" => $user->id,
+                "session_id" => $session->id,
+                "package_id" => $package->id,
+                "promo_id" => $promo ? $promo->id : "",
+                "total_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "status" => "0",
+            ]);
+
+            return redirect($session->url);
         } else {
             return redirect()->back()->with('error', 'Package not Found!');
         }
     }
 
-    public function success()
+    public function success(Request $request)
     {
-        $user = Auth::user();
+        $customer = null;
+        try {
+            $session = $this->stripe->checkout->sessions->retrieve($request->session_id);
+            $user = $this->user->where('stripe_id', $session->id)->first();
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException();
+        }
         return view('frontend.success', compact('user'));
+    }
+
+    public function webhook(Request $request)
+    {
+        $endpoint_secret = env("STRIPE_WEBHOOK_SECRET");
+        $payload = @file_get_contents('php://input');
+        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+        $event = null;
+        try {
+            $event = \Stripe\Webhook::constructEvent(
+                $payload,
+                $sig_header,
+                $endpoint_secret
+            );
+        } catch (\UnexpectedValueException $e) {
+            // Invalid payload
+            return response("", 400);
+        } catch (\Stripe\Exception\SignatureVerificationException $e) {
+            // Invalid signature
+            return response("", 400);
+        }
+        // Handle the event
+        switch ($event->type) {
+            case 'checkout.session.completed':
+                $session = $event->data->object;
+                $status = $session->payment_status == "paid" ? "1" : "2";
+                $this->webhook->create([
+                    "name" => $session->object,
+                    "url" => $session->url,
+                    "headers" => $session->id,
+                    "payload" => $session,
+                    "exception" => "",
+                ]);
+                $order = $this->order->where('session_id', $session->id)->unpaid()->first();
+                if ($order) {
+                    $order->update([
+                        "customer_id" => $session->customer,
+                        "status" => $status
+                    ]);
+                }
+            default:
+                echo 'Received unknown event type ' . $event->type;
+        }
+        return response("Here", 200);
     }
 }

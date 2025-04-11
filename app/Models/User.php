@@ -30,6 +30,7 @@ class User extends Authenticatable
         'address',
         'membership_id',
         'status',
+        "stripe_id",
     ];
 
     /**

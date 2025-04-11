@@ -2,16 +2,16 @@
 @section('body')
     <div class="container success-page-content">
         <i class="bi bi-check-circle"></i>
-        <h2>Awesome payment was successful!</h2>
+        <h2>Order Placed Successfull</h2>
         <h1>
-            Dear, <span class="customer-name green-color">
-                {{ $user->full_name }}
-            </span>
+            Welcome to Pak Connection!
         </h1>
         <p>
-            Thank you, we have received you payment, You may now initiate the chat with payment Transuction ID or Please email us your confirmation Pyament ID so that we can proceed further with your request.
+            We're excited to have you on board as a valued member.
+            Your order has been received and is being processed.
+            You'll soon receive a confirmation email with further details.
         </p>
         <h2>You may start by calling us as well</h2>
-        <a href="tel:+9252000111" class="btn btn-primary">+92-52-000111 (11am-7pm)</a> 
+        <a href="tel:+9252000111" class="btn btn-primary">+92-52-000111 (11am-7pm)</a>
     </div>
 @endsection

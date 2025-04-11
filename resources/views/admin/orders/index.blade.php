@@ -1,14 +1,14 @@
 @extends('admin.layouts.secure')
-@section('page_title', 'Users')
+@section('page_title', 'Orders')
 @section('page_content')
-    @can('view_user')
+    @can('view_orders')
         <div class="page-content">
             <div class="content-header clearfix">
-                <h1 class="float-left">Users</h1>
-                <div class="float-right">
-                    <a class="btn btn-primary" href="{{ route('users.create') }}">
+                <h1 class="float-left">Orders</h1>
+                {{-- <div class="float-right">
+                    <a class="btn btn-primary" href="{{ route('promo-code.create') }}">
                         <i class="fas fa-plus-square"></i> Add new</a>
-                </div>
+                </div> --}}
             </div>
             <section class="content">
                 <div class="container-fluid">
@@ -22,24 +22,17 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-striped table-bordered" id="dataTable">
                                                         <thead>
-                                                            <th>{{ __('users.id') }}</th>
-                                                            {{-- <th>{{ __('users.profile_pic') }}</th> --}}
-                                                            <th>{{ __('users.full_name') }}</th>
-                                                            <th>Membership ID</th>
-                                                            <th>{{ __('users.email_username') }}</th>
-                                                            <th>Whatsapp#</th>
-                                                            <th>City</th>
-                                                            <th>Country</th>
-                                                            <th>{{ __('users.role') }}</th>
-                                                            <th>{{ __('users.status') }}</th>
-                                                            <th>{{ __('users.created_at') }}</th>
-                                                            <th>{{ __('users.action') }}</th>
+                                                            <th>ID</th>
+                                                            <th>Customer</th>
+                                                            <th>Package</th>
+                                                            <th>Coupon</th>
+                                                            <th>Package Amount</th>
+                                                            <th>Discount Amount</th>
+                                                            <th>Amount</th>
+                                                            <th>Status</th>
+                                                            <th>Date</th>
+                                                            <th>Action</th>
                                                         </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                            </tr>
-                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -69,37 +62,34 @@
             "processing": true,
             "serverSide": true,
             ajax: {
-                url: "{{ route('users.dataTable') }}",
+                url: "{{ route('orders.dataTable') }}",
             },
             columns: [{
                     data: 'id'
                 },
                 {
-                    data: 'name_link'
+                    data: 'customer_name'
                 },
                 {
-                    data: 'membership_id'
+                    data: 'package_name'
                 },
                 {
-                    data: 'email_username'
+                    data: 'coupon_name'
                 },
                 {
-                    data: 'whatsapp_number'
+                    data: 'package_amount'
                 },
                 {
-                    data: 'city'
+                    data: 'discount_amount'
                 },
                 {
-                    data: 'country'
+                    data: 'total_amount'
                 },
                 {
-                    data: 'role'
+                    data: 'status_view'
                 },
                 {
-                    data: 'status_span'
-                },
-                {
-                    data: 'created'
+                    data: 'date'
                 },
                 {
                     data: 'action'

@@ -52,18 +52,23 @@ class PromoCodeController extends Controller
             'active' => 'required',
         ]);
         // create stripe coupon
+        $now = date("Y-m-d");
+        $expiry = date("Y-m-d", timestamp: strtotime($now . " + " . $request->duration . " days"));
+
         if ($request->discount_type == 'fix') {
             $coupon = $this->stripe->coupons->create([
                 "amount_off" => $request->discount_amount * 100,
                 "currency" => "gbp",
-                "duration" => "once",
+                "duration" => "forever",
                 "name" => $request->name,
+                "redeem_by" => strtotime($expiry),
             ]);
         } else {
             $coupon = $this->stripe->coupons->create([
                 "percent_off" => $request->discount_amount,
-                "duration" => "once",
+                "duration" => "forever",
                 "name" => $request->name,
+                "redeem_by" => strtotime($expiry),
             ]);
         }
         if ($coupon) {

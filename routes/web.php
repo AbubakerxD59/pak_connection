@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\RolesController;
@@ -72,6 +73,12 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(PromoCodeController::class)->prefix('promo-code/')->name('promo-code.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
     });
+
+    // Order
+    Route::resource('orders', OrderController::class)->except('show');
+    Route::controller(OrderController::class)->prefix('orders/')->name('orders.')->group(function () {
+        Route::get('dataTable', 'dataTable')->name('dataTable');
+    });
 });
 
 // Strip routes
@@ -83,4 +90,4 @@ Route::name('frontend.')->group(function () {
 });
 
 // Strip webhook route
-Route::stripeWebhooks('stripe-webhook');
+Route::post("webhook", [HomeController::class, 'webhook'])->name('stripe_webhook');

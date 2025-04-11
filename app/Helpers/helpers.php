@@ -1,9 +1,10 @@
 <?php
 
-use App\Models\Package;
 use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\Package;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -214,6 +215,19 @@ function get_total_users($type = null)
     return count($users);
 }
 
+function get_total_orders($type = null)
+{
+    $orders = new Order;
+    if ($type == '0') {
+        $orders = $orders->unpaid()->get();
+    } elseif ($type == '1') {
+        $orders = $orders->paid()->get();
+    } else {
+        $orders = $orders->get();
+    }
+    return count($orders);
+}
+
 function get_status_view($type)
 {
     if ($type == '1') {
@@ -269,20 +283,23 @@ function getPreviousWeekDates($mode = 0)
     return $dates;
 }
 
-function getPreviousWeeksUsers($type = 'users')
+function getPreviousWeeksData($type = 'users')
 {
     $dates = getPreviousWeekDates(1);
-    $users = [];
+    $data = [];
     foreach ($dates as $date) {
         $start_date = $date;
         $end_date = date('Y-m-d 23:59:59', strtotime($start_date));
         if ($type == 'users') {
-            $user = User::whereBetween('created_at', [$start_date, $end_date])->get()->count();
+            $val = User::whereBetween('created_at', [$start_date, $end_date])->get()->count();
         }
-        $users[] = $user;
+        if ($type == "orders") {
+            $val = Order::whereBetween("created_at", [$start_date, $end_date])->get()->count();
+        }
+        $data[] = $val;
     }
-    $users = '"' . implode('", "', $users) . '"';
-    return $users;
+    $data = '"' . implode('", "', $data) . '"';
+    return $data;
 }
 
 function getCurrentMonthDates($mode = 0)
@@ -308,20 +325,23 @@ function getCurrentMonthDates($mode = 0)
     return $dates;
 }
 
-function getCurrentMonthUsers($type = 'users')
+function getCurrentMonthData($type = 'users')
 {
     $dates = getCurrentMonthDates(1);
-    $users = [];
+    $data = [];
     foreach ($dates as $date) {
         $start_date = $date;
         $end_date = date('Y-m-d 23:59:59', strtotime($start_date));
         if ($type == 'users') {
-            $user = User::whereBetween('created_at', [$start_date, $end_date])->get()->count();
+            $val = User::whereBetween('created_at', [$start_date, $end_date])->get()->count();
         }
-        $users[] = $user;
+        if ($type == "orders") {
+            $val = Order::whereBetween('created_at', [$start_date, $end_date])->get()->count();
+        }
+        $data[] = $val;
     }
-    $users = '"' . implode('", "', $users) . '"';
-    return $users;
+    $data = '"' . implode('", "', $data) . '"';
+    return $data;
 }
 
 
@@ -345,20 +365,30 @@ function getPreviousMonths($mode = 0)
     return $months;
 }
 
-function getPreviousMonthsUsers($type = 'users')
+function getPreviousMonthsData($type = 'users')
 {
     $dates = getPreviousMonths(1);
-    $users = [];
+    $data = [];
     foreach ($dates as $date) {
         $start_date = $date;
         $end_date = date('Y-m-t 23:59:59', strtotime($start_date));
         if ($type == 'users') {
-            $user = User::whereBetween('created_at', [$start_date, $end_date])->get()->count();
+            $val = User::whereBetween('created_at', [$start_date, $end_date])->get()->count();
         }
-        $users[] = $user;
+        if ($type == 'orders') {
+            $val = Order::whereBetween('created_at', [$start_date, $end_date])->get()->count();
+        }
+        $data[] = $val;
     }
-    $users = '"' . implode('", "', $users) . '"';
-    return $users;
+    $data = '"' . implode('", "', $data) . '"';
+    return $data;
+}
+
+function getEarnings()
+{
+    $order = new Order();
+    $earning = $order->totalEarning();
+    return '£' . $earning;
 }
 
 function check_features($features, $package_id)

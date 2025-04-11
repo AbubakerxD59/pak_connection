@@ -31,6 +31,8 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'manage_promocodes', 'label' => 'Manage PromoCodes', 'parent_id' => '', 'route_name' => 'promo-code'],
 
+            ['name' => 'manage_orders', 'label' => 'Manage Orders', 'parent_id' => '', 'route_name' => 'orders'],
+
             //Manage Roles
             ['name' => 'view_role', 'label' => 'View Role', 'parent_id' => 'manage_roles', 'route_name' => 'roles.index', 'role_id' => '1'],
 
@@ -86,6 +88,15 @@ class PermissionSeeder extends Seeder
             ['name' => 'edit_promocode', 'label' => 'Edit Promo Code', 'parent_id' => 'manage_promocodes', 'route_name' => 'promo-code.edit'],
 
             ['name' => 'delete_promocode', 'label' => 'Delete Promo Code', 'parent_id' => 'manage_promocodes', 'route_name' => 'promo-code.destroy'],
+
+            // Manage Orders
+            ['name' => 'view_orders', 'label' => 'View Orders', 'parent_id' => 'manage_orders', 'route_name' => 'orders.index'],
+
+            ['name' => 'add_orders', 'label' => 'Add Orders', 'parent_id' => 'manage_orders', 'route_name' => 'orders.create'],
+
+            ['name' => 'edit_orders', 'label' => 'Edit Orders', 'parent_id' => 'manage_orders', 'route_name' => 'orders.edit'],
+
+            ['name' => 'delete_orders', 'label' => 'Delete Orders', 'parent_id' => 'manage_orders', 'route_name' => 'orders.destroy'],
 
         ];
         try {
