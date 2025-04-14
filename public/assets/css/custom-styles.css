@@ -22,6 +22,7 @@
     font-family: 'PoppinsThin';
     src: url('../fonts/Poppins-Thin.ttf');
 }
+
 @font-face {
     font-family: 'PoppinsBold';
     src: url('../fonts/Poppins-Bold.ttf');
@@ -432,4 +433,12 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 
 .dataTable a {
     color: #008100;
+}
+
+.rotate-right {
+    rotate: 90deg;
+}
+
+th {
+    white-space: nowrap;
 }

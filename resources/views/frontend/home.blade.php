@@ -11,7 +11,13 @@
                     <div class="package-box">
                         <header class="packages-header">
                             <h3>{{ $package->name }}</h3>
-                            <p>{{ '£' . $package->price . ' for ' . $package->date_duration }} </p>
+                            <span class="font-weight-bold h5">
+                                {{ '£' . $package->price }}
+                            </span>
+                            for
+                            <span>
+                                {{ $package->date_duration }}
+                            </span>
                         </header>
                         <ul class="package-list">
                             @foreach ($package->checkFeatures() as $key => $feature)
@@ -46,13 +52,14 @@
                             @endforeach
                         </ul>
                     </div>
-                    <a href="{{ route('frontend.buy_memebership', $package->id) }}" class="btn btn-primary w-100">Buy Now</a>
+                    <a href="{{ route('frontend.buy_memebership', $package->id) }}" class="btn btn-primary w-100">Buy
+                        Now</a>
                 </article>
             @endforeach
         </div>
         <!-- {{-- <button class="customize-plan">Customize your Plan</button> --}} -->
         <div class="customize-button text-center pt-5">
-            <button class="btn btn-primary mt-md-3 w-100">Customize your Plan</button> 
+            <button class="btn btn-primary mt-md-3 w-100">Already A Member</button>
         </div>
     </section>
 @endsection

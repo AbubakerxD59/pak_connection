@@ -79,6 +79,10 @@ class HomeController extends Controller
                     "line_items" => array(
                         ["price" => $package->stripe_price_id, "quantity" => "1"]
                     ),
+                    "shipping_address_collection" => [
+                        "allowed_countries" => ["GB", "PK"]
+                    ],
+                    "customer_email" => $request->email,
                     "mode" => "subscription",
                     "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
                     "cancel_url" => route('frontend.home'),
@@ -88,9 +92,13 @@ class HomeController extends Controller
                     "line_items" => array(
                         ["price" => $package->stripe_price_id, "quantity" => "1"]
                     ),
+                    "shipping_address_collection" => [
+                        "allowed_countries" => ["GB", "PK"]
+                    ],
                     "discounts" => array(
                         ["coupon" => $promo->stripe_coupon_id]
                     ),
+                    "customer_email" => $request->email,
                     "mode" => "subscription",
                     "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
                     "cancel_url" => route('frontend.home'),

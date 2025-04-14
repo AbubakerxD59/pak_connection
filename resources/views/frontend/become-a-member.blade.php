@@ -2,6 +2,7 @@
 @section('body')
     <div class="container buy-membership mt-4 mb-5 my-md-5">
         <h2 class="membership-heading">Your cart</h2>
+        <span class="h5">Enter your details</span>
         <form action="{{ route('frontend.checkout') }}" method="POST" class="col-md-12 membership-form">
             @csrf
             <input type="hidden" name="package_id" value="{{ $package->id }}">
