@@ -2,7 +2,7 @@
 @section('body')
     <div class="container success-page-content">
         <i class="bi bi-check-circle"></i>
-        <h2>Order Placed Successfull</h2>
+        <h2>Order Placed Successfully</h2>
         <h1>
             Welcome to Pak Connection!
         </h1>
