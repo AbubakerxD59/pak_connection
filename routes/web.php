@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PromoCodeController;
@@ -66,6 +67,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('features', FeatureController::class)->except('show');
     Route::controller(FeatureController::class)->prefix('features/')->name('features.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
+    });
+
+    // Fields
+     Route::controller(FieldController::class)->prefix('fields/')->name('fields.')->group(function () {
+        Route::post('import', 'import')->name('import');
     });
 
     // Promo Codes

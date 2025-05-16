@@ -5,9 +5,20 @@
         <div class="page-content">
             <div class="content-header clearfix">
                 <h1 class="float-left">Services</h1>
-                <div class="float-right">
-                    <a class="btn btn-primary" data-toggle="modal" data-target="#add_features_modal">
-                        <i class="fas fa-plus-square"></i> Add new</a>
+                <div class="float-right d-flex">
+                    <form action="{{ route('fields.import') }}" method="POST" enctype="multipart/form-data" id="importForm">
+                        @csrf
+                        <input type="file" name="import" id="import" class="form-control d-none"
+                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                        <label for="import" class="btn btn-primary my-0 mx-2">
+                            <i class="fa fa-download"></i>
+                            Import
+                        </label>
+                    </form>
+                    <a class="btn btn-primary">
+                        <i class="fas fa-plus-square"></i>
+                        Add new
+                    </a>
                 </div>
             </div>
             <section class="content">
@@ -130,6 +141,10 @@
                         });
                     }
                 });
+            });
+
+            $(document).on('change', '#import', function() {
+                $('#importForm').submit();
             });
         });
     </script>
