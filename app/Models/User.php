@@ -54,9 +54,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
+
     public function scopeSearch($query, $value)
     {
         $query->where('full_name', 'like', "%{$value}%")->orWhere('email', 'like', "%{$value}%");
+    }
+
+    public function scopeMembership($query, $id)
+    {
+        $query->where("membership_id", $id);
     }
 
     protected function Password(): Attribute
@@ -71,5 +81,20 @@ class User extends Authenticatable
         return Attribute::make(
             get: fn($value) => ($value != '' && $value != null) ? url(getImage('users', $value)) : '',
         );
+    }
+
+    public function getRole()
+    {
+        $role = $this->roles()->first();
+        return $role ? $role->name : '';
+    }
+
+    public function getPackage()
+    {
+        $latestOrder = $this->orders()->paid()->latest()->first();
+        if ($latestOrder) {
+            $package = $latestOrder->package()->first();
+        }
+        return $latestOrder ? $package : [];
     }
 }

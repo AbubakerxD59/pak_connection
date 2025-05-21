@@ -412,3 +412,9 @@ function check_features($features, $package_id)
         return $features;
     }
 }
+
+function no_image()
+{
+    $image =  url(getImage('img', 'noimage.png', 'assets'));
+    return $image;
+}

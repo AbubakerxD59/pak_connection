@@ -1,8 +1,7 @@
 <div class="modal fade" id="add_features_modal" style="padding-right: 17px;" aria-modal="true" role="dialog">
     <div class="modal-dialog">
-        <form method="POST" id="featureForm">
+        <form method="POST" id="featureForm" action="{{ route('features.store') }}" enctype="multipart/form-data">
             @csrf
-            <input type="hidden" id="feature_id" value="">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Service</h4>
@@ -19,6 +18,14 @@
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="name" id="feature_name"
                                     placeholder="Enter feature name" value="{{ old('name') }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label for="icon" class="form-label">Icon</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="file" class="form-control" name="icon" id="feature_icon" required>
                             </div>
                         </div>
                     </div>

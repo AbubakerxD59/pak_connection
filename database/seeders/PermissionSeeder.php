@@ -33,6 +33,8 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'manage_orders', 'label' => 'Manage Orders', 'parent_id' => '', 'route_name' => 'orders'],
 
+            ['name' => 'manage_fields', 'label' => 'Manage Fields', 'parent_id' => '', 'route_name' => 'fields'],
+
             //Manage Roles
             ['name' => 'view_role', 'label' => 'View Role', 'parent_id' => 'manage_roles', 'route_name' => 'roles.index', 'role_id' => '1'],
 
@@ -97,6 +99,15 @@ class PermissionSeeder extends Seeder
             ['name' => 'edit_orders', 'label' => 'Edit Orders', 'parent_id' => 'manage_orders', 'route_name' => 'orders.edit'],
 
             ['name' => 'delete_orders', 'label' => 'Delete Orders', 'parent_id' => 'manage_orders', 'route_name' => 'orders.destroy'],
+
+            // Manage Fields
+            ['name' => 'view_fields', 'label' => 'View Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.index'],
+
+            ['name' => 'add_fields', 'label' => 'Add Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.create'],
+
+            ['name' => 'edit_fields', 'label' => 'Edit Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.edit'],
+
+            ['name' => 'delete_fields', 'label' => 'Delete Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.destroy'],
 
         ];
         try {

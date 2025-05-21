@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feature;
+use App\Models\Field;
 use Illuminate\Http\Request;
 
 class FeatureController extends Controller
 {
     private $feature;
-    public function __construct(Feature $feature)
+    private $field;
+    public function __construct(Feature $feature, Field $field)
     {
         // permissions
         $this->middleware('permission:view_feature', ['only' => ['index']]);
@@ -18,6 +20,7 @@ class FeatureController extends Controller
         // permissions
 
         $this->feature = $feature;
+        $this->field = $field;
     }
     /**
      * Display a listing of the resource.
@@ -41,25 +44,19 @@ class FeatureController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'icon' => 'required'
         ]);
-        $feature = $this->feature->updateOrCreate([
-            'name' => $request->name
-        ], [
-            'name' => $request->name
-        ]);
+        $data = [
+            "name" => $request->name,
+            "icon" => saveImage($request->File("icon"))
+        ];
+        $feature = $this->feature->create($data);
         if ($feature) {
-            if ($request->has('feature_id') && !empty($request->feature_id)) {
-                $response = [
-                    'status' => true,
-                    'message' => 'Feature updated Successfully!'
-                ];
-            } else {
-                $response = [
-                    'status' => true,
-                    'message' => 'Feature added Successfully!'
-                ];
-            }
+            $response = [
+                'status' => true,
+                'message' => 'Feature added Successfully!'
+            ];
         } else {
             $response = [
                 'status' => false,
@@ -83,18 +80,8 @@ class FeatureController extends Controller
     public function edit(string $id)
     {
         $feature = $this->feature->find($id);
-        if ($feature) {
-            $response = [
-                'status' => true,
-                'data' => $feature
-            ];
-        } else {
-            $response = [
-                'status' => false,
-                'error' => 'Something went wrong!'
-            ];
-        }
-        return response()->json($response);
+        $fields = $this->field->orderBy('name','ASC')->get();
+        return view('admin.features.edit', compact('feature', 'fields'));
     }
 
     /**
@@ -102,7 +89,23 @@ class FeatureController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'icon' => 'required|file',
+        ]);
+        $feature = $this->feature->find($id);
+        if ($feature) {
+            $data = [
+                'name' => $request->name,
+            ];
+            if ($request->has('icon')) {
+                $data['icon'] = saveImage($request->File('icon'));
+            }
+            $feature->update($data);
+            return redirect(route('features.index'))->with('success', 'Feature update successfully!');
+        } else {
+            return back()->with('error', 'Unable to update Feature!');
+        }
     }
 
     /**
@@ -140,6 +143,7 @@ class FeatureController extends Controller
 
         $features = $features->get();
         foreach ($features as $k => $val) {
+            $features[$k]['icon_image'] = '<img src="' . $val->icon . '" width="100px" class="rounded">';
             $features[$k]['action'] = view('admin.features.action')->with('feature', $val)->render();
             $features[$k] = $val;
         }
@@ -150,5 +154,28 @@ class FeatureController extends Controller
             'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
             'aaData' => $features,
         ]);
+    }
+
+    public function addField(Request $request)
+    {
+        $data = $request->validate([
+            'feature_id' => 'required'
+        ]);
+        $id = $request->feature_id;
+        $feature = $this->feature->find($id);
+        if ($feature) {
+            $field_ids = explode(',', $request->field_ids);
+            $feature->fields()->sync($field_ids);
+            $response = [
+                'status' => true,
+                'message' => 'Fields added Successfully!'
+            ];
+        } else {
+            $response = [
+                'status' => false,
+                'message' => 'Unable to add Fields!'
+            ];
+        }
+        return response()->json($response);
     }
 }

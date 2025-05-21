@@ -23,6 +23,11 @@ class Package extends Model
 
     protected $appends = ['date_duration'];
 
+    public function features()
+    {
+        return $this->belongsToMany(Feature::class, 'feature_packages');
+    }
+
     public function scopeSearch($query, $search)
     {
         $query->where('name', 'like', "%{$search}%");
@@ -45,11 +50,6 @@ class Package extends Model
         return Attribute::make(
             get: fn($value) => $this->duration . ' ' . $this->date_type,
         );
-    }
-
-    public function features()
-    {
-        return $this->belongsToMany(Feature::class, 'feature_packages');
     }
 
     public function getFeatures()

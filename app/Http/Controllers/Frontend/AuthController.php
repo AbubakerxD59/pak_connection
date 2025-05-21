@@ -1,27 +1,34 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Frontend;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use App\Providers\RouteServiceProvider;
 
 class AuthController extends Controller
 {
+    private $user;
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     public function showLogin()
     {
-        return view('auth.login');
+        return view('frontend.auth.login');
     }
 
     public function login(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'membership_id' => 'required',
         ]);
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember_me)) {
+        $user = $this->user->membership($request->membership_id)->first();
+        if ($user) {
+            Auth::login($user, $request->remember_me);
             $response = [
                 'success' => true,
                 'message' => 'Login successful!'
@@ -34,9 +41,9 @@ class AuthController extends Controller
         }
 
         if ($response['success']) {
-            return redirect()->intended(RouteServiceProvider::HOME)->with('success', $response['message']);
+            return redirect()->route('frontend.member.home')->with('success', $response['message']);
         } else {
-            return redirect()->intended(RouteServiceProvider::INV_CRED)->with('error', $response['message']);
+            return redirect()->intended(RouteServiceProvider::MEMBER_INV_CRED)->with('error', $response['message']);
         }
     }
 

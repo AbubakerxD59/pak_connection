@@ -9,7 +9,9 @@ use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\FeatureController;
+use App\Http\Controllers\Frontend\AuthController as FrontendAuthController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\MemberController;
 use App\Http\Controllers\PackageController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,10 +69,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('features', FeatureController::class)->except('show');
     Route::controller(FeatureController::class)->prefix('features/')->name('features.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
+        Route::post("add-field", "addField")->name("addField");
     });
 
     // Fields
-     Route::controller(FieldController::class)->prefix('fields/')->name('fields.')->group(function () {
+    Route::controller(FieldController::class)->prefix('fields/')->name('fields.')->group(function () {
         Route::post('import', 'import')->name('import');
     });
 
@@ -93,6 +96,11 @@ Route::name('frontend.')->group(function () {
     Route::get('buy-membership/{id?}', [HomeController::class, 'buyMembership'])->name('buy_memebership');
     Route::post('checkout', [HomeController::class, 'checkout'])->name('checkout');
     Route::get('success', [HomeController::class, 'success'])->name('checkout_success');
+    Route::get('member/login', [FrontendAuthController::class, 'showLogin'])->name("showLogin");
+    Route::post('member/login', [FrontendAuthController::class, 'login'])->name("login");
+    Route::middleware(['is_member'])->controller(MemberController::class)->name('member.')->prefix('member/')->group(function () {
+        Route::get('home', 'home')->name('home');
+    });
 });
 
 // Strip webhook route

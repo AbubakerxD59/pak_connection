@@ -36,15 +36,19 @@
                         <div class="dropdown-item" href="#">imra.khan@gmail.com</div>
                     </div>
                 </div>
-                <div class="costomer-login">
-                    <div class="customer-avatar">
-                        <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
+                @if (auth()->check())
+                    <div class="costomer-login">
+                        <div class="customer-avatar">
+                            <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
+                        </div>
+                        <div class="txtbox">
+                            <h3>{{ auth()->user()->full_name }}</h3>
+                            <p>{{ auth()->user()->email }}</p>
+                        </div>
                     </div>
-                    <div class="txtbox">
-                        <h3>Iram Khan</h3>
-                        <p>imra.khan@gmail.com</p>
-                    </div>
-                </div>
+                @else
+                    <a class="btn btn-primary" href="{{ route('frontend.showLogin') }}">Already A Member</a>
+                @endif
             </div>
         </header>
         @yield('body')

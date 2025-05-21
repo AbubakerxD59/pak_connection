@@ -59,7 +59,7 @@
         </div>
         <!-- {{-- <button class="customize-plan">Customize your Plan</button> --}} -->
         <div class="customize-button text-center pt-5">
-            <button class="btn btn-primary mt-md-3 w-100">Already A Member</button>
+            <a class="btn btn-primary mt-md-3 w-100" href="{{ route('frontend.showLogin') }}">Already A Member</a>
         </div>
     </section>
 @endsection

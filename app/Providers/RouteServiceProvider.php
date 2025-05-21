@@ -21,6 +21,10 @@ class RouteServiceProvider extends ServiceProvider
 
     public const INV_CRED = '/login';
 
+    public const MEMBER_HOME = '/dashboard';
+
+    public const MEMBER_INV_CRED = 'member/login';
+
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
