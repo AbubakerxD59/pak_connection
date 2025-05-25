@@ -15,7 +15,7 @@
                     </textarea>
             @else
                 <input type="{{ $field->type }}" class="form-control" name="fields[{{ $field->name }}]"
-                    id="{{ $field->name }}" required>
+                    id="{{ $field->name }}" onclick="this.showPicker()" required>
             @endif
         </div>
     </div>
