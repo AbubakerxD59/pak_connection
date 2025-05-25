@@ -97,11 +97,13 @@ Route::middleware(['auth'])->group(function () {
 // Strip routes
 Route::name('frontend.')->group(function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
-    Route::get('buy-membership/{id?}', [HomeController::class, 'buyMembership'])->name('buy_memebership');
-    Route::post('checkout', [HomeController::class, 'checkout'])->name('checkout');
-    Route::get('success', [HomeController::class, 'success'])->name('checkout_success');
-    Route::get('member/login', [FrontendAuthController::class, 'showLogin'])->name("showLogin");
-    Route::post('member/login', [FrontendAuthController::class, 'login'])->name("login");
+    Route::middleware(["frontend"])->group(function () {
+        Route::get('buy-membership/{id?}', [HomeController::class, 'buyMembership'])->name('buy_memebership');
+        Route::post('checkout', [HomeController::class, 'checkout'])->name('checkout');
+        Route::get('success', [HomeController::class, 'success'])->name('checkout_success');
+        Route::get('member/login', [FrontendAuthController::class, 'showLogin'])->name("showLogin");
+        Route::post('member/login', [FrontendAuthController::class, 'login'])->name("login");
+    });
     Route::middleware(['is_member'])->controller(MemberController::class)->name('member.')->prefix('member/')->group(function () {
         Route::post('member/logout', [FrontendAuthController::class, 'logout'])->name("logout");
         Route::get('home', 'home')->name('home');
