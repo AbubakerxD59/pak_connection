@@ -45,6 +45,7 @@ class FieldImport implements ToModel, WithHeadingRow
                     "name" => $data["name"],
                     "type" => $data["type"],
                     "options" => explode(",", $data["options"]),
+                    "order" => $this->field->count() + 1
                 ]
             );
             return $field;
