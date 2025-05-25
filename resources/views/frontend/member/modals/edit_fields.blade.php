@@ -13,13 +13,13 @@
                     @endforeach
                 </select>
             @elseif($field->field->type == 'textarea')
-                <textare class="form-control" name="fields[{{ $field->field->name }}]" id="{{ $field->field->name }}"
-                    required disabled>
+                <textarea class="form-control" name="fields[{{ $field->field->name }}]" id="{{ $field->field->name }}" required
+                    disabled>
                     {{ $field->value }}
                     </textarea>
-                @else
-                    <input type="text" class="form-control" name="fields[{{ $field->field->name }}]"
-                        id="{{ $field->field->name }}" value="{{ $field->value }}" required disabled>
+            @else
+                <input type="text" class="form-control" name="fields[{{ $field->field->name }}]"
+                    id="{{ $field->field->name }}" value="{{ $field->value }}" required disabled>
             @endif
         </div>
     </div>
