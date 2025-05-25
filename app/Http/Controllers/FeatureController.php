@@ -143,7 +143,6 @@ class FeatureController extends Controller
 
         $features = $features->orderBy("order", "ASC")->get();
         foreach ($features as $k => $val) {
-            $val->update(["order" => ($k+1)]);
             $features[$k]['name_link'] = '<a href=' . route('features.edit', $val->id) . '>' . $val->name . '</a>';
             $features[$k]['order_span'] = '<span class="order_row pointer" data-id="' . $val->id . '" data-order="' . ($k + 1) . '"><i class="fa fa-arrows-alt"></i></span>';
             $features[$k]['icon_image'] = '<img src="' . $val->icon . '" width="100px" class="rounded">';

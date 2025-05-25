@@ -42,7 +42,6 @@ class FieldController extends Controller
 
         $fields = $fields->orderBy("order", "ASC")->get();
         foreach ($fields as $k => $val) {
-            $val->update(["order" => ($k+1)]);
             $fields[$k]['order_span'] = '<span class="order_row pointer" data-id="' . $val->id . '" data-order="' . ($k + 1) . '"><i class="fa fa-arrows-alt"></i></span>';
             $fields[$k] = $val;
         }
