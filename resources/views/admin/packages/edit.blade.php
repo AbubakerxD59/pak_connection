@@ -140,7 +140,7 @@
 
                                     </div>
                                 </div>
-
+                                {{-- Services --}}
                                 <div class="card">
                                     <div class="card-header with-border clearfix">
                                         <div class="card-title">
@@ -185,6 +185,54 @@
                                                                     <tr>
                                                                         <td>{{ $key + 1 }}</td>
                                                                         <td>{{ $feature->name }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- Booked Services --}}
+                                <div class="card">
+                                    <div class="card-header with-border clearfix">
+                                        <div class="card-title">
+                                            <i class="fas fa-star"></i>
+                                            Booked Services
+                                        </div>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                                title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-list">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered"
+                                                            id="booked_services_dataTable">
+                                                            <thead>
+                                                                <th>ID</th>
+                                                                <th>User</th>
+                                                                <th>Service</th>
+                                                                <th>Field</th>
+                                                                <th>Value</th>
+                                                                <th>Status</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($package->load('bookServices')->bookServices as $key => $service)
+                                                                    <tr>
+                                                                        <td>{{ $key + 1 }}</td>
+                                                                        <td>{{ $service->user->full_name }}</td>
+                                                                        <td>{{ $service->service->name }}</td>
+                                                                        <td>{{ $service->field->name }}</td>
+                                                                        <td>{{ $service->value }}</td>
+                                                                        <td>{!! service_book_status($service->status) !!}</td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>

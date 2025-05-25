@@ -28,6 +28,10 @@ class Package extends Model
         return $this->belongsToMany(Feature::class, 'feature_packages');
     }
 
+    public function bookServices(){
+        return $this->hasMany(BookService::class, 'package_id', 'id');
+    }
+
     public function scopeSearch($query, $search)
     {
         $query->where('name', 'like', "%{$search}%");

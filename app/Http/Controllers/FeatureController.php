@@ -80,7 +80,7 @@ class FeatureController extends Controller
     public function edit(string $id)
     {
         $feature = $this->feature->find($id);
-        $fields = $this->field->orderBy('name','ASC')->get();
+        $fields = $this->field->orderBy('name', 'ASC')->get();
         return view('admin.features.edit', compact('feature', 'fields'));
     }
 
@@ -141,8 +141,11 @@ class FeatureController extends Controller
         $features = $features->offset(intval($data['start']));
         $features = $features->limit(intval($data['length']));
 
-        $features = $features->get();
+        $features = $features->orderBy("order", "ASC")->get();
         foreach ($features as $k => $val) {
+            // $val->update(["order" => ($k+1)]);
+            $features[$k]['name_link'] = '<a href=' . route('features.edit', $val->id) . '>' . $val->name . '</a>';
+            $features[$k]['order_span'] = '<span class="order_row pointer" data-id="' . $val->id . '" data-order="' . ($k + 1) . '"><i class="fa fa-arrows-alt"></i></span>';
             $features[$k]['icon_image'] = '<img src="' . $val->icon . '" width="100px" class="rounded">';
             $features[$k]['action'] = view('admin.features.action')->with('feature', $val)->render();
             $features[$k] = $val;
@@ -174,6 +177,53 @@ class FeatureController extends Controller
             $response = [
                 'status' => false,
                 'message' => 'Unable to add Fields!'
+            ];
+        }
+        return response()->json($response);
+    }
+
+    public function saveOrder(Request $request)
+    {
+        $data = $request->validate([
+            "feature_id" => "required",
+            "new_order" => "required",
+            "total_records" => "required",
+            "page" => "required",
+        ]);
+        $id = $request->feature_id;
+        $feature = $this->feature->find($id);
+        if ($feature) {
+            $page = $request->page;
+            $total_records = (int) $request->total_records;
+            $old_order = $feature->order;
+            $new_order = $page > 1 ? $total_records * ($page - 1) + $request->new_order : $request->new_order;
+            $offset =  $total_records * ($page - 1);
+            if ($new_order != $old_order) {
+                $features = $this->feature;
+                if ($new_order < $old_order) {
+                    $features = $features->lesserOrder(['new_order' => $new_order, 'old_order' => $old_order]);
+                } else if ($new_order > $old_order) {
+                    $features = $features->greaterOrder(['new_order' => $new_order, 'old_order' => $old_order]);
+                }
+                $features = $features->get();
+                foreach ($features as $val) {
+                    if ($new_order < $old_order) {
+                        $order = $val->order + 1;
+                    } else {
+                        $order = $val->order - 1;
+                    }
+                    $val->update(["order" => $order]);
+                }
+            }
+            $feature->update(["order" => $new_order]);
+            $response = [
+                "success" => true,
+                "message" => "Row sorting updated Successfully!"
+            ];
+        } else {
+            $response = [
+                "success" => false,
+                "message" => "Something went Wrong!"
             ];
         }
         return response()->json($response);

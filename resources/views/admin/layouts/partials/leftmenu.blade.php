@@ -74,7 +74,7 @@
                 {{-- Manage Packages --}}
                 @if (check_permission('view_package') || check_permission('view_feature'))
                     <?php
-                    $package = in_array(request()->route()->getName(), ['packages.index', 'packages.create', 'packages.edit', 'features.index', 'features.create', 'features.edit', 'promo-code.index', 'promo-code.create', 'promo-code.edit']) ? true : false;
+                    $package = in_array(request()->route()->getName(), ['packages.index', 'packages.create', 'packages.edit', 'features.index', 'features.create', 'features.edit', 'promo-code.index', 'promo-code.create', 'promo-code.edit', 'fields.index', 'fields.create', 'fields.edit']) ? true : false;
                     ?>
                     <li class="nav-item {{ $package ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ $package ? 'active' : '' }}">
@@ -98,6 +98,13 @@
                                         class="nav-link {{ in_array(request()->route()->getName(), ['features.index', 'features.create', 'features.edit']) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-dot-circle"></i>
                                         <p>Services</p>
+                                    </a>
+                                @endcan
+                                @can('view_fields')
+                                    <a href="{{ route('fields.index') }}"
+                                        class="nav-link {{ in_array(request()->route()->getName(), ['fields.index', 'fields.create', 'fields.edit']) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-dot-circle"></i>
+                                        <p>Feilds</p>
                                     </a>
                                 @endcan
                                 <a href="{{ route('promo-code.index') }}"

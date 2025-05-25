@@ -70,11 +70,15 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(FeatureController::class)->prefix('features/')->name('features.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
         Route::post("add-field", "addField")->name("addField");
+        Route::get("save-order", "saveOrder")->name("saveOrder");
     });
 
     // Fields
+    Route::resource('fields', FieldController::class)->except('show');
     Route::controller(FieldController::class)->prefix('fields/')->name('fields.')->group(function () {
+        Route::get('dataTable', 'dataTable')->name('dataTable');
         Route::post('import', 'import')->name('import');
+        Route::get("save-order", "saveOrder")->name("saveOrder");
     });
 
     // Promo Codes
@@ -99,7 +103,10 @@ Route::name('frontend.')->group(function () {
     Route::get('member/login', [FrontendAuthController::class, 'showLogin'])->name("showLogin");
     Route::post('member/login', [FrontendAuthController::class, 'login'])->name("login");
     Route::middleware(['is_member'])->controller(MemberController::class)->name('member.')->prefix('member/')->group(function () {
+        Route::post('member/logout', [FrontendAuthController::class, 'logout'])->name("logout");
         Route::get('home', 'home')->name('home');
+        Route::get('get-fields', 'getFields')->name('getFields');
+        Route::post('book-service', "bookService")->name("bookService");
     });
 });
 

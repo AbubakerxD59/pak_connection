@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="{{ csrf_token() }}" name="csrf-token">
     <title>Membership Portal</title>
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
@@ -24,18 +25,6 @@
                 <div class="slogan-title">
                     <h1>Membership Portal</h1>
                 </div>
-                <div class="dropdown customer-dropown">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="customer-avatar">
-                            <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
-                        </div>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-item" href="#">Iram Khan</div>
-                        <div class="dropdown-item" href="#">imra.khan@gmail.com</div>
-                    </div>
-                </div>
                 @if (auth()->check())
                     <div class="costomer-login">
                         <div class="customer-avatar">
@@ -45,6 +34,13 @@
                             <h3>{{ auth()->user()->full_name }}</h3>
                             <p>{{ auth()->user()->email }}</p>
                         </div>
+                    </div>
+                    <form action="{{ route('frontend.member.logout') }}" method="POST" id="signout_form">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                    </form>
+                    <div>
+                        <i class="fas fa-sign-out-alt sign-out pointer  " style="font-size: 20px;"></i>
                     </div>
                 @else
                     <a class="btn btn-primary" href="{{ route('frontend.showLogin') }}">Already A Member</a>
@@ -145,6 +141,17 @@
             toastr.error('{{ Session::get('error') }}');
         </script>
     @endif
+    <script>
+        $(document).ready(function() {
+            $('.sign-out').on('click', function() {
+                if (confirm('Do you wish to Signout?')) {
+                    console.log('here');
+                    $('#signout_form').submit();
+                }
+            });
+        });
+    </script>
+    @stack('script')
 </body>
 
 </html>

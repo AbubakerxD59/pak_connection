@@ -59,14 +59,18 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
 
+    public function bookServices(){
+        return $this->hasMany(BookService::class, 'user_id', 'id');
+    }
+
     public function scopeSearch($query, $value)
     {
         $query->where('full_name', 'like', "%{$value}%")->orWhere('email', 'like', "%{$value}%");
     }
 
-    public function scopeMembership($query, $id)
+    public function scopeMembership($query, $search)
     {
-        $query->where("membership_id", $id);
+        $query->where("membership_id", $search)->orWhere("email", $search);
     }
 
     protected function Password(): Attribute
