@@ -16,8 +16,13 @@ class IsMember
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->getRole() == 'Customer') {
-            return $next($request);
+        if (Auth::check()) {
+            if(Auth::user()->getRole() == 'Customer'){
+                return $next($request);
+            }
+            if(Auth::user()->getRole() == 'Super Admin'){
+                return redirect(route("admin.dashboard"));
+            }
         } else {
             Auth::logout();
             return redirect(route('frontend.showLogin'));
