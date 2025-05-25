@@ -39,15 +39,25 @@ class FieldImport implements ToModel, WithHeadingRow
             ]
         )->validate();
         if ($data) {
-            $field = $this->field->updateOrCreate(
-                ["name" => $data["name"]],
-                [
-                    "name" => $data["name"],
-                    "type" => $data["type"],
-                    "options" => explode(",", $data["options"]),
-                    "order" => $this->field->count() + 1
-                ]
-            );
+            $field = $this->field->where("name", $data["name"])->first();
+            if ($field) {
+                $field = $this->field->update(
+                    [
+                        "type" => $data["type"],
+                        "options" => explode(",", $data["options"]),
+                    ]
+                );
+            } else {
+                $field = $this->field->create(
+                    [
+                        "name" => $data["name"],
+                        "type" => $data["type"],
+                        "options" => explode(",", $data["options"]),
+                        "order" => $this->field->count() + 1
+                    ]
+                );
+            }
+
             return $field;
         }
     }
