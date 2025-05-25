@@ -14,8 +14,8 @@
                 <textarea class="form-control" name="fields[{{ $field->name }}]" id="{{ $field->name }}" required>
                     </textarea>
             @else
-                <input type="text" class="form-control" name="fields[{{ $field->name }}]" id="{{ $field->name }}"
-                    required>
+                <input type="{{ $field->type }}" class="form-control" name="fields[{{ $field->name }}]"
+                    id="{{ $field->name }}" required>
             @endif
         </div>
     </div>
