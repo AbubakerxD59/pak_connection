@@ -10,6 +10,19 @@ use App\Providers\RouteServiceProvider;
 
 class AuthController extends Controller
 {
+    public function index()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->getRole() == "Super Admin") {
+                return redirect(route("showLogin"));
+            } else {
+                return redirect(route('frontend.home'));
+            }
+        } else {
+            return redirect(route('frontend.home'));
+        }
+    }
     public function showLogin()
     {
         return view('auth.login');

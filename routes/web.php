@@ -26,9 +26,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect(route('frontend.home'));
-});
+Route::get('/', [AuthController::class, 'index']);
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
@@ -100,8 +98,8 @@ Route::middleware(['auth'])->group(function () {
 
 // Strip routes
 Route::name('frontend.')->group(function () {
-    Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::middleware(["frontend"])->group(function () {
+        Route::get('home', [HomeController::class, 'index'])->name('home');
         Route::get('buy-membership/{id?}', [HomeController::class, 'buyMembership'])->name('buy_memebership');
         Route::post('checkout', [HomeController::class, 'checkout'])->name('checkout');
         Route::get('success', [HomeController::class, 'success'])->name('checkout_success');
@@ -109,7 +107,7 @@ Route::name('frontend.')->group(function () {
         Route::post('member/login', [FrontendAuthController::class, 'login'])->name("login");
     });
     Route::middleware(['is_member'])->controller(MemberController::class)->name('member.')->prefix('member/')->group(function () {
-        Route::post('member/logout', [FrontendAuthController::class, 'logout'])->name("logout");
+        Route::post('logout', [FrontendAuthController::class, 'logout'])->name("logout");
         Route::get('home', 'home')->name('home');
         Route::get('get-fields', 'getFields')->name('getFields');
         Route::post('book-service', "bookService")->name("bookService");
