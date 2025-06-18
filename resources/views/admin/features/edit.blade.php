@@ -72,7 +72,7 @@
                                 <div class="card">
                                     <div class="card-header with-border clearfix">
                                         <div class="card-title">
-                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-list"></i>
                                             Fields
                                         </div>
                                         <div class="card-tools">
