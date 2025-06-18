@@ -43,8 +43,9 @@ class MemberController extends Controller
         if ($feature) {
             $package = $user->getPackage();
             if ($feature->book) {
-                $fields = $feature->bookServices()->search(["user_id" => $user->id, "package_id" => $package->id, "service_id" => $feature->id])->get();
-                $view = view("frontend.member.modals.edit_fields", compact("fields"))->render();
+                $bookService = $user->bookServices()->where("package_id", $package->id)->where("service_id", $feature->id)->latest()->first();
+                $bookFields = $user->bookFields()->where("book_service_id", $bookService->id)->get();
+                $view = view("frontend.member.modals.edit_fields", compact("bookFields"))->render();
             } else {
                 $fields = $feature->fields()->orderBy("order", "ASC")->get();
                 $view = view("frontend.member.modals.fields", compact("fields"))->render();
@@ -70,13 +71,21 @@ class MemberController extends Controller
         if ($package) {
             $service = $this->feature->find($request->service_id);
             if ($service) {
+                $bookService = $user->bookServices()->updateOrCreate([
+                    "user_id" => $user->id,
+                    "package_id" => $package->id,
+                    "service_id" => $service->id
+                ], [
+                    "package_id" => $package->id,
+                    "service_id" => $service->id,
+                    "status" => 1
+                ]);
                 $data = $request->fields;
                 $fields = $service->fields()->orderBy("order", "ASC")->get();
                 foreach ($fields as $field) {
                     if (isset($data[$field->name])) {
-                        $user->bookServices()->create([
-                            "package_id" => $package->id,
-                            "service_id" => $service->id,
+                        $user->bookFields()->create([
+                            "book_service_id" => $bookService->id,
                             "field_id" => $field->id,
                             "value" => $data[$field->name],
                             "status" => 1
@@ -100,5 +109,25 @@ class MemberController extends Controller
             ];
         }
         return response()->json($response);
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('frontend.member.profile', compact('user'));
+    }
+
+    public function profileUpdate(Request $request)
+    {
+        $user = Auth::user();
+        $user->update([
+            "full_name" => $request->full_name,
+            "whatsapp_number" => $request->whatsapp_number,
+            "phone_number" => $request->phone_number,
+            "city" => $request->city,
+            "country" => $request->country,
+            "address" => $request->address,
+        ]);
+        return back()->with("success", "Profile updated Successfully!");
     }
 }

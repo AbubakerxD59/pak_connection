@@ -30,6 +30,10 @@ class Feature extends Model
         return $this->hasMany(BookService::class, 'service_id', 'id');
     }
 
+    public function bookFields(){
+        return $this->hasMany(BookFeild::class, 'service_id' ,'id');
+    }
+
     public function scopeSearch($query, $search)
     {
         $query->where('name', 'like', "%{$search}%");

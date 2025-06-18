@@ -102,4 +102,28 @@ class Order extends Model
             }
         );
     }
+
+    public function getUser()
+    {
+        $user = $this->user()->first();
+        return $user ? $user->full_name : '';
+    }
+
+    public function getPackage()
+    {
+        $package = $this->package()->first();
+        return $package ? $package->name : '';
+    }
+
+    public function getCoupon()
+    {
+        $coupon = $this->promo()->first();
+        return $coupon ? $coupon->name : '';
+    }
+
+    public function getPackageTotal()
+    {
+        $package = $this->package()->first();
+        return $package ? $package->price : 0;
+    }
 }

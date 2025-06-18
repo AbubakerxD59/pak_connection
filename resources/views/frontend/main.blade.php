@@ -26,15 +26,17 @@
                     <h1>Membership Portal</h1>
                 </div>
                 @if (auth()->check())
-                    <div class="costomer-login">
-                        <div class="customer-avatar">
-                            <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
+                    <a href="{{ route('frontend.member.profile') }}">
+                        <div class="costomer-login">
+                            <div class="customer-avatar">
+                                <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
+                            </div>
+                            <div class="txtbox">
+                                <h3>{{ auth()->user()->full_name }}</h3>
+                                <p>{{ auth()->user()->email }}</p>
+                            </div>
                         </div>
-                        <div class="txtbox">
-                            <h3>{{ auth()->user()->full_name }}</h3>
-                            <p>{{ auth()->user()->email }}</p>
-                        </div>
-                    </div>
+                    </a>
                     <form action="{{ route('frontend.member.logout') }}" method="POST" id="signout_form">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ auth()->id() }}">

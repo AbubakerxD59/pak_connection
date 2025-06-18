@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookService;
 use App\Models\Feature;
 use App\Models\Package;
 use Illuminate\Http\Request;
@@ -11,8 +12,9 @@ class PackageController extends Controller
 {
     private $package;
     private $feature;
+    private $bookService;
     private $stripe;
-    public function __construct(Package $package, Feature $feature)
+    public function __construct(Package $package, Feature $feature, BookService $bookService)
     {
         // permissions
         $this->middleware('permission:view_package', ['only' => ['index']]);
@@ -23,6 +25,7 @@ class PackageController extends Controller
 
         $this->package = $package;
         $this->feature = $feature;
+        $this->bookService = $bookService;
         $this->stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
     }
     /**
@@ -214,5 +217,27 @@ class PackageController extends Controller
             ];
         }
         return response()->json($response);
+    }
+
+    public function showBookedService(Request $request)
+    {
+        $id = $request->id;
+        $bookedService = $this->bookService->find($id);
+        if ($bookedService) {
+            $fields = $bookedService->bookFields()->get();
+            $view = view("admin.packages.fields", compact("fields", "bookedService"))->render();
+            $title = strtoupper($bookedService->getPackage()) . '-' . strtoupper($bookedService->getService());
+            $response = [
+                "status" => true,
+                "body" => $view,
+                "title" => $title
+            ];
+        } else {
+            $response = [
+                "status" => false,
+                "message" => "Something went wrong!"
+            ];
+        }
+        return $response;
     }
 }

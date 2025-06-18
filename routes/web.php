@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect(route('login'));
+    return redirect(route('frontend.home'));
 });
 
 Route::group(['middleware' => 'guest'], function () {
@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::controller(UserController::class)->prefix('users/')->name('users.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
+        Route::get("edit/{id}/booked-service", "editBookedService")->name("booked_service.edit");
+        Route::put("update/{id}/booked-service", "updateBookedService")->name("booked_service.update");
+        Route::get("delete/{id}/booked-service", "deleteBookedService")->name("booked_service.delete");
     });
 
     //  Roles
@@ -63,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(PackageController::class)->prefix('packages/')->name('packages.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
         Route::post('add-facility', 'addFacility')->name('add_facility');
+        Route::get("show-booked-service", "showBookedService")->name("show_booked_service");
     });
 
     // Features
@@ -109,6 +113,8 @@ Route::name('frontend.')->group(function () {
         Route::get('home', 'home')->name('home');
         Route::get('get-fields', 'getFields')->name('getFields');
         Route::post('book-service', "bookService")->name("bookService");
+        Route::get('profile', 'profile')->name('profile');
+        Route::post('profile-update', 'profileUpdate')->name('profile_update');
     });
 });
 

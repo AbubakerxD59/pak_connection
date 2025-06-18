@@ -13,8 +13,6 @@ class BookService extends Model
         "user_id",
         "package_id",
         "service_id",
-        "field_id",
-        "value",
         "status",
     ];
 
@@ -33,13 +31,30 @@ class BookService extends Model
         return $this->belongsTo(Feature::class, 'service_id', 'id');
     }
 
-    public function field()
+    public function bookFields()
     {
-        return $this->belongsTo(Field::class, 'field_id', 'id');
+        return $this->hasMany(BookFeild::class, 'book_service_id', 'id');
     }
 
     public function scopeSearch($query, $search)
     {
         $query->where('user_id', $search["user_id"])->where('package_id', $search["package_id"])->where('service_id', $search["service_id"]);
+    }
+
+    public function getUser(){
+        $user = $this->user()->first();
+        return $user ? $user->full_name : '';
+    }
+
+    public function getPackage()
+    {
+        $package = $this->package()->first();
+        return $package ? $package->name : '';
+    }
+
+    public function getService()
+    {
+        $service = $this->service()->first();
+        return $service ? $service->name : '';
     }
 }

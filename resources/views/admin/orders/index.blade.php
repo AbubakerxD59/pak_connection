@@ -31,7 +31,7 @@
                                                             <th>Amount</th>
                                                             <th>Status</th>
                                                             <th>Date</th>
-                                                            {{-- <th>Action</th> --}}
+                                                            <th>Action</th>
                                                         </thead>
                                                     </table>
                                                 </div>
@@ -91,9 +91,9 @@
                 {
                     data: 'date'
                 },
-                // {
-                //     data: 'action'
-                // }
+                {
+                    data: 'action'
+                }
             ],
         });
     </script>

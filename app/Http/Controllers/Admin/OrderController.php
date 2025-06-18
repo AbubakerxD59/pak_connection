@@ -57,7 +57,12 @@ class OrderController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $order = $this->order->find($id);
+        if ($order) {
+            return view("admin.orders.edit", compact("order"));
+        } else {
+            return back()->with("error", "Something went Wrong!");
+        }
     }
 
     /**
@@ -65,7 +70,20 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $order = $this->order->find($id);
+        if ($order) {
+            $status = $request->status;
+            if (isset(Order::$status_array[$status])) {
+                $order->update([
+                    "status" => $status
+                ]);
+                return back()->with("success", "Order updated Successfully!");
+            } else {
+                return back()->with("error", "Something went Wrong!");
+            }
+        } else {
+            return back()->with("error", "Something went Wrong!");
+        }
     }
 
     /**
@@ -73,7 +91,13 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $order = $this->order->find($id);
+        if ($order) {
+            $order->delete();
+            return back()->with("success", "Order deleted Successfully!");
+        } else {
+            return back()->with("error", "Something went Wrong!");
+        }
     }
 
     public function datatable(Request $request)
@@ -95,7 +119,6 @@ class OrderController extends Controller
 
         $orders = $orders->get();
         foreach ($orders as $k => $val) {
-            // dd($val);
             $orders[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->user->full_name . ' (' . $val->user->email . ')</a>' : '-';
             $orders[$k]['package_name'] = $val->package ? '<a href="' . route("packages.edit", $val->package->id) . '">' . $val->package->name . '</a>' : '-';
             $orders[$k]['coupon_name'] = $val->promo ? '<a href="' . route("promo-code.edit", $val->promo->id) . '">' . $val->promo->name . '</a>' : '-';
@@ -104,7 +127,7 @@ class OrderController extends Controller
             $orders[$k]['total_amount'] = $val->getTotal();
             $orders[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
             $orders[$k]['status_view'] = $val->status_view;
-            $orders[$k]['action'] = view('admin.promo-code.action')->with('code', $val)->render();
+            $orders[$k]['action'] = view('admin.orders.action')->with('order', $val)->render();
             $orders[$k] = $val;
         }
 

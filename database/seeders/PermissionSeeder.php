@@ -35,6 +35,8 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'manage_fields', 'label' => 'Manage Fields', 'parent_id' => '', 'route_name' => 'fields'],
 
+            ['name' => 'manage_booked_services', 'label' => 'Manage Booked Services', 'parent_id' => '', 'route_name' => 'booked_service'],
+
             //Manage Roles
             ['name' => 'view_role', 'label' => 'View Role', 'parent_id' => 'manage_roles', 'route_name' => 'roles.index', 'role_id' => '1'],
 
@@ -108,6 +110,14 @@ class PermissionSeeder extends Seeder
             ['name' => 'edit_fields', 'label' => 'Edit Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.edit'],
 
             ['name' => 'delete_fields', 'label' => 'Delete Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.destroy'],
+            
+            // Manage Fields
+            ['name' => 'view_booked_services', 'label' => 'View Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => ''],
+
+            ['name' => 'edit_booked_services', 'label' => 'Edit Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => ''],
+
+            ['name' => 'delete_booked_services', 'label' => 'Delete Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => ''],
+
 
         ];
         try {

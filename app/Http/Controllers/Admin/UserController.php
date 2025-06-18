@@ -6,17 +6,26 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\BookService;
 
 class UserController extends Controller
 {
-    public function __construct()
+    private $user;
+    private $role;
+    private $bookService;
+    public function __construct(User $user, Role $role, BookService $bookService)
     {
         // permissions
         $this->middleware('permission:view_user', ['only' => ['index']]);
         $this->middleware('permission:add_user', ['only' => ['create']]);
         $this->middleware('permission:edit_user', ['only' => ['edit', 'showInfo']]);
         $this->middleware('permission:delete_user', ['only' => ['destroy']]);
+        $this->middleware('permission:edit_booked_services', ['only' => ['editBookedService']]);
         // permissions
+
+        $this->user = $user;
+        $this->role = $role;
+        $this->bookService = $bookService;
     }
 
     /**
@@ -32,7 +41,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::get();
+        $roles = $this->role->get();
         return view('admin.users.add', compact('roles'));
     }
 
@@ -47,13 +56,13 @@ class UserController extends Controller
             'password' => 'required|min:4|confirmed',
             'role' => 'required',
         ]);
-        $user = User::create([
+        $user = $this->user->create([
             'full_name' => $request->full_name,
             'email' => $request->email,
             'password' => $request->password,
         ]);
         if (!empty($user)) {
-            $role = Role::find($request->role);
+            $role = $this->role->find($request->role);
             if (!empty($role)) {
                 $user->assignRole($role->name);
             }
@@ -88,8 +97,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::find($id);
-        $roles = Role::get();
+        $user = $this->user->find($id);
+        $roles = $this->role->get();
         return view('admin.users.edit', compact('roles', 'user'));
     }
 
@@ -105,7 +114,7 @@ class UserController extends Controller
             'role' => 'required',
             'active' => 'required'
         ]);
-        $user = User::find($id);
+        $user = $this->user->find($id);
         if (!empty($user)) {
             $data = [
                 'full_name' => $request->full_name,
@@ -116,7 +125,7 @@ class UserController extends Controller
                 $data['password'] = $request->password;
             }
             $user->update($data);
-            $role = Role::find($request->role);
+            $role = $this->role->find($request->role);
             if (!empty($role)) {
                 $user->syncRoles($role->name);
             }
@@ -142,7 +151,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find($id);
+        $user = $this->user->find($id);
         if ($user) {
             if ($user->delete()) {
                 return back()->with('success', 'User deleted successfully!');
@@ -197,5 +206,46 @@ class UserController extends Controller
             'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
             'aaData' => $users,
         ]);
+    }
+
+    public function editBookedService($id)
+    {
+        $bookedService = $this->bookService->find($id);
+        if ($bookedService) {
+            return view("admin.users.edit_booked_service", compact("bookedService"));
+        } else {
+            return back();
+        }
+    }
+
+    public function updateBookedService(Request $request, $id)
+    {
+        $status = $request->status;
+        $bookedService = $this->bookService->find($id);
+        if ($bookedService) {
+            $fields = $request->fields;
+            foreach ($fields as $key => $value) {
+                $bookField = $bookedService->bookFields()->where("field_id", $key)->first();
+                if ($bookField) {
+                    $bookField->update(["value" => $value]);
+                }
+            }
+            $bookedService->update(["status" => $status]);
+            return back()->with("success", "Service updated Successfully!");
+        } else {
+            return back()->with("error", "Something went Wrong!");
+        }
+    }
+
+    public function deleteBookedService($id)
+    {
+        $bookedService = $this->bookService->find($id);
+        if ($bookedService) {
+            $bookedService->bookFields()->delete();
+            $bookedService->delete();
+            return back()->with("success", "Service deleted Successfully!");
+        } else {
+            return back()->with("error", "Something went Wrong!");
+        }
     }
 }

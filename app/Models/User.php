@@ -63,6 +63,10 @@ class User extends Authenticatable
         return $this->hasMany(BookService::class, 'user_id', 'id');
     }
 
+    public function bookFields(){
+        return $this->hasMany(BookFeild::class, 'user_id', 'id');
+    }
+
     public function scopeSearch($query, $value)
     {
         $query->where('full_name', 'like', "%{$value}%")->orWhere('email', 'like', "%{$value}%");

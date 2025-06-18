@@ -1,4 +1,4 @@
-@foreach ($fields as $field)
+@foreach ($bookFields as $field)
     <div class="form-group row">
         <div class="col-md-3">
             <label for="{{ $field->field->name }}" class="form-label">{{ $field->field->name }}</label>
