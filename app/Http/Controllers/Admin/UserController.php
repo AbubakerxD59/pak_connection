@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\BookService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\BookService;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -223,6 +224,7 @@ class UserController extends Controller
         $status = $request->status;
         $bookedService = $this->bookService->find($id);
         if ($bookedService) {
+            $user_id = $bookedService->user_id;
             $fields = $request->fields;
             foreach ($fields as $key => $value) {
                 $bookField = $bookedService->bookFields()->where("field_id", $key)->first();
@@ -231,7 +233,7 @@ class UserController extends Controller
                 }
             }
             $bookedService->update(["status" => $status]);
-            return back()->with("success", "Service updated Successfully!");
+            return redirect(route("users.edit", $user_id))->with("success", "Service updated Successfully!");
         } else {
             return back()->with("error", "Something went Wrong!");
         }

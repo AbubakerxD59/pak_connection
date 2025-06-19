@@ -99,7 +99,7 @@ class User extends Authenticatable
 
     public function getPackage()
     {
-        $latestOrder = $this->orders()->latest()->first();
+        $latestOrder = $this->orders()->paid()->latest()->first();
         if ($latestOrder) {
             $package = $latestOrder->package()->first();
         }

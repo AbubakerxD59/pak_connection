@@ -9,8 +9,8 @@
     <tbody>
         @foreach ($fields as $field)
             <tr>
-                <td>{{ $field->field->name }}</td>
-                <td>{{ $field->field->type }}</td>
+                <td>{{ $field->getField() ? $field->getField()->name : '' }}</td>
+                <td>{{ $field->getField() ? $field->getField()->type : '' }}</td>
                 <td>{{ $field->value }}</td>
             </tr>
         @endforeach

@@ -27,7 +27,8 @@ class BookFeild extends Model
         return $this->belongsTo(Field::class, 'field_id', "id");
     }
 
-    public function getField(){
+    public function getField()
+    {
         $field = $this->field()->first();
         return $field;
     }

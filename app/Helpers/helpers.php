@@ -424,13 +424,13 @@ function service_book_status($status)
     if ($status == 1) {
         $div = '<span class="badge badge-warning">Pending</span>';
     } elseif ($status == 2) {
-        $div = '<span class="badge badge-success">Approved</span>';
+        $div = '<span class="badge badge-info">Approved</span>';
     } elseif ($status == 3) {
-        $div = '<span class="badge badge-success">Started</span>';
+        $div = '<span class="badge badge-primary">Started</span>';
     } elseif ($status == 4) {
         $div = '<span class="badge badge-success">Finished</span>';
     } elseif ($status == -1) {
-        $div = '<span class="badge badge-success">Rejected</span>';
+        $div = '<span class="badge badge-danger">Rejected</span>';
     } else {
         $div = '';
     }

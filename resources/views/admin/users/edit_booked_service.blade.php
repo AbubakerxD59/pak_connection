@@ -113,15 +113,20 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <select name="status" id="status" class="form-control">
-                                                    <option value="1" {{ $bookField->status == '1' ? 'selected' : '' }}>
+                                                    <option value="1"
+                                                        {{ $bookedService->status == '1' ? 'selected' : '' }}>
                                                         Pending</option>
-                                                    <option value="2" {{ $bookField->status == '2' ? 'selected' : '' }}>
+                                                    <option value="2"
+                                                        {{ $bookedService->status == '2' ? 'selected' : '' }}>
                                                         Approved</option>
-                                                    <option value="3" {{ $bookField->status == '3' ? 'selected' : '' }}>
+                                                    <option value="3"
+                                                        {{ $bookedService->status == '3' ? 'selected' : '' }}>
                                                         Started</option>
-                                                    <option value="4" {{ $bookField->status == '4' ? 'selected' : '' }}>
+                                                    <option value="4"
+                                                        {{ $bookedService->status == '4' ? 'selected' : '' }}>
                                                         Finished</option>
-                                                    <option value="-1" {{ $bookField->status == '-1' ? 'selected' : '' }}>
+                                                    <option value="-1"
+                                                        {{ $bookedService->status == '-1' ? 'selected' : '' }}>
                                                         Rejected</option>
                                                 </select>
                                                 @error('service')
