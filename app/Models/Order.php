@@ -45,6 +45,17 @@ class Order extends Model
         return $this->belongsTo(PromoCode::class, 'promo_id', 'id');
     }
 
+    public function scopeSearch($query, $search)
+    {
+        $query->whereHas("user", function ($q) use ($search) {
+            $q->where("full_name", "like", "%{$search}%");
+            $q->orWhere("email", "like", "%{$search}%");
+        })
+            ->orWhereHas("package", function ($q) use ($search) {
+                $q->where("name", "like", "%{$search}%");
+            });
+    }
+
     public function scopeUnpaid($query)
     {
         $query->where('status', '0');
