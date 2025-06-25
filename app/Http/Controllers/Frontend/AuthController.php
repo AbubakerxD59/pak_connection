@@ -25,14 +25,30 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'membership_id' => 'required',
+            'password' => 'required',
+            'remember_me' => 'sometimes'
         ]);
         $user = $this->user->membership($request->membership_id)->first();
         if ($user) {
-            Auth::login($user, $request->remember_me);
-            $response = [
-                'success' => true,
-                'message' => 'Login successful!'
+            $attempt = [
+                "password" => $request->password
             ];
+            if ($user->email == $request->membership_id) {
+                $attempt["email"] = $request->membership_id;
+            } else {
+                $attempt["membership_id"] = $request->membership_id;
+            }
+            if (Auth::attempt($attempt, $request->remember_me)) {
+                $response = [
+                    'success' => true,
+                    'message' => 'Login successful!'
+                ];
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Invalid Credentials!',
+                ];
+            }
         } else {
             $response = [
                 'success' => false,

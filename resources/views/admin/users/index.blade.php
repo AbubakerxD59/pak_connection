@@ -1,10 +1,10 @@
 @extends('admin.layouts.secure')
-@section('page_title', 'Users')
+@section('page_title', 'Customers')
 @section('page_content')
     @can('view_user')
         <div class="page-content">
             <div class="content-header clearfix">
-                <h1 class="float-left">Users</h1>
+                <h1 class="float-left">Customers</h1>
                 <div class="float-right">
                     <a class="btn btn-primary" href="{{ route('users.create') }}">
                         <i class="fas fa-plus-square"></i> Add new</a>

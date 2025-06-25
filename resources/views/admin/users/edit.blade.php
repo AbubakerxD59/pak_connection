@@ -7,10 +7,10 @@
                 @csrf
                 @method('PUT')
                 <div class="content-header clearfix">
-                    <h1 class="float-left"> Edit User
+                    <h1 class="float-left"> Edit Customer
                         <small>
                             <i class="fas fa-arrow-circle-left"></i>
-                            <a href="{{ route('users.index') }}">back to Users list</a>
+                            <a href="{{ route('users.index') }}">back to Customers list</a>
                         </small>
                     </h1>
                     <div class="float-right">
@@ -46,7 +46,7 @@
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" name="full_name" id="full_name"
                                                     value="{{ old('full_name', $user->full_name) }}"
-                                                    placeholder="Enter user name" required>
+                                                    placeholder="Enter customer name" required>
                                                 @error('full_name')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
@@ -59,7 +59,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="email" class="form-control" name="email" id="email"
-                                                    value="{{ old('email', $user->email) }}" placeholder="Enter user email">
+                                                    value="{{ old('email', $user->email) }}" placeholder="Enter customer email">
                                                 @error('email')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
@@ -152,7 +152,7 @@
                                                                 id="booked_services_dataTable">
                                                                 <thead>
                                                                     <th>ID</th>
-                                                                    <th>User</th>
+                                                                    <th>Customer</th>
                                                                     <th>Service</th>
                                                                     <th>Status</th>
                                                                     <th>Action</th>

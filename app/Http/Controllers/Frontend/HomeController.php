@@ -55,10 +55,13 @@ class HomeController extends Controller
         $data = $request->validate([
             'full_name' => 'required',
             'email' => 'required',
+            'password' => 'required|confirmed|min:6',
             'whatsapp_number' => 'required',
             'city' => 'required',
             'country' => 'required',
-            'promo' => 'sometimes'
+            'promo' => 'sometimes',
+            'emergency_full_name' => 'sometimes',
+            'emergency_phone_number' => 'sometimes',
         ]);
         $package = $this->package->find($request->package_id);
         if ($package) {
@@ -108,6 +111,7 @@ class HomeController extends Controller
             if ($user) {
                 $user->update([
                     'full_name' => $request->full_name,
+                    'password' => $request->password,
                     'whatsapp_number' => $request->whatsapp_number,
                     'phone_number' => $request->phone_number,
                     'city' => $request->city,
@@ -115,11 +119,14 @@ class HomeController extends Controller
                     'address' => $request->address,
                     'stripe_id' => $session->id,
                     'status' => 1,
+                    'emergency_full_name' => $request->has("emergency_full_name") && $request->emergency_full_name ? $request->emergency_full_name : null,
+                    'emergency_phone_number' => $request->has("emergency_phone_number") && $request->emergency_phone_number ? $request->emergency_phone_number : null,
                 ]);
             } else {
                 $user = $this->user->create([
                     'full_name' => $request->full_name,
                     'email' => $request->email,
+                    'password' => $request->password,
                     'whatsapp_number' => $request->whatsapp_number,
                     'phone_number' => $request->phone_number,
                     'city' => $request->city,
@@ -128,6 +135,8 @@ class HomeController extends Controller
                     'membership_id' => rand(100000, 999999),
                     'stripe_id' => $session->id,
                     'status' => 1,
+                    'emergency_full_name' => $request->has("emergency_full_name") && $request->emergency_full_name ? $request->emergency_full_name : null,
+                    'emergency_phone_number' => $request->has("emergency_phone_number") && $request->emergency_phone_number ? $request->emergency_phone_number : null,
                 ]);
             }
             $role = $this->role->where('name', 'Customer')->first();

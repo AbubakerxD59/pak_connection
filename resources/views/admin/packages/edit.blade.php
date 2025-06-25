@@ -219,7 +219,7 @@
                                                                 id="booked_services_dataTable">
                                                                 <thead>
                                                                     <th>ID</th>
-                                                                    <th>User</th>
+                                                                    <th>Customer</th>
                                                                     <th>Service</th>
                                                                     <th>Status</th>
                                                                     <th>Action</th>

@@ -128,6 +128,8 @@
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Toastr -->
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
+    {{-- SweetAlert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (Session::has('success'))
         <script type="text/javascript">
             toastr.success('{{ Session::get('success') }}');

@@ -15,6 +15,12 @@
                         <div class="input-group-text"><span class="fas fa-envelope"></span></div>
                     </div>
                 </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-lock"></span></div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <input type="hidden" name="remember_me" value="0">

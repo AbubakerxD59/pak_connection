@@ -32,6 +32,26 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
+                            <label for="password">Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                value="{{ old('password') }}" required>
+                            @error('password')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" id="password_confirmation"
+                                name="password_confirmation" value="{{ old('password_confirmation') }}" required>
+                            @error('password_confirmation')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
                             <label for="whatsapp_number">Whatsapp Number <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="whatsapp_number" name="whatsapp_number"
                                 value="{{ old('whatsapp_number') }}" required>
@@ -74,6 +94,31 @@
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St"
                             value="{{ old('address') }}">
+                        @error('address')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <h4>Emergency Contact Information</h4>
+                    <hr>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="emergency_full_name">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="emergency_full_name"
+                                name="emergency_full_name" value="{{ old('emergency_full_name') }}">
+                            @error('emergency_full_name')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="emergency_phone_number">Phone Number <span class="text-danger">*</span></label>
+                            <input type="xt" class="form-control" id="emergency_phone_number"
+                                name="emergency_phone_number" value="{{ old('emergency_phone_number') }}">
+                            @error('emergency_phone_number')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4 cart-summary bg-white rounded p-4">

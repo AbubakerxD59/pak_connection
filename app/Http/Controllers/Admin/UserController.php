@@ -132,12 +132,12 @@ class UserController extends Controller
             }
             $response = [
                 'success' => true,
-                'message' => 'User updated successfully!'
+                'message' => 'Customer updated successfully!'
             ];
         } else {
             $response = [
                 'success' => false,
-                'message' => 'Unable to update User!'
+                'message' => 'Unable to update Customer!'
             ];
         }
         if ($response['success']) {
@@ -155,9 +155,9 @@ class UserController extends Controller
         $user = $this->user->find($id);
         if ($user) {
             if ($user->delete()) {
-                return back()->with('success', 'User deleted successfully!');
+                return back()->with('success', 'Customer deleted successfully!');
             } else {
-                return back()->with('error', 'Unable to delete User!');
+                return back()->with('error', 'Unable to delete Customer!');
             }
         }
     }

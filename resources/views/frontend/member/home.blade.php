@@ -73,8 +73,21 @@
                         if (response.success) {
                             modal.modal('toggle');
                             modal.find('.card-body').empty();
-                            toastr.success(response.message);
+                            Swal.fire({
+                                title: "Success!",
+                                text: response.message,
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
                         } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: response.message,
+                                icon: "error",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
                             toastr.error(response.message);
                         }
                     }

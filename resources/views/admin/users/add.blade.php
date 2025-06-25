@@ -1,5 +1,5 @@
 @extends('admin.layouts.secure')
-@section('page_title', 'Users')
+@section('page_title', 'Customers')
 @section('page_content')
     @can('add_user')
         <div class="page-content">
@@ -9,7 +9,7 @@
                     <h1 class="float-left"> {{ __('users.add_page_heading') }}
                         <small>
                             <i class="fas fa-arrow-circle-left"></i>
-                            <a href="{{ route('users.index') }}">back to Users list</a>
+                            <a href="{{ route('users.index') }}">back to Customers list</a>
                         </small>
                     </h1>
                     <div class="float-right">
@@ -43,7 +43,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" name="full_name" id="full_name"
-                                                    value="{{ old('full_name') }}" placeholder="Enter user name" required>
+                                                    value="{{ old('full_name') }}" placeholder="Enter customer name" required>
                                                 @error('full_name')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
@@ -56,7 +56,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="email" class="form-control" name="email" id="email"
-                                                    value="{{ old('email') }}" placeholder="Enter user email">
+                                                    value="{{ old('email') }}" placeholder="Enter customer email">
                                                 @error('email')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
@@ -69,7 +69,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="password" class="form-control" name="password" id="password"
-                                                    placeholder="Enter user password">
+                                                    placeholder="Enter customer password">
                                                 @error('password')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror

@@ -50,7 +50,7 @@
                         <a href="#" class="nav-link {{ $user ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user"></i>
                             <p>
-                                USERS
+                                CUSTOMERS
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -60,7 +60,7 @@
                                     <a href="{{ route('users.index') }}"
                                         class="nav-link {{ in_array(request()->route()->getName(), ['users.index', 'users.create', 'users.edit']) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-dot-circle"></i>
-                                        <p>Users</p>
+                                        <p>Customers</p>
                                     </a>
                                 @endcan
                                 @can('view_role')

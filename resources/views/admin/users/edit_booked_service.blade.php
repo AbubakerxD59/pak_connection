@@ -35,7 +35,7 @@
                                     <div class="card-body">
                                         <div class="form-group row">
                                             <div class="col-md-3">
-                                                <label for="user" class="form-label">User</label>
+                                                <label for="user" class="form-label">Customer</label>
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" id="user"
