@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\BookService;
 use App\Models\Feature;
+use App\Models\Package;
+use App\Mail\WelcomeEmail;
+use App\Models\BookService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Package;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class MemberController extends Controller
 {
@@ -92,6 +94,7 @@ class MemberController extends Controller
                         ]);
                     }
                 }
+                Mail::to($user->email)->send(new WelcomeEmail($user));
                 $response = [
                     "success" => true,
                     "message" => "Service initiated Successfully!"
