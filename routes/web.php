@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\Frontend\AuthController as FrontendAuthController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -32,6 +33,24 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
+
+
+Route::prefix('password')->name('password.')->group(function () {
+    // Show email form
+    Route::get('forgot', [PasswordController::class, 'showLinkRequestForm'])->name('request');
+
+    // Send reset link
+    Route::post('email', [PasswordController::class, 'sendResetLinkEmail'])->name('send_link');
+
+    // Show reset password form from email
+    // Route::get('reset/{token}', [PasswordController::class, 'visitPasswordLink'])->name('visit_link');
+    Route::get('/change-password', [PasswordController::class, 'visitPasswordLink'])->name('visit_link');
+
+    // Submit new password
+    Route::post('reset', [PasswordController::class, 'resetPassword'])->name('reset');
+});
+
+
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
