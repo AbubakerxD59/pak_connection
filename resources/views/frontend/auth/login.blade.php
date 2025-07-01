@@ -32,6 +32,14 @@
                 </div>
                 <div class="social-auth-links text-center mb-3">
                     <button type="submit" class="btn btn-primary btn-block">{{ __('auth.btn_sign_in') }}</button>
+                    
+                </div>
+                 <div class="row">
+                    <div class="col-12">
+                        <div class="icheck-primary text-center">
+                            <a href="{{ route('password.request') }}" class="my-3">Forgot Your Password?</a>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
