@@ -139,14 +139,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        {{-- @can('add_fields')
-                                            <div class="content-header clearfix">
-                                                <div class="float-right">
-                                                    <a class="btn btn-primary" data-toggle="modal" data-target="#add_fields_modal">
-                                                        <i class="fas fa-plus-square"></i> Add Field</a>
-                                                </div>
-                                            </div>
-                                        @endcan --}}
+                                        
                                         <div class="table-list">
                                             <div class="row">
                                                 <div class="col-12">
