@@ -26,6 +26,7 @@ class MemberController extends Controller
     {
         $user = Auth::user();
         $package = $user->getPackage();
+        // return $package;
         if ($package) {
             $features = $package->features()->orderBy("order", "ASC")->get();
         } else {

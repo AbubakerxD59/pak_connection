@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <form method="POST" id="submitFeatureForm">
             @csrf
-            <input type="hidden" name="package_id" value="{{ $package->id }}">
+            <input type="hidden" name="package_id" value="{{ $package->id ?? '' }}">
             <input type="hidden" id="service_id" name="service_id">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="modal-content">

@@ -98,7 +98,7 @@
                                                         <?php
                                                         $selected_fields = [];
                                                         ?>
-                                                        <table class="table table-striped table-bordered" id="fields_datatable">
+                                                        <table class="table table-striped table-bordered fields_datatable" id="fields_datatable">
                                                             <thead>
                                                                 <th>ID</th>
                                                                 <th>Name</th>
@@ -123,6 +123,100 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                {{-- // by abdul moiz --}}
+                                <div class="card">
+                                    <div class="card-header with-border clearfix">
+                                        <div class="card-title">
+                                            <i class="fas fa-list"></i>
+                                            Service Users
+                                        </div>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                                title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        {{-- @can('add_fields')
+                                            <div class="content-header clearfix">
+                                                <div class="float-right">
+                                                    <a class="btn btn-primary" data-toggle="modal" data-target="#add_fields_modal">
+                                                        <i class="fas fa-plus-square"></i> Add Field</a>
+                                                </div>
+                                            </div>
+                                        @endcan --}}
+                                        <div class="table-list">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="table-responsive">
+                                                        <?php
+                                                        $book_services_arr = [];
+                                                        ?>
+                                                        <table class="table table-striped table-bordered fields_datatable" id="services_datatable">
+                                                            <thead>
+                                                                <th>ID</th>
+                                                                <th>Name</th>
+                                                                <th>Email / Phone number</th>
+                                                                <th>Address</th>
+                                                                <th>Action</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($book_services as $key => $field)
+                                                                    <?php
+                                                                    array_push($book_services_arr, $field->id);
+                                                                    ?>
+                                                                    <tr>
+
+                                                                        <td>{{ $key + 1 }}</td>
+                                                                        <td>{{ $field->user?->full_name ?? '-' }}</td>
+                                                                        <td>{{ $field->user?->email ?? '-' }} /
+                                                                            {{ $field->user?->phone_number ?? '-' }}</td>
+                                                                        <td>{{ $field->user?->city ?? '-' }} /
+                                                                            {{ $field->user?->address ?? '-' }}</td>
+                                                                        {{-- <td>@include('admin.users.action', ['field' => $field])</td> --}}
+                                                                        {{-- <td>{!! view('admin.roles.action', ['field' => $field])->render() !!}</td> --}}
+
+                                                                        <td>
+                                                                            @if ($role == 'Super Admin')
+                                                                             <div class="d-flex">
+                                                                                <div class="mr-2">
+                                                                                    <a href="{{ route('users.edit', $field->id) }}"
+                                                                                        class="btn btn-outline-primary btn-sm">Edit</a>
+                                                                                </div>
+
+                                                                                <div>
+                                                                                    <button
+                                                                                        class="btn btn-outline-danger btn-sm delete-btn"
+                                                                                        onclick="confirmDelete(event)">Delete</button>
+                                                                                    <form
+                                                                                        action="{{ route('users.destroy', $field->id) }}"
+                                                                                        method="POST" class="delete_form">
+                                                                                        @csrf
+                                                                                        @method('DELETE')
+                                                                                    </form>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            @endif
+                                                                            
+
+                                                                        </td>
+
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
@@ -134,6 +228,7 @@
         'feature' => $feature,
         'fields' => $fields,
         'selected_fields' => $selected_fields,
+        'book_services_arr' => $book_services_arr,
     ])
 @endsection
 @push('scripts')
@@ -155,7 +250,7 @@
         });
     </script>
     <script>
-        var fields_datatable = $('#fields_datatable').DataTable({
+        var fields_datatable = $('.fields_datatable').DataTable({
             "paging": true,
             'iDisplayLength': 10,
             "lengthChange": true,
