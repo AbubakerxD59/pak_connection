@@ -14,7 +14,7 @@
                         <div class="form-group col-md-6">
                             <label for="full_name">Full Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="full_name" name="full_name"
-                                value="{{ old('full_name') }}" required>
+                                value="{{ auth()->check() ? auth()->user()->full_name : old('full_name') }}" required>
                             @error('full_name')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -23,38 +23,42 @@
                         <div class="form-group col-md-6">
                             <label for="email">Email <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="email" name="email"
-                                value="{{ old('email') }}" required>
+                                value="{{ auth()->check() ? auth()->user()->email : old('email') }}" required>
                             @error('email')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="password">Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="password" name="password"
-                                value="{{ old('password') }}" required>
-                            @error('password')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
+                    @if (!auth()->check())
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="password">Password <span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    value="{{ old('password') }}" required>
+                                @error('password')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
 
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="password_confirmation">Confirm Password <span
+                                        class="text-danger">*</span></label>
+                                <input type="password" class="form-control" id="password_confirmation"
+                                    name="password_confirmation" value="{{ old('password_confirmation') }}" required>
+                                @error('password_confirmation')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="password_confirmation"
-                                name="password_confirmation" value="{{ old('password_confirmation') }}" required>
-                            @error('password_confirmation')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+                    @endif
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="whatsapp_number">Whatsapp Number <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="whatsapp_number" name="whatsapp_number"
-                                value="{{ old('whatsapp_number') }}" required>
+                                value="{{ auth()->check() ? auth()->user()->whatsapp_number : old('whatsapp_number') }}"
+                                required>
                             @error('whatsapp_number')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -63,7 +67,7 @@
                         <div class="form-group col-md-6">
                             <label for="phone_number">Phone Number</label>
                             <input type="number" class="form-control" id="phone_number" name="phone_number"
-                                value="{{ old('phone_number') }}">
+                                value="{{ auth()->check() ? auth()->user()->phone_number : old('phone_number') }}">
                             @error('full_name')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -74,7 +78,7 @@
                         <div class="form-group col-md-6">
                             <label for="city">City <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="city" name="city"
-                                value="{{ old('city') }}" required>
+                                value="{{ auth()->check() ? auth()->user()->city : old('city') }}" required>
                             @error('city')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -83,7 +87,7 @@
                         <div class="form-group col-md-6">
                             <label for="country">Country <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="country" name="country"
-                                value="{{ old('country') }}" required>
+                                value="{{ auth()->check() ? auth()->user()->country : old('country') }}" required>
                             @error('country')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -93,7 +97,7 @@
                     <div class="form-group">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St"
-                            value="{{ old('address') }}">
+                            value="{{ auth()->check() ? auth()->user()->address : old('address') }}">
                         @error('address')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -105,7 +109,8 @@
                         <div class="form-group col-md-6">
                             <label for="emergency_full_name">Full Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="emergency_full_name"
-                                name="emergency_full_name" value="{{ old('emergency_full_name') }}">
+                                name="emergency_full_name"
+                                value="{{ auth()->check() ? auth()->user()->emergency_full_name : old('emergency_full_name') }}">
                             @error('emergency_full_name')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -114,7 +119,8 @@
                         <div class="form-group col-md-6">
                             <label for="emergency_phone_number">Phone Number <span class="text-danger">*</span></label>
                             <input type="xt" class="form-control" id="emergency_phone_number"
-                                name="emergency_phone_number" value="{{ old('emergency_phone_number') }}">
+                                name="emergency_phone_number"
+                                value="{{ auth()->check() ? auth()->user()->emergency_phone_number : old('emergency_phone_number') }}">
                             @error('emergency_phone_number')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror

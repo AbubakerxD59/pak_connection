@@ -77,7 +77,7 @@
                     </div>
                     <div class="col-md-9">
                         <input type="text" class="form-control" name="package" id="package"
-                            value="{{ old('package', $user->getPackage()->name) }}" readonly disabled>
+                            value="{{ old('package', $user->getPackage() ? $user->getPackage()->name : '') }}" readonly disabled>
                         @error('package')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

@@ -55,17 +55,20 @@ class HomeController extends Controller
 
     public function checkout(Request $request)
     {
-        $data = $request->validate([
+        $rules = [
             'full_name' => 'required',
             'email' => 'required',
-            'password' => 'required|confirmed|min:6',
             'whatsapp_number' => 'required',
             'city' => 'required',
             'country' => 'required',
             'promo' => 'sometimes',
-            'emergency_full_name' => 'sometimes',
-            'emergency_phone_number' => 'sometimes',
-        ]);
+            'emergency_full_name' => 'required',
+            'emergency_phone_number' => 'required',
+        ];
+        if (!auth()->check()) {
+            $rules['password'] = 'required|confirmed|min:6';
+        }
+        $data = $request->validate($rules);
         $package = $this->package->find($request->package_id);
         if ($package) {
             $promo = '';

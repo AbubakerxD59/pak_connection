@@ -17,12 +17,10 @@ class Frontend
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            if (Auth::user()->getRole() == 'Customer') {
-                return redirect(route("frontend.member.home"));
-            }
             if (Auth::user()->getRole() == 'Super Admin') {
                 return redirect(route("dashboard"));
             }
+            return $next($request);
         } else {
             return $next($request);
         }

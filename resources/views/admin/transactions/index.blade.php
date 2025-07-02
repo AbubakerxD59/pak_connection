@@ -5,24 +5,16 @@
         <div class="page-content">
             <div class="content-header clearfix">
                 <h1 class="float-left">Transactions</h1>
-                {{-- <div class="float-right">
-                    <a class="btn btn-primary" href="{{ route('promo-code.create') }}">
-                        <i class="fas fa-plus-square"></i> Add new</a>
-                </div> --}}
             </div>
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-
-
-
                             {{-- // show transactions  --}}
-
                             <div class="card">
                                 <div class="card-header with-border clearfix">
                                     <div class="card-title">
-                                        <i class="fas fa-list"></i>
+                                        <i class="fas fa-money-bill"></i>
                                         Transactions
                                     </div>
                                     <div class="card-tools">
@@ -33,7 +25,6 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-
                                     <div class="table-list">
                                         <div class="row">
                                             <div class="col-12">
@@ -41,7 +32,6 @@
 
                                                     <table class="table table-striped table-bordered" id="transactions_dt">
                                                         <thead>
-                                                            {{-- <th>Transaction ID</th> --}}
                                                             <th>Customer</th>
                                                             <th>Order ID</th>
                                                             <th>Package</th>
@@ -50,12 +40,6 @@
                                                             <th>Discount Amount</th>
                                                             <th>Status</th>
                                                             <th>Date</th>
-
-
-                                                            {{-- <th>Coupon</th>
-
-                                                            
-                                                            <th>Action</th> --}}
                                                         </thead>
                                                     </table>
                                                 </div>
@@ -64,13 +48,11 @@
                                     </div>
                                 </div>
                             </div>
-
                             {{-- // show orders  --}}
-
                             <div class="card">
                                 <div class="card-header with-border clearfix">
                                     <div class="card-title">
-                                        <i class="fas fa-list"></i>
+                                        <i class="fas fa-bookmark"></i>
                                         Orders
                                     </div>
                                     <div class="card-tools">
@@ -131,7 +113,6 @@
             "serverSide": true,
             ajax: {
                 url: "{{ route('transactions.dataTable') }}",
-                // url: "{{ route('orders.dataTable') }}",
             },
             columns: [
                 // {
@@ -162,21 +143,6 @@
                 {
                     data: 'date'
                 },
-
-
-
-
-
-
-
-                // {
-                //     data: 'coupon_name'
-                // },
-
-
-                // {
-                //     data: 'action'
-                // }
             ],
         });
     </script>
@@ -196,7 +162,6 @@
             "processing": true,
             "serverSide": true,
             ajax: {
-                // url: "{{ route('transactions.dataTable') }}",
                 url: "{{ route('orders.dataTable') }}",
             },
             columns: [{

@@ -19,7 +19,11 @@ class AuthController extends Controller
 
     public function showLogin()
     {
-        return view('frontend.auth.login');
+        if (auth()->check()) {
+            return redirect()->route("frontend.member.home");
+        } else {
+            return view('frontend.auth.login');
+        }
     }
 
     public function login(Request $request)

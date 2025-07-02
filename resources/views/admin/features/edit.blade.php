@@ -123,8 +123,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                {{-- // by abdul moiz --}}
                                 <div class="card">
                                     <div class="card-header with-border clearfix">
                                         <div class="card-title">
