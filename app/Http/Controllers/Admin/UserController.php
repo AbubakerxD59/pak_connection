@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\BookedServiceStatusUpdated;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\BookService;
@@ -222,17 +223,25 @@ class UserController extends Controller
     public function updateBookedService(Request $request, $id)
     {
         $status = $request->status;
-        $bookedService = $this->bookService->find($id);
+        // $bookedService = $this->bookService->find($id);
+        $bookedService = $this->bookService->with('user')->find($id);
+
+        // return $bookedService;
         if ($bookedService) {
             $user_id = $bookedService->user_id;
             $fields = $request->fields;
-            foreach ($fields as $key => $value) {
-                $bookField = $bookedService->bookFields()->where("field_id", $key)->first();
-                if ($bookField) {
-                    $bookField->update(["value" => $value]);
+            if (is_array($fields)) {
+                foreach ($fields as $key => $value) {
+                    $bookField = $bookedService->bookFields()->where("field_id", $key)->first();
+                    if ($bookField) {
+                        $bookField->update(["value" => $value]);
+                    }
                 }
             }
             $bookedService->update(["status" => $status]);
+
+            event(new BookedServiceStatusUpdated($bookedService));
+
             return redirect(route("users.edit", $user_id))->with("success", "Service updated Successfully!");
         } else {
             return back()->with("error", "Something went Wrong!");

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\BookedServiceStatusUpdated;
+use App\Listeners\SendDepositRequestedMail;
+use App\Listeners\SendInvoiceCreatedMail;
+use App\Listeners\SendOrderInProgressMail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +22,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        // ✅ Your custom event and listeners
+    BookedServiceStatusUpdated::class => [
+        SendDepositRequestedMail::class,
+        SendOrderInProgressMail::class,
+        SendInvoiceCreatedMail::class,
+    ],
     ];
 
     /**
