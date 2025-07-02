@@ -221,6 +221,9 @@
                             'orders.index',
                             'orders.create',
                             'orders.edit',
+                            'transactions.index',
+                            'transactions.create',
+                            'transactions.edit',
                         ])
                             ? true
                             : false;
@@ -244,7 +247,20 @@
                                 </li>
                             </ul>
                         @endcan
+                        @can('view_transactions')
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('transactions.index') }}"
+                                        class="nav-link {{ in_array(request()->route()->getName(), ['transactions.index', 'transactions.create', 'transactions.edit']) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-dot-circle"></i>
+                                        <p>Transactions</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        @endcan
                     </li>
+
+
                 @endcan
 
                 {{-- Earnings --}}

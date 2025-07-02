@@ -112,7 +112,8 @@ class PasswordController extends Controller
             // Only update the password if it is present in the request
             if ($request->filled('password')) {
                 // $data['password'] = bcrypt($request->password);
-                $data['password'] = Hash::make($request->password);
+                // $data['password'] = Hash::make($request->password);
+                $data['password'] = $request->password;
             }
 
 

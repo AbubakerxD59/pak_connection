@@ -14,6 +14,7 @@ use App\Http\Controllers\Frontend\AuthController as FrontendAuthController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\MemberController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\Admin\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -111,6 +112,12 @@ Route::middleware(['auth'])->group(function () {
     // Order
     Route::resource('orders', OrderController::class)->except('show');
     Route::controller(OrderController::class)->prefix('orders/')->name('orders.')->group(function () {
+        Route::get('dataTable', 'dataTable')->name('dataTable');
+    });
+
+    // Transactions
+    Route::resource('transactions', TransactionController::class)->except('show');
+    Route::controller(TransactionController::class)->prefix('transactions/')->name('transactions.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
     });
 });

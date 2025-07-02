@@ -13,6 +13,7 @@ use App\Models\WebhookCall;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class HomeController extends Controller
@@ -24,7 +25,8 @@ class HomeController extends Controller
     private $stripe;
     private $order;
     private $webhook;
-    public function __construct(Package $package, User $user, Role $role, PromoCode $promoCode, Order $order, WebhookCall $webhook)
+    private $transaction;
+    public function __construct(Package $package, User $user, Role $role, PromoCode $promoCode, Order $order, WebhookCall $webhook, Transaction $transaction)
     {
         $this->package = $package;
         $this->user = $user;
@@ -32,6 +34,7 @@ class HomeController extends Controller
         $this->promoCode = $promoCode;
         $this->order = $order;
         $this->webhook = $webhook;
+        $this->transaction = $transaction;
         $this->stripe = new StripeClient(env('STRIPE_SECRET'));
     }
     public function index()
@@ -144,7 +147,8 @@ class HomeController extends Controller
                 $user->assignRole($role->name);
             }
 
-            $this->order->create([
+            // $this->order->create([
+            $order = $this->order->create([
                 "user_id" => $user->id,
                 "session_id" => $session->id,
                 "package_id" => $package->id,
@@ -152,6 +156,20 @@ class HomeController extends Controller
                 "total_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
                 "status" => "0",
             ]);
+
+
+            $this->transaction->create([
+                "user_id" => $user->id,
+                "order_id" => $order->id,
+                "session_id" => $session->id,
+                "package_id" => $package->id,
+                "promo_id" => $promo ? $promo->id : "",
+                "total_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "status" => "0",
+            ]);
+
+
+
 
             return redirect($session->url);
         } else {

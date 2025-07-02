@@ -41,7 +41,7 @@ class AuthController extends Controller
                 $attempt["membership_id"] = $request->membership_id;
             }
 
-            return [$attempt, $request->remember_me];
+            // return [$attempt, $request->remember_me];
 
 
             if (Auth::attempt($attempt, $request->remember_me)) {

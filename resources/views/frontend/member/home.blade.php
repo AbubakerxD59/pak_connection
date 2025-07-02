@@ -3,7 +3,11 @@
     <section class="membership-portal container">
         <p class="text-center">
             <span class="h4">Package:</span>
-            <span class="font-weight-bold h4">{{ $package->name }}</span>
+            @if (!empty($package))
+                <span class="font-weight-bold h4">{{ $package->name ?? '-' }}</span>
+            @else
+                <span class="font-weight-bold h4">No package found</span>
+            @endif
         </p>
         <div class="row">
             @foreach ($features as $feature)
@@ -23,7 +27,13 @@
             @endforeach
         </div>
     </section>
-    @include('frontend.member.modals.feature_fields', ['package' => $package])
+
+    {{-- @include('frontend.member.modals.feature_fields', ['package' => $package ?? null]) --}}
+    @if (!empty($package))
+        @include('frontend.member.modals.feature_fields', ['package' => $package])
+    @else
+        <span class="text-muted text-center">No package data available</span>
+    @endif
 @endsection
 
 @push('script')

@@ -79,9 +79,21 @@ class FeatureController extends Controller
      */
     public function edit(string $id)
     {
-        $feature = $this->feature->find($id);
+        // $feature = $this->feature->find($id);
+
+        $feature = $this->feature->with('bookServices')->find($id);
+        // $book_services = $feature->bookServices;
+        $book_services = $feature->bookServices()->with('user')->get();
+
+        $role = auth()->user()?->roles->pluck('name')->first();
+
+        // return $role;
+
+
         $fields = $this->field->orderBy('name', 'ASC')->get();
-        return view('admin.features.edit', compact('feature', 'fields'));
+
+        // return $book_services;
+        return view('admin.features.edit', compact('feature', 'fields', 'book_services','role'));
     }
 
     /**

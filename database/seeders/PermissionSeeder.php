@@ -102,6 +102,15 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'delete_orders', 'label' => 'Delete Orders', 'parent_id' => 'manage_orders', 'route_name' => 'orders.destroy'],
 
+            // Manage Transactions
+            ['name' => 'view_transactions', 'label' => 'View Transactions', 'parent_id' => 'manage_transactions', 'route_name' => 'transactions.index'],
+
+            ['name' => 'add_transactions', 'label' => 'Add Transactions', 'parent_id' => 'manage_transactions', 'route_name' => 'transactions.create'],
+
+            ['name' => 'edit_transactions', 'label' => 'Edit Transactions', 'parent_id' => 'manage_transactions', 'route_name' => 'transactions.edit'],
+
+            ['name' => 'delete_transactions', 'label' => 'Delete Transactions', 'parent_id' => 'manage_transactions', 'route_name' => 'transactions.destroy'],
+
             // Manage Fields
             ['name' => 'view_fields', 'label' => 'View Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.index'],
 
