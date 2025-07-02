@@ -125,6 +125,17 @@
                                                     <option value="4"
                                                         {{ $bookedService->status == '4' ? 'selected' : '' }}>
                                                         Finished</option>
+
+                                                    <option value="5"
+                                                        {{ $bookedService->status == '5' ? 'selected' : '' }}>Deposit Requested
+                                                    </option>
+                                                    <option value="6"
+                                                        {{ $bookedService->status == '6' ? 'selected' : '' }}>Order in Progress
+                                                    </option>
+                                                    <option value="7"
+                                                        {{ $bookedService->status == '7' ? 'selected' : '' }}>Invoice Created
+                                                    </option>
+
                                                     <option value="-1"
                                                         {{ $bookedService->status == '-1' ? 'selected' : '' }}>
                                                         Rejected</option>

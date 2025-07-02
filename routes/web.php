@@ -15,6 +15,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\MemberController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Models\BookService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [AuthController::class, 'index']);
+// Route::get('/email-template', function () {
+//     return view('emails.deposit_requested');
+// });
+
+Route::get('/email-preview', function () {
+    $bookedService = BookService::with(['user', 'service'])->first();
+    // return view('emails.deposit_requested', [
+    return view('emails.invoice_created', [
+        'bookedService' => $bookedService,
+        'paymentLink' => 'https://pakconnections.co.uk/pay-deposit/abc123'
+    ]);
+});
+
+
+
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
