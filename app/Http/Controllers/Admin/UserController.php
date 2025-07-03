@@ -6,8 +6,10 @@ use App\Events\BookedServiceStatusUpdated;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\BookService;
+use App\Models\PromoCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -15,7 +17,10 @@ class UserController extends Controller
     private $user;
     private $role;
     private $bookService;
-    public function __construct(User $user, Role $role, BookService $bookService)
+    private $promo_code;
+    private $stripe;
+    private $transaction;
+    public function __construct(User $user, Role $role, BookService $bookService, PromoCode $promo_code, Transaction $transaction)
     {
         // permissions
         $this->middleware('permission:view_user', ['only' => ['index']]);
@@ -28,6 +33,9 @@ class UserController extends Controller
         $this->user = $user;
         $this->role = $role;
         $this->bookService = $bookService;
+        $this->promo_code = $promo_code;
+        $this->stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+        $this->transaction = $transaction;
     }
 
     /**
@@ -101,7 +109,181 @@ class UserController extends Controller
     {
         $user = $this->user->find($id);
         $roles = $this->role->get();
-        return view('admin.users.edit', compact('roles', 'user'));
+        $promo_codes = $this->promo_code->get();
+
+        // return $promo_codes;
+
+        return view('admin.users.edit', compact('roles', 'user', 'promo_codes'));
+    }
+
+    public function createInvoice(Request $request)
+    {
+
+        // return $request;
+
+        try {
+            $data = $request->validate([
+                'book_service_id' => 'required|exists:book_services,id',
+                'amount'            => 'required|numeric|min:0',
+                'final_price'       => 'required|numeric|min:0',
+                'promo_code_id'         => 'nullable|exists:promo_codes,id',
+            ]);
+
+
+            // Load BookService with its Service
+            $bookedService = $this->bookService->with('service')->find($request->book_service_id);
+            $serviceName = $bookedService->service->name ?? '-';
+
+
+
+            // Load Coupon name if provided
+            $promoCode = $this->promo_code->find($request->promo_code_id);
+            $promoName = $promoCode->name ?? '-';
+
+            // dd($promoCode);
+
+
+            // Set Stripe secret key
+            // Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            // Create a product (if not already created)
+            $product = $this->stripe->products->create([
+                'name' => $serviceName,
+            ]);
+
+            // Create a price
+            $price = $this->stripe->prices->create([
+                'unit_amount' => $request->final_price * 100, // Amount in cents (i.e. $50.00)
+                'currency' => 'gbp',
+                'product' => $product->id,
+            ]);
+
+            // Create a payment link
+            // $paymentLink = PaymentLink::create([
+            $paymentLink = $this->stripe->paymentLinks->create([
+                'line_items' => [
+                    [
+                        'price' => $price->id,
+                        'quantity' => 1,
+                    ],
+                ],
+            ]);
+
+            //  Save link to invoice url column
+
+            $bookedService->invoice_url = $paymentLink->url;
+            $bookedService->invoice_status = 1;
+            $bookedService->status = 5;
+
+            event(new BookedServiceStatusUpdated($bookedService));
+
+            $bookedService->save();
+
+            // Return or redirect to payment link
+            // return response()->json([
+            //     'url' => $paymentLink->url,
+            // ]);
+
+
+            // add transaction code here 
+            // add transaction code here 
+            // add transaction code here 
+            // add transaction code here 
+
+            $this->transaction->create([
+                "user_id" => $bookedService->user_id,
+                // "order_id" => $order->id,
+                "book_service_id" => $bookedService->id,
+                // "session_id" => $session->id,
+                // "package_id" => $package->id,
+                "promo_id" => $request->promo_code_id ? $request->promo_code_id : "",
+                "total_amount" => $request->final_price * 100,
+                "invoice_url" => $paymentLink->url,
+                "status" => "0",
+            ]);
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invoice generated successfully.',
+                'url'     => $paymentLink->url,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate invoice.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function depositPayment(Request $request)
+    {
+
+        try {
+            $data = $request->validate([
+                'book_service_id' => 'required|exists:book_services,id',
+            ]);
+
+
+            // Load BookService with its Service
+            $bookedService = $this->bookService->with('service')->find($request->book_service_id);
+
+            // Create a product (if not already created)
+            $product = $this->stripe->products->create([
+                'name' => 'Deposit Payment',
+            ]);
+
+            // Create a price
+            $price = $this->stripe->prices->create([
+                'unit_amount' => 100 * 100, // Amount in cents (i.e. $50.00)
+                'currency' => 'gbp',
+                'product' => $product->id,
+            ]);
+
+            // Create a payment link
+            // $paymentLink = PaymentLink::create([
+            $paymentLink = $this->stripe->paymentLinks->create([
+                'line_items' => [
+                    [
+                        'price' => $price->id,
+                        'quantity' => 1,
+                    ],
+                ],
+            ]);
+
+            $bookedService->deposit_url = $paymentLink->url;
+            $bookedService->deposit_status = 1;
+            $bookedService->status = 2;
+
+            $this->transaction->create([
+                "user_id" => $bookedService->user_id,
+                // "order_id" => $order->id,
+                "book_service_id" => $bookedService->id,
+                // "session_id" => $session->id,
+                // "package_id" => $package->id,
+                "promo_id" => "",
+                "total_amount" => 100 * 100,
+                "invoice_url" => $paymentLink->url,
+                "status" => "0",
+            ]);
+
+            event(new BookedServiceStatusUpdated($bookedService));
+
+            $bookedService->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Deposit payment successfully.',
+                'url'     => $paymentLink->url,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate invoice.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
