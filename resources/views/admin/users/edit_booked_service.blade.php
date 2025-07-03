@@ -136,6 +136,22 @@
                                                         {{ $bookedService->status == '7' ? 'selected' : '' }}>Invoice Created
                                                     </option>
 
+                                                    <option value="8"
+                                                        {{ $bookedService->status == '8' ? 'selected' : '' }}>Full Payment
+                                                        Received</option>
+                                                    <option value="9"
+                                                        {{ $bookedService->status == '9' ? 'selected' : '' }}>Schedule Created
+                                                    </option>
+                                                    <option value="10"
+                                                        {{ $bookedService->status == '10' ? 'selected' : '' }}>Pre Arrival
+                                                    </option>
+                                                    <option value="11"
+                                                        {{ $bookedService->status == '11' ? 'selected' : '' }}>Member Arrived
+                                                    </option>
+                                                    <option value="12"
+                                                        {{ $bookedService->status == '12' ? 'selected' : '' }}>Order Completed
+                                                    </option>
+
                                                     <option value="-1"
                                                         {{ $bookedService->status == '-1' ? 'selected' : '' }}>
                                                         Rejected</option>
