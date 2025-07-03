@@ -193,7 +193,7 @@ class UserController extends Controller
             $this->transaction->create([
                 "user_id" => $bookedService->user_id,
                 // "order_id" => $order->id,
-                "book_service_id" => $bookedService->id,
+                "book_service_id" => $request->book_service_id,
                 // "session_id" => $session->id,
                 // "package_id" => $package->id,
                 "promo_id" => $request->promo_code_id ? $request->promo_code_id : "",
@@ -259,7 +259,7 @@ class UserController extends Controller
             $this->transaction->create([
                 "user_id" => $bookedService->user_id,
                 // "order_id" => $order->id,
-                "book_service_id" => $bookedService->id,
+                "book_service_id" => $request->book_service_id,
                 // "session_id" => $session->id,
                 // "package_id" => $package->id,
                 "promo_id" => "",
