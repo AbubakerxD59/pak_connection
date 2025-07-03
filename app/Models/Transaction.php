@@ -32,6 +32,12 @@ class Transaction extends Model
         return $this->belongsTo(Order::class);
     }
 
+    // not in use
+    public function bookService()
+    {
+        return $this->belongsTo(BookService::class, 'order_id', 'id');
+    }
+
 
     // copied from order table
     static public $status_array = [
