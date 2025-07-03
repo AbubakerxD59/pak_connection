@@ -98,7 +98,8 @@
                                                         <?php
                                                         $selected_fields = [];
                                                         ?>
-                                                        <table class="table table-striped table-bordered fields_datatable" id="fields_datatable">
+                                                        <table class="table table-striped table-bordered fields_datatable"
+                                                            id="fields_datatable">
                                                             <thead>
                                                                 <th>ID</th>
                                                                 <th>Name</th>
@@ -126,8 +127,8 @@
                                 <div class="card">
                                     <div class="card-header with-border clearfix">
                                         <div class="card-title">
-                                            <i class="fas fa-list"></i>
-                                            Service Users
+                                            <i class="fas fa-user"></i>
+                                            Booked Customers
                                         </div>
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse"
@@ -137,7 +138,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        
+
                                         <div class="table-list">
                                             <div class="row">
                                                 <div class="col-12">
@@ -145,10 +146,12 @@
                                                         <?php
                                                         $book_services_arr = [];
                                                         ?>
-                                                        <table class="table table-striped table-bordered fields_datatable" id="services_datatable">
+                                                        <table class="table table-striped table-bordered fields_datatable"
+                                                            id="services_datatable">
                                                             <thead>
                                                                 <th>ID</th>
                                                                 <th>Name</th>
+                                                                <th>Membership ID</th>
                                                                 <th>Email / Phone number</th>
                                                                 <th>Address</th>
                                                                 <th>Action</th>
@@ -161,40 +164,25 @@
                                                                     <tr>
 
                                                                         <td>{{ $key + 1 }}</td>
-                                                                        <td>{{ $field->user?->full_name ?? '-' }}</td>
+                                                                        <td>
+                                                                            <a
+                                                                                href="{{ route('users.edit', $field->user_id) }}">{{ $field->user?->full_name ?? '-' }}</a>
+                                                                        </td>
+                                                                        <td>{{ $field->user?->membership_id ?? '-' }}</td>
                                                                         <td>{{ $field->user?->email ?? '-' }} /
                                                                             {{ $field->user?->phone_number ?? '-' }}</td>
                                                                         <td>{{ $field->user?->city ?? '-' }} /
                                                                             {{ $field->user?->address ?? '-' }}</td>
-                                                                        {{-- <td>@include('admin.users.action', ['field' => $field])</td> --}}
-                                                                        {{-- <td>{!! view('admin.roles.action', ['field' => $field])->render() !!}</td> --}}
-
                                                                         <td>
                                                                             @if ($role == 'Super Admin')
-                                                                             <div class="d-flex">
-                                                                                <div class="mr-2">
-                                                                                    <a href="{{ route('users.edit', $field->id) }}"
-                                                                                        class="btn btn-outline-primary btn-sm">Edit</a>
+                                                                                <div class="d-flex">
+                                                                                    <div class="mr-2">
+                                                                                        <a href="{{ route('users.edit', $field->user_id) }}"
+                                                                                            class="btn btn-outline-primary btn-sm">Edit</a>
+                                                                                    </div>
                                                                                 </div>
-
-                                                                                <div>
-                                                                                    <button
-                                                                                        class="btn btn-outline-danger btn-sm delete-btn"
-                                                                                        onclick="confirmDelete(event)">Delete</button>
-                                                                                    <form
-                                                                                        action="{{ route('users.destroy', $field->id) }}"
-                                                                                        method="POST" class="delete_form">
-                                                                                        @csrf
-                                                                                        @method('DELETE')
-                                                                                    </form>
-                                                                                </div>
-
-                                                                            </div>
                                                                             @endif
-                                                                            
-
                                                                         </td>
-
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>

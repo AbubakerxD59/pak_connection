@@ -24,7 +24,7 @@ class SendScheduleCreatedEmail
 
     public function handle(BookedServiceStatusUpdated $event): void
     {
-        if ($event->bookedService->status == 9) {
+        if ($event->bookedService->status == 6) {
             Mail::to($event->bookedService->user->email)
                 ->send(new ScheduleCreatedMail($event->bookedService));
         }

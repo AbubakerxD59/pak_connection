@@ -71,6 +71,7 @@ class HomeController extends Controller
         $data = $request->validate($rules);
         $package = $this->package->find($request->package_id);
         if ($package) {
+            $session = array();
             $promo = '';
             if (!empty($request->promo)) {
                 $promo = $this->promoCode->search($request->promo)->active()->first();
@@ -83,41 +84,60 @@ class HomeController extends Controller
                 }
             }
 
-            if (empty($promo)) {
-                $session = $this->stripe->checkout->sessions->create([
-                    "line_items" => array(
-                        ["price" => $package->stripe_price_id, "quantity" => "1"]
-                    ),
-                    "shipping_address_collection" => [
-                        "allowed_countries" => ["GB", "PK"]
-                    ],
-                    "customer_email" => $request->email,
-                    "mode" => "subscription",
-                    "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
-                    "cancel_url" => route('frontend.home'),
-                ]);
-            } else {
-                $session = $this->stripe->checkout->sessions->create([
-                    "line_items" => array(
-                        ["price" => $package->stripe_price_id, "quantity" => "1"]
-                    ),
-                    "shipping_address_collection" => [
-                        "allowed_countries" => ["GB", "PK"]
-                    ],
-                    "discounts" => array(
-                        ["coupon" => $promo->stripe_coupon_id]
-                    ),
-                    "customer_email" => $request->email,
-                    "mode" => "subscription",
-                    "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
-                    "cancel_url" => route('frontend.home'),
-                ]);
-            }
             $user = $this->user->search($request->email)->first();
+            if (auth()->check()) {
+                $user = auth()->user();
+            }
+            // Checkout session
+            $session["line_items"] = [["price" => $package->stripe_price_id, "quantity" => "1"]];
+            $session["shipping_address_collection"] = ["allowed_countries" => ["GB", "PK"]];
+            if ($user) {
+                $session["customer"] = $user->customer_id;
+            } else {
+                $session["customer_email"] = $request->email;
+            }
+            if ($promo) {
+                $session["discounts"] = [["coupon" => $promo->stripe_coupon_id]];
+            }
+            $session["mode"] = "subscription";
+            $session["success_url"] = route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}";
+            $session["cancel_url"] = route('frontend.home');
+            $session = $this->stripe->checkout->sessions->create($session);
+            // Checkout session
+
+            // if (empty($promo)) {
+            //     $session = $this->stripe->checkout->sessions->create([
+            //         "line_items" => array(
+            //             ["price" => $package->stripe_price_id, "quantity" => "1"]
+            //         ),
+            //         "shipping_address_collection" => [
+            //             "allowed_countries" => ["GB", "PK"]
+            //         ],
+            //         $customer,
+            //         "mode" => "subscription",
+            //         "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
+            //         "cancel_url" => route('frontend.home'),
+            //     ]);
+            // } else {
+            //     $session = $this->stripe->checkout->sessions->create([
+            //         "line_items" => array(
+            //             ["price" => $package->stripe_price_id, "quantity" => "1"]
+            //         ),
+            //         "shipping_address_collection" => [
+            //             "allowed_countries" => ["GB", "PK"]
+            //         ],
+            //         "discounts" => array(
+
+            //         ),
+            //         $customer,
+            //         "mode" => "subscription",
+            //         "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
+            //         "cancel_url" => route('frontend.home'),
+            //     ]);
+            // }
             if ($user) {
                 $user->update([
                     'full_name' => $request->full_name,
-                    'password' => $request->password,
                     'whatsapp_number' => $request->whatsapp_number,
                     'phone_number' => $request->phone_number,
                     'city' => $request->city,
@@ -172,8 +192,6 @@ class HomeController extends Controller
             ]);
 
 
-
-
             return redirect($session->url);
         } else {
             return redirect()->back()->with('error', 'Package not Found!');
@@ -205,17 +223,17 @@ class HomeController extends Controller
                 $endpoint_secret
             );
         } catch (\UnexpectedValueException $e) {
-            Log::info($e);
             // Invalid payload
             return response($e, 400);
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            Log::info($e);
             // Invalid signature
             return response("signature verification", 400);
         }
-        Log::info($event);
         // Handle the event
         switch ($event->type) {
+            case 'payment_intent.payment_failed':
+
+                // session is completed
             case 'checkout.session.completed':
                 $session = $event->data->object;
                 $status = $session->payment_status == "paid" ? "1" : "2";
@@ -232,9 +250,13 @@ class HomeController extends Controller
                         "customer_id" => $session->customer,
                         "status" => $status
                     ]);
+                    $user = $this->user->find($order->user_id);
+                    $user->update([
+                        "customer_id" => $session->customer
+                    ]);
                 }
             default:
-                echo 'Received unknown event type ' . $event->type;
+                info("Received unknown event type" . $event->type);
         }
         return response("Here", 200);
     }

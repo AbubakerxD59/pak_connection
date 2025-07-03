@@ -24,7 +24,7 @@ class SendOrderCompletedEmail
 
     public function handle(BookedServiceStatusUpdated $event): void
     {
-        if ($event->bookedService->status == 12) {
+        if ($event->bookedService->status == 9) {
             Mail::to($event->bookedService->user->email)
                 ->send(new OrderCompletedMail($event->bookedService));
         }

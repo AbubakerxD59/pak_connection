@@ -16,6 +16,18 @@ class BookService extends Model
         "status",
     ];
 
+    static public $status_array = [
+        "1" => "Order Received",
+        "2" => "Deposit Requested",
+        "3" => "Order in Progress",
+        "4" => "Invoice Created",
+        "5" => "Full Payment Received",
+        "6" => "Schedule Created",
+        "7" => "Pre Arrival",
+        "8" => "Member Arrived",
+        "9" => "Order Completed",
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -41,7 +53,8 @@ class BookService extends Model
         $query->where('user_id', $search["user_id"])->where('package_id', $search["package_id"])->where('service_id', $search["service_id"]);
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         $user = $this->user()->first();
         return $user ? $user->full_name : '';
     }
@@ -56,5 +69,11 @@ class BookService extends Model
     {
         $service = $this->service()->first();
         return $service ? $service->name : '';
+    }
+
+    public static function getStatuses()
+    {
+        $status = self::$status_array;
+        return $status;
     }
 }

@@ -7,7 +7,7 @@
                 @csrf
                 @method('PUT')
                 <div class="content-header clearfix">
-                    <h1 class="float-left"> Edit User
+                    <h1 class="float-left"> Edit Order
                         <small>
                             <i class="fas fa-arrow-circle-left"></i>
                             <a href="{{ route('orders.index') }}">back to Orders list</a>

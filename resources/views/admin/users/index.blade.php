@@ -26,7 +26,7 @@
                                                             {{-- <th>{{ __('users.profile_pic') }}</th> --}}
                                                             <th>{{ __('users.full_name') }}</th>
                                                             <th>Membership ID</th>
-                                                            <th>{{ __('users.email_username') }}</th>
+                                                            <th>Email</th>
                                                             <th>Whatsapp#</th>
                                                             <th>City</th>
                                                             <th>Country</th>

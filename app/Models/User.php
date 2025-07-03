@@ -31,6 +31,7 @@ class User extends Authenticatable
         'membership_id',
         'status',
         "stripe_id",
+        "customer_id",
         "emergency_full_name",
         "emergency_phone_number",
     ];

@@ -23,7 +23,7 @@ class SendDepositRequestedMail
      */
     public function handle(BookedServiceStatusUpdated $event): void
     {
-        if ($event->bookedService->status == 5) {
+        if ($event->bookedService->status == 1) {
             Mail::to($event->bookedService->user->email)
                 ->send(new DepositRequestedMail($event->bookedService));
         }

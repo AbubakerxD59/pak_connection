@@ -113,48 +113,11 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <select name="status" id="status" class="form-control">
-                                                    <option value="1"
-                                                        {{ $bookedService->status == '1' ? 'selected' : '' }}>
-                                                        Pending</option>
-                                                    <option value="2"
-                                                        {{ $bookedService->status == '2' ? 'selected' : '' }}>
-                                                        Approved</option>
-                                                    <option value="3"
-                                                        {{ $bookedService->status == '3' ? 'selected' : '' }}>
-                                                        Started</option>
-                                                    <option value="4"
-                                                        {{ $bookedService->status == '4' ? 'selected' : '' }}>
-                                                        Finished</option>
-
-                                                    <option value="5"
-                                                        {{ $bookedService->status == '5' ? 'selected' : '' }}>Deposit Requested
-                                                    </option>
-                                                    <option value="6"
-                                                        {{ $bookedService->status == '6' ? 'selected' : '' }}>Order in Progress
-                                                    </option>
-                                                    <option value="7"
-                                                        {{ $bookedService->status == '7' ? 'selected' : '' }}>Invoice Created
-                                                    </option>
-
-                                                    <option value="8"
-                                                        {{ $bookedService->status == '8' ? 'selected' : '' }}>Full Payment
-                                                        Received</option>
-                                                    <option value="9"
-                                                        {{ $bookedService->status == '9' ? 'selected' : '' }}>Schedule Created
-                                                    </option>
-                                                    <option value="10"
-                                                        {{ $bookedService->status == '10' ? 'selected' : '' }}>Pre Arrival
-                                                    </option>
-                                                    <option value="11"
-                                                        {{ $bookedService->status == '11' ? 'selected' : '' }}>Member Arrived
-                                                    </option>
-                                                    <option value="12"
-                                                        {{ $bookedService->status == '12' ? 'selected' : '' }}>Order Completed
-                                                    </option>
-
-                                                    <option value="-1"
-                                                        {{ $bookedService->status == '-1' ? 'selected' : '' }}>
-                                                        Rejected</option>
+                                                    @foreach (\app\Models\BookService::getStatuses() as $id => $value)
+                                                        <option value="{{ $id }}"
+                                                            {{ $bookedService->status == $id ? 'selected' : '' }}>
+                                                            {{ $value }}</option>
+                                                    @endforeach
                                                 </select>
                                                 @error('service')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>

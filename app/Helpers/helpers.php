@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BookService;
 use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
@@ -421,18 +422,18 @@ function no_image()
 
 function service_book_status($status)
 {
-    if ($status == 1) {
-        $div = '<span class="badge badge-warning">Pending</span>';
-    } elseif ($status == 2) {
-        $div = '<span class="badge badge-info">Approved</span>';
-    } elseif ($status == 3) {
-        $div = '<span class="badge badge-primary">Started</span>';
-    } elseif ($status == 4) {
-        $div = '<span class="badge badge-success">Finished</span>';
-    } elseif ($status == -1) {
-        $div = '<span class="badge badge-danger">Rejected</span>';
-    } else {
-        $div = '';
-    }
+    $statuses = BookService::$status_array;
+    $classes = [
+        "1" => "badge-info",
+        "2" => "badge-primary",
+        "3" => "badge-primary",
+        "4" => "badge-primary",
+        "5" => "badge-primary",
+        "6" => "badge-primary",
+        "7" => "badge-primary",
+        "8" => "badge-primary",
+        "9" => "badge-success",
+    ];
+    $div = "<span class='badge " . $classes[$status] . "'>" . $statuses[$status] . "</span>";
     return $div;
 }

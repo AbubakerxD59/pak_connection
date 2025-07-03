@@ -23,7 +23,7 @@ class SendMemberArrivedEmail
      */
     public function handle(BookedServiceStatusUpdated $event): void
     {
-        if ($event->bookedService->status == 11) {
+        if ($event->bookedService->status == 8) {
             Mail::to($event->bookedService->user->email)
                 ->send(new MemberArrivedMail($event->bookedService));
         }

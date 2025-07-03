@@ -25,7 +25,7 @@ class SendPreArrivalEmail
 
     public function handle(BookedServiceStatusUpdated $event): void
     {
-        if ($event->bookedService->status == 10) {
+        if ($event->bookedService->status == 7) {
             Mail::to($event->bookedService->user->email)
                 ->send(new PreArrivalMail($event->bookedService));
 
