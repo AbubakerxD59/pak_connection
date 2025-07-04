@@ -87,7 +87,7 @@ class TransactionController extends Controller
             $data = $request->all();
             $search = @$data['search']['value'];
             $iTotalRecords = $this->transaction;
-            $transactions = $this->transaction->with('user', 'package', 'promo');
+            $transactions = $this->transaction->with('user', 'package', 'promo')->whereNotNull("order_id");
 
             if (!empty($search)) {
                 $transactions = $transactions->search($search);

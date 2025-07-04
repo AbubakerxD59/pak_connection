@@ -450,3 +450,7 @@ tr {
 td {
     place-items: center !important;
 }
+
+.btn-sm {
+    margin-inline: 5px !important;
+}

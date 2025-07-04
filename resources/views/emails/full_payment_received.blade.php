@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Final Payment Confirmation</title>
 </head>
+
 <body style="font-family: Arial, sans-serif; background-color: #ffffff; margin: 0; padding: 0;">
     <div style="max-width: 700px; margin: 0 auto; padding: 30px; border: 1px solid #e0e0e0;">
 
@@ -13,17 +15,20 @@
         </div>
 
         {{-- Email Content --}}
-        <p style="font-size: 16px;">Dear Member{{ isset($bookedService->user) ? ' ' . $bookedService->user->full_name : '' }},</p>
+        <p style="font-size: 16px;">Dear Member{{ $name }},</p>
 
-        <p style="font-size: 16px;">We’re pleased to confirm that we have received your final payment in full — thank you!</p>
+        <p style="font-size: 16px;">We’re pleased to confirm that we have received your final payment in full — thank
+            you!</p>
 
         <p style="font-size: 16px;">
-            Your entire booking is now fully confirmed, and our team has activated all services you requested. From this point forward,
-            your journey is in the hands of our expert concierge teams who are fully briefed and ready to support you every step of the way.
+            Your entire booking is now fully confirmed, and our team has activated all services you requested. From this
+            point forward,
+            your journey is in the hands of our expert concierge teams who are fully briefed and ready to support you
+            every step of the way.
         </p>
 
         {{-- Attach Invoice Info --}}
-        <p style="font-size: 16px; font-weight: bold;">[ Attach Paid Invoice Here ]</p>
+        <p style="font-size: 16px; font-weight: bold;">{{ $invoice_url }}</p>
 
         <p style="font-size: 16px;"><strong>What Happens Next?</strong></p>
         <ol style="font-size: 16px; padding-left: 20px;">
@@ -37,11 +42,13 @@
                 </ul>
             </li>
             <li>Our team in Pakistan is now on standby and preparing for your arrival.</li>
-            <li>Should you need any further assistance, please don’t hesitate to contact us — we’re always happy to assist.</li>
+            <li>Should you need any further assistance, please don’t hesitate to contact us — we’re always happy to
+                assist.</li>
         </ol>
 
         <p style="font-size: 16px;">
-            Thank you for trusting <strong>Pak Connections</strong>. Your journey is now our responsibility, and we look forward to delivering
+            Thank you for trusting <strong>Pak Connections</strong>. Your journey is now our responsibility, and we look
+            forward to delivering
             an unforgettable experience from the moment you land to the moment you leave.
         </p>
 
@@ -65,7 +72,9 @@
                     Email: MembersSupport@pakconnections.co.uk
                 </td>
             </tr>
-            <tr><td colspan="2">&nbsp;</td></tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
             <tr>
                 <td><strong>Corporate & Business Members</strong></td>
                 <td style="padding-left: 20px;">
@@ -74,7 +83,9 @@
                     Email: CorporateSupport@pakconnections.co.uk
                 </td>
             </tr>
-            <tr><td colspan="2">&nbsp;</td></tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
             <tr>
                 <td><strong>Personal Assistant</strong></td>
                 <td style="padding-left: 20px;">
@@ -82,7 +93,9 @@
                     WhatsApp: 0092 320 5023407
                 </td>
             </tr>
-            <tr><td colspan="2">&nbsp;</td></tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
             <tr>
                 <td><strong>Emergency / Crisis / Medical</strong></td>
                 <td style="padding-left: 20px;">
@@ -99,4 +112,5 @@
         </div>
     </div>
 </body>
+
 </html>

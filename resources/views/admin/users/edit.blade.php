@@ -1,8 +1,6 @@
 @extends('admin.layouts.secure')
 @section('page_title', $user->full_name)
 @section('page_content')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     @can('edit_user')
         <div class="page-content">
             <form method="POST" action="{{ route('users.update', $user->id) }}" class="form-horizontal">
@@ -169,47 +167,10 @@
                                                                         <td>{{ $service->service->name }}</td>
                                                                         <td>{!! service_book_status($service->status) !!}</td>
                                                                         <td>
-                                                                            <div class="row">
-                                                                                <div>
-
-                                                                                    <button type="button"
-                                                                                        class="btn btn-outline-secondary btn-sm generate-invoice-btn"
-                                                                                        data-bs-toggle="modal"
-                                                                                        data-bs-target="#invoiceModal"
-                                                                                        data-id="{{ $service->id }}">
-                                                                                        Generate Invoice
-                                                                                    </button>
-
-                                                                                </div>
-
-
-                                                                                <div>
-                                                                                    <span
-                                                                                        class="btn btn-outline-secondary btn-sm view_booked_service deposit-payment-btn"
-                                                                                        data-id="{{ $service->id }}">
-                                                                                        Deposit Payment
-                                                                                    </span>
-
-                                                                                </div>
-
-                                                                                <div>
-                                                                                    <span
-                                                                                        class="btn btn-outline-success btn-sm view_booked_service"
-                                                                                        data-id="{{ $service->id }}">View</span>
-                                                                                </div>
-                                                                                @can('edit_booked_services')
-                                                                                    <div>
-                                                                                        <a href="{{ route('users.booked_service.edit', $service->id) }}"
-                                                                                            class="btn btn-outline-primary btn-sm mx-1">Edit</a>
-                                                                                    </div>
-                                                                                @endcan
-                                                                                @can('delete_booked_services')
-                                                                                    <div>
-                                                                                        <a href="{{ route('users.booked_service.delete', $service->id) }}"
-                                                                                            class="btn btn-outline-danger btn-sm mx-1">Delete</a>
-                                                                                    </div>
-                                                                                @endcan
-                                                                            </div>
+                                                                            @include(
+                                                                                'admin.booked-services.actions',
+                                                                                ['service' => $service]
+                                                                            )
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
@@ -226,61 +187,6 @@
                     </div>
                 </div>
             </section>
-            {{-- </form> --}}
-
-
-            <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Generate Invoice</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-
-                        <form id="invoiceForm" method="POST">
-                            @csrf
-                            <input type="hidden" name="book_service_id" id="modalBookedServiceId">
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="amount" class="form-label">Amount (£)</label>
-                                    <input type="number" name="amount" id="amount" class="form-control" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="promo_code_id" class="form-label">Select Promo Code</label>
-                                    <select name="promo_code_id" id="promo_code_id" class="form-select">
-                                        <option value="">-- No Coupon --</option>
-                                        @foreach ($promo_codes as $coupon)
-                                            <option value="{{ $coupon->id }}"
-                                                data-discount-type="{{ $coupon->discount_type }}"
-                                                data-discount-amount="{{ $coupon->discount_amount }}">
-                                                {{ $coupon->name }} ({{ $coupon->code }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Final Amount (£)</label>
-                                    <input type="text" id="final_price" class="form-control" readonly>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">Generate</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-
-
-
-
         </div>
     @endcan
 @endsection
@@ -337,7 +243,6 @@
                     document.getElementById('promo_code_id').selectedIndex = 0;
                 });
             });
-
             // Calculate final price
             const amountInput = document.getElementById('amount');
             const couponSelect = document.getElementById('promo_code_id');
@@ -348,30 +253,22 @@
                 const selected = couponSelect.options[couponSelect.selectedIndex];
                 const discountType = selected.getAttribute('data-discount-type');
                 const discountAmount = parseFloat(selected.getAttribute('data-discount-amount'));
-
                 if (!amount || isNaN(amount)) {
                     finalPriceInput.value = '';
                     return;
                 }
-
                 let final = amount;
-
                 if (discountType === 'percent') {
                     final -= (discountAmount / 100) * amount;
                 } else if (discountType === 'fixed') {
                     final -= discountAmount;
                 }
-
                 final = Math.max(final, 0);
                 finalPriceInput.value = final.toFixed(2);
             }
-
             amountInput.addEventListener('input', calculateFinalPrice);
             couponSelect.addEventListener('change', calculateFinalPrice);
-
-
             // ==================================================
-
             document.querySelectorAll('.generate-invoice-btn').forEach(function(btn) {
                 btn.addEventListener('click', function() {
                     const serviceId = this.getAttribute('data-id');
@@ -385,19 +282,13 @@
             // Handle AJAX form submission
             $('#invoiceForm').on('submit', function(e) {
                 e.preventDefault();
-
                 const form = $(this);
-
                 // const submitBtn = form.find('.generate-invoice-btn'); // get the button inside the form
-
                 let clickedBtn = null; // global variable to store clicked button reference
-
                 // Capture the clicked submit button before form submission
                 $(document).on('click', '.generate-invoice-btn', function() {
                     clickedBtn = $(this); // store the reference globally
                 });
-
-
                 const url = "{{ route('users.book_service_invoice') }}";
                 const data = {
                     _token: form.find('input[name="_token"]').val(),
@@ -406,22 +297,18 @@
                     final_price: $('#final_price').val(),
                     promo_code_id: $('#promo_code_id').val(),
                 };
-
                 if (clickedBtn) {
                     clickedBtn.prop('disabled', true).text('Processing...');
                 }
-
-
                 form[0].reset();
-
                 $.ajax({
                     type: 'POST',
                     url: url,
                     data: data,
                     success: function(response) {
                         if (response.success) {
+                            booked_services_dataTable.ajax.reload();
                             toastr.success(response.message);
-                            booked_services_dataTable.ajax.reload(null, false);
 
                             // Open the Stripe payment link in a new tab
                             // window.open(response.url, '_blank');
@@ -460,10 +347,10 @@
 
     <script>
         $(document).on('click', '.deposit-payment-btn', function() {
+            $(this).attr(disabled, true);
             let bookedServiceId = $(this).data('id');
-
             $.ajax({
-                url: '{{ route('users.deposit_payment') }}', // replace with your actual route
+                url: "{{ route('users.deposit_payment') }}", // replace with your actual route
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -471,8 +358,8 @@
                 },
                 success: function(response) {
                     if (response.success) {
+                        booked_services_dataTable.ajax.reload();
                         toastr.success(response.message);
-                        booked_services_dataTable.ajax.reload(null, false);
 
                     } else {
                         toastr.error(response.message || 'Failed to create deposit invoice');

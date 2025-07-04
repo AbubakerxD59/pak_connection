@@ -101,7 +101,12 @@ class Transaction extends Model
         if (!empty($this->promo_id)) {
             $promo = $this->promo()->first();
             $package = $this->package()->first();
-            $total = calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1);
+            if($package){
+                $total = calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1);
+            }
+            else{
+                $total = 0;
+            }
             return '£' . $total;
         } else {
             return '£' . $this->total_amount;

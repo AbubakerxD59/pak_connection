@@ -274,7 +274,7 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Deposit payment successfully.',
+                'message' => 'Deposit requested successfully.',
                 'url'     => $paymentLink->url,
             ]);
         } catch (\Exception $e) {

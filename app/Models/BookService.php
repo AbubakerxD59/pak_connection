@@ -76,4 +76,20 @@ class BookService extends Model
         $status = self::$status_array;
         return $status;
     }
+
+    public function depositStatus()
+    {
+        if ($this->status == 1 && $this->deposit_status == 0 && empty($this->deposit_url)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function invoiceStatus()
+    {
+        if ($this->status == 3 && $this->invoice_status == 0 && empty($this->invoice_url)) {
+            return true;
+        }
+        return false;
+    }
 }
