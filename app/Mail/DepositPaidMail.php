@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AdminPreArrivalMail extends Mailable
+class DepositPaidMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -24,14 +24,13 @@ class AdminPreArrivalMail extends Mailable
         $this->bookedService = $bookedService;
     }
 
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Member Pre Arrival Confirmation',
+            subject: ' Deposit Payment Received – Your Bookings Are Now Being Processed',
         );
     }
 
@@ -41,7 +40,7 @@ class AdminPreArrivalMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.pre_arrival_admin',
+            view: 'emails.deposit_paid',
         );
     }
 

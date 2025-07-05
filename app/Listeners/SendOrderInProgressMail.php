@@ -23,7 +23,7 @@ class SendOrderInProgressMail
      */
     public function handle(BookedServiceStatusUpdated $event): void
     {
-        if ($event->bookedService->status == 3) {
+        if ($event->bookedService->status == 4) {
             Mail::to($event->bookedService->user->email)
                 ->send(new OrderInProgressMail($event->bookedService));
         }

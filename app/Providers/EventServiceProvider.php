@@ -11,6 +11,7 @@ use App\Listeners\SendOrderCompletedEmail;
 use App\Listeners\SendOrderInProgressMail;
 use App\Listeners\SendPreArrivalEmail;
 use App\Listeners\SendScheduleCreatedEmail;
+use App\Listeners\SendDepositPaidMail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -39,6 +40,8 @@ class EventServiceProvider extends ServiceProvider
             SendPreArrivalEmail::class,
             SendMemberArrivedEmail::class,
             SendOrderCompletedEmail::class,
+
+            SendDepositPaidMail::class,
 
         ],
     ];

@@ -16,16 +16,18 @@ class BookService extends Model
         "status",
     ];
 
+    // status order change by abdul moiz
     static public $status_array = [
         "1" => "Order Received",
         "2" => "Deposit Requested",
-        "3" => "Order in Progress",
-        "4" => "Invoice Created",
-        "5" => "Full Payment Received",
-        "6" => "Schedule Created",
-        "7" => "Pre Arrival",
-        "8" => "Member Arrived",
-        "9" => "Order Completed",
+        "3" => " Deposit Paid", // added by abdul moiz
+        "4" => "Order in Progress",
+        "5" => "Invoice Created",
+        "6" => "Full Payment Received",
+        "7" => "Schedule Created",
+        "8" => "Pre Arrival",
+        "9" => "Member Arrived",
+        "10" => "Order Completed",
     ];
 
     public function user()
@@ -87,9 +89,48 @@ class BookService extends Model
 
     public function invoiceStatus()
     {
-        if ($this->status == 3 && $this->invoice_status == 0 && empty($this->invoice_url)) {
+        if ($this->status == 4 && $this->invoice_status == 0 && empty($this->invoice_url)) {
             return true;
         }
         return false;
+    }
+
+    // new status added
+
+
+    public function depositPaidStatus()
+    {
+        return $this->status == 2 && $this->deposit_status == 1;
+    }
+
+     public function inprogressStatus()
+    {
+        return $this->status == 3;
+    }
+
+
+    public function fullPaymentStatus()
+    {
+        return $this->status == 5 && $this->invoice_status == 1;
+    }
+
+    public function scheduleStatus()
+    {
+        return $this->status == 6;
+    }
+
+    public function preArrivalStatus()
+    {
+        return $this->status == 7;
+    }
+
+    public function arrivalStatus()
+    {
+        return $this->status == 8;
+    }
+
+    public function completionStatus()
+    {
+        return $this->status == 9;
     }
 }

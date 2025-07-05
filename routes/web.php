@@ -79,9 +79,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
         Route::get("edit/{id}/booked-service", "editBookedService")->name("booked_service.edit");
         Route::put("update/{id}/booked-service", "updateBookedService")->name("booked_service.update");
-        Route::get("delete/{id}/booked-service", "deleteBookedService")->name("booked_service.delete");
+        // Route::get("delete/{id}/booked-service", "deleteBookedService")->name("booked_service.delete");
+        Route::delete("delete/{id}/booked-service", "deleteBookedService")->name("booked_service.delete");
+
         Route::post('/booked-service/invoice/', 'createInvoice')->name('book_service_invoice');
         Route::post('/deposit-payment', 'depositPayment')->name('deposit_payment');
+        Route::post('/user-crm-status', 'crmStatusTransaction')->name('user_crm_status');
 
 
     });

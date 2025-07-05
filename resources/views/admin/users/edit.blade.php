@@ -171,6 +171,7 @@
                                                                                 'admin.booked-services.actions',
                                                                                 ['service' => $service]
                                                                             )
+
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
@@ -186,6 +187,11 @@
                         </div>
                     </div>
                 </div>
+
+
+                @include('admin.booked-services.generate_invoice_modal')
+
+
             </section>
         </div>
     @endcan
@@ -231,65 +237,70 @@
     </script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // When button is clicked, inject service ID
-            document.querySelectorAll('.generate-invoice-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    const serviceId = this.getAttribute('data-id');
-                    document.getElementById('modalBookedServiceId').value = serviceId;
-                    document.getElementById('amount').value = '';
-                    document.getElementById('final_price').value = '';
-                    document.getElementById('promo_code_id').selectedIndex = 0;
-                });
-            });
-            // Calculate final price
-            const amountInput = document.getElementById('amount');
-            const couponSelect = document.getElementById('promo_code_id');
-            const finalPriceInput = document.getElementById('final_price');
 
+
+    <script>
+        $(document).ready(function() {
+            let clickedBtn = null;
+
+            // Handle modal open and reset form
+            $(document).on('click', '.generate-invoice-btn', function() {
+                const serviceId = $(this).data('id');
+                clickedBtn = $(this); // track the clicked button
+
+                // Reset form fields
+                $('#modalBookedServiceId').val(serviceId);
+                $('#amount').val('');
+                $('#final_price').val('');
+                $('#promo_code_id').prop('selectedIndex', 0);
+            });
+
+            // Calculate final price based on amount and selected coupon
             function calculateFinalPrice() {
-                const amount = parseFloat(amountInput.value);
-                const selected = couponSelect.options[couponSelect.selectedIndex];
-                const discountType = selected.getAttribute('data-discount-type');
-                const discountAmount = parseFloat(selected.getAttribute('data-discount-amount'));
+                const amount = parseFloat($('#amount').val());
+                const selectedOption = $('#promo_code_id option:selected');
+                const discountType = selectedOption.data('discount-type');
+                const discountAmount = parseFloat(selectedOption.data('discount-amount'));
+
                 if (!amount || isNaN(amount)) {
-                    finalPriceInput.value = '';
+                    $('#final_price').val('');
                     return;
                 }
+
                 let final = amount;
+
                 if (discountType === 'percent') {
                     final -= (discountAmount / 100) * amount;
                 } else if (discountType === 'fixed') {
                     final -= discountAmount;
                 }
-                final = Math.max(final, 0);
-                finalPriceInput.value = final.toFixed(2);
-            }
-            amountInput.addEventListener('input', calculateFinalPrice);
-            couponSelect.addEventListener('change', calculateFinalPrice);
-            // ==================================================
-            document.querySelectorAll('.generate-invoice-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    const serviceId = this.getAttribute('data-id');
-                    document.getElementById('modalBookedServiceId').value = serviceId;
-                    document.getElementById('amount').value = '';
-                    document.getElementById('final_price').value = '';
-                    document.getElementById('promo_code_id').selectedIndex = 0;
-                });
-            });
 
-            // Handle AJAX form submission
+                final = Math.max(final, 0); // prevent negative values
+                $('#final_price').val(final.toFixed(2));
+            }
+
+            // Bind events
+            $('#amount').on('input', calculateFinalPrice);
+            $('#promo_code_id').on('change', calculateFinalPrice);
+
+            // Handle form submission
             $('#invoiceForm').on('submit', function(e) {
                 e.preventDefault();
+
+                // let submitBtn = $('#submitBtn'); // Adjust selector as needed
+                // let form = $('#invoiceForm'); // Adjust selector as needed
+
                 const form = $(this);
-                // const submitBtn = form.find('.generate-invoice-btn'); // get the button inside the form
-                let clickedBtn = null; // global variable to store clicked button reference
-                // Capture the clicked submit button before form submission
-                $(document).on('click', '.generate-invoice-btn', function() {
-                    clickedBtn = $(this); // store the reference globally
-                });
-                const url = "{{ route('users.book_service_invoice') }}";
+                const submitBtn = form.find('button[type="submit"]');
+
+                // Disable both buttons
+                if (clickedBtn) clickedBtn.prop('disabled', true).text('Processing...');
+                submitBtn.prop('disabled', true).text('Generating...');
+
+                // Show toast message
+                toastr.info(
+                    "Submitting your invoice request. Please wait while we process your details...");
+
                 const data = {
                     _token: form.find('input[name="_token"]').val(),
                     book_service_id: $('#modalBookedServiceId').val(),
@@ -297,78 +308,153 @@
                     final_price: $('#final_price').val(),
                     promo_code_id: $('#promo_code_id').val(),
                 };
-                if (clickedBtn) {
-                    clickedBtn.prop('disabled', true).text('Processing...');
-                }
-                form[0].reset();
+
                 $.ajax({
                     type: 'POST',
-                    url: url,
+                    url: "{{ route('users.book_service_invoice') }}",
                     data: data,
                     success: function(response) {
                         if (response.success) {
-                            booked_services_dataTable.ajax.reload();
                             toastr.success(response.message);
-
-                            // Open the Stripe payment link in a new tab
-                            // window.open(response.url, '_blank');
-
-                            // Hide the modal and reset the form
-
                         } else {
                             toastr.error(response.message || 'Something went wrong!');
                         }
                     },
                     error: function(xhr) {
-                        let errorMsg = 'Something went wrong!';
-                        if (xhr.responseJSON?.message) {
-                            errorMsg = xhr.responseJSON.message;
-                        }
-                        // alert(errorMsg);
-                        toastr.error(msg);
+                        const errorMsg = xhr.responseJSON?.message || 'An error occurred.';
+                        toastr.error(errorMsg);
                     },
                     complete: function() {
-                        // submitBtn.prop('disabled', false).text('Generate');
-
-                        if (clickedBtn) {
-                            clickedBtn.prop('disabled', false).text('Generate');
-                        }
-
                         $('#invoiceModal').modal('hide');
+                        form[0].reset();
+
+                        // Re-enable buttons
+                        if (clickedBtn) {
+                            clickedBtn.prop('disabled', false).text('Generate Invoice');
+                            clickedBtn = null;
+                        }
+                        submitBtn.prop('disabled', false).text('Generate');
+
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.deposit-payment-btn', function() {
+
+                toastr.info(
+                    "Please wait while we generate your deposit invoice. This may take a few seconds..."
+                );
+
+
+                let $button = $(this);
+                $button.prop('disabled', true); // Disable the button
+
+                // Check if it is disabled
+                console.log('Button disabled:', $button.prop('disabled')); // should log `true`
+                $button.text('Processing...');
+
+
+                let bookedServiceId = $button.data('id');
+
+                $.ajax({
+                    url: "{{ route('users.deposit_payment') }}", // Your actual route
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        book_service_id: bookedServiceId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+
+                            // Option 1: Reload the DataTable (only if using AJAX source)
+                            // booked_services_dataTable.ajax.reload();
+
+                            // Option 2: Full page reload
+                            location.reload();
+                        } else {
+                            toastr.error(response.message ||
+                                'Failed to create deposit invoice');
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = xhr.responseJSON?.message || 'An error occurred.';
+                        toastr.error(errorMessage);
+                    },
+                    complete: function() {
+                        $button.prop('disabled', false); // Re-enable the button
+                        $button.prop('disabled', false).text('Deposit Payment');
+                        location.reload();
 
                     }
                 });
-
             });
-
         });
     </script>
 
 
     <script>
-        $(document).on('click', '.deposit-payment-btn', function() {
-            $(this).attr(disabled, true);
-            let bookedServiceId = $(this).data('id');
+        function handleStatusAction(button, routeUrl, defaultText = 'Processing...') {
+            const $button_for_status = $(button);
+            const bookedServiceId = $button_for_status.data('id');
+            const currentStatus = $button_for_status.data('status');
+            const currentStatusText = $button_for_status.data('status-text');
+
+            toastr.info(`Please wait while we process your request: ${currentStatusText}`);
+
+            $button_for_status.prop('disabled', true).text(defaultText);
+
+            // 🔍 Console log all values
+            console.log('Button Element:', $button_for_status);
+            console.log('Booked Service ID:', bookedServiceId);
+            console.log('Current Status:', currentStatus);
+            console.log('Current Status Text:', currentStatusText);
+
+
+            // return true;
+
             $.ajax({
-                url: "{{ route('users.deposit_payment') }}", // replace with your actual route
+                url: "{{ route('users.user_crm_status') }}",
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    book_service_id: bookedServiceId
+                    book_service_id: bookedServiceId,
+                    status: currentStatus,
+                    status_text: currentStatusText
                 },
                 success: function(response) {
                     if (response.success) {
-                        booked_services_dataTable.ajax.reload();
                         toastr.success(response.message);
 
                     } else {
-                        toastr.error(response.message || 'Failed to create deposit invoice');
+                        toastr.error(response.message || 'Something went wrong.');
                     }
                 },
                 error: function(xhr) {
                     let errorMessage = xhr.responseJSON?.message || 'An error occurred.';
                     toastr.error(errorMessage);
+                },
+                complete: function() {
+                    $button_for_status.prop('disabled', false).text(currentStatusText);
+                    location.reload();
                 }
+            });
+        }
+
+
+        $(document).ready(function() {
+            $(document).on('click', '.update-next-status', function() {
+                handleStatusAction(this, "{{ route('users.deposit_payment') }}", 'Processing...');
             });
         });
     </script>
