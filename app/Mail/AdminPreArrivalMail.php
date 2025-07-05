@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\BookService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,10 +17,13 @@ class AdminPreArrivalMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public $bookedService;
+
+    public function __construct(BookService $bookedService)
     {
-        //
+        $this->bookedService = $bookedService;
     }
+
 
     /**
      * Get the message envelope.
