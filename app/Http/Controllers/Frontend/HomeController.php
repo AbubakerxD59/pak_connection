@@ -91,7 +91,7 @@ class HomeController extends Controller
             // Checkout session
             $session["line_items"] = [["price" => $package->stripe_price_id, "quantity" => "1"]];
             $session["shipping_address_collection"] = ["allowed_countries" => ["GB", "PK"]];
-            if ($user) {
+            if ($user && $user->customer_id) {
                 $session["customer"] = $user->customer_id;
             } else {
                 $session["customer_email"] = $request->email;
@@ -104,39 +104,8 @@ class HomeController extends Controller
             $session["cancel_url"] = route('frontend.home');
             $session = $this->stripe->checkout->sessions->create($session);
             // Checkout session
-
-            // if (empty($promo)) {
-            //     $session = $this->stripe->checkout->sessions->create([
-            //         "line_items" => array(
-            //             ["price" => $package->stripe_price_id, "quantity" => "1"]
-            //         ),
-            //         "shipping_address_collection" => [
-            //             "allowed_countries" => ["GB", "PK"]
-            //         ],
-            //         $customer,
-            //         "mode" => "subscription",
-            //         "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
-            //         "cancel_url" => route('frontend.home'),
-            //     ]);
-            // } else {
-            //     $session = $this->stripe->checkout->sessions->create([
-            //         "line_items" => array(
-            //             ["price" => $package->stripe_price_id, "quantity" => "1"]
-            //         ),
-            //         "shipping_address_collection" => [
-            //             "allowed_countries" => ["GB", "PK"]
-            //         ],
-            //         "discounts" => array(
-
-            //         ),
-            //         $customer,
-            //         "mode" => "subscription",
-            //         "success_url" => route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}",
-            //         "cancel_url" => route('frontend.home'),
-            //     ]);
-            // }
             if ($user) {
-                $user->update([
+                $update = [
                     'full_name' => $request->full_name,
                     'whatsapp_number' => $request->whatsapp_number,
                     'phone_number' => $request->phone_number,
@@ -147,7 +116,11 @@ class HomeController extends Controller
                     'status' => 1,
                     'emergency_full_name' => $request->has("emergency_full_name") && $request->emergency_full_name ? $request->emergency_full_name : null,
                     'emergency_phone_number' => $request->has("emergency_phone_number") && $request->emergency_phone_number ? $request->emergency_phone_number : null,
-                ]);
+                ];
+                if (empty($user->membership_id)) {
+                    $update["membership_id"] =  rand(100000, 999999);
+                }
+                $user->update($update);
             } else {
                 $user = $this->user->create([
                     'full_name' => $request->full_name,

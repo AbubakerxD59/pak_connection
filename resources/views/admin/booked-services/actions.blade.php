@@ -126,19 +126,6 @@
         </div>
     @endif
 
-    {{-- when status is : 10 --}}
-    @if ($service->status == 10)
-        {{-- <div>
-            <button class="btn btn-success btn-sm" disabled>
-                {{ $statusText }} </>
-            </button>
-        </div> --}}
-    @endif
-
-
-
-
-
     <div>
         <span class="btn btn-outline-success btn-sm view_booked_service" data-id="{{ $service->id }}">View</span>
     </div>
@@ -150,16 +137,6 @@
     @endcan
     @can('delete_booked_services')
         <div>
-            {{-- <a href="{{ route('users.booked_service.delete', $service->id) }}"
-                class="btn btn-outline-danger btn-sm">Delete</a>
-
-            <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" class="delete_form">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-outline-danger btn-sm delete-btn"
-                    onclick="confirmDelete(event)">Delete</button>
-            </form> --}}
-
             <form action="{{ route('users.booked_service.delete', $service->id) }}" method="POST"
                 style="display:inline-block;" onsubmit="return confirmDelete(event)">
                 @csrf
