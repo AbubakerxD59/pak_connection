@@ -31,7 +31,7 @@ class OrderCompletedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome to Pakistan – Your Itinerary & Support Details Reminder',
+            subject: 'We Hope You Enjoyed Your Journey !',
         );
     }
 

@@ -30,7 +30,7 @@
         </p>
 
         <p style="font-size: 16px;">
-            <a href="{{ $paymentLink ?? '' }}" target="_blank"
+            <a href="{{ $bookedService->deposit_url ?? '#' }}" target="_blank"
                style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0;">
                 Pay Deposit Now
             </a>

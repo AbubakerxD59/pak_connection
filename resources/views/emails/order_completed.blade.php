@@ -1,55 +1,47 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to Pakistan – Your Itinerary & Support Details Reminder</title>
+    <title>We Hope You Enjoyed Your Journey!</title>
 </head>
-
 <body style="font-family: Arial, sans-serif; background-color: #ffffff; margin: 0; padding: 0;">
     <div style="max-width: 700px; margin: 0 auto; padding: 30px; border: 1px solid #e0e0e0;">
 
         @include('emails.partials.header')
 
         {{-- Email Content --}}
-        <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
-
         <p style="font-size: 16px;">
-            A very warm welcome on your safe arrival into Pakistan! We’re delighted to have you here and look forward
-            to making your visit smooth, enjoyable, and truly memorable.
+            <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
         </p>
 
         <p style="font-size: 16px;">
-            Your <strong>Personal Itinerary & Schedule</strong> has been carefully prepared and is attached for your convenience,
-            outlining all your bookings, service timings, and contact points.
-        </p>
-
-        <p style="font-size: 16px; font-weight: bold; color: #cc0000;">
-            STAFF: Please attach the Itinerary & Schedule (PDF) here.
+            Thank you for choosing <strong>Pak Connections</strong> to support your recent visit to Pakistan. We hope your journey was smooth, memorable, and truly enjoyable.
         </p>
 
         <p style="font-size: 16px;">
-            Should you need any changes, additional services, or assistance during your stay, our dedicated
-            Member Services Team is available around the clock.
+            It has been our pleasure to assist you. Your personal itinerary & schedule will remain on file should you need to refer back to any bookings or details.
         </p>
 
-        <p style="font-size: 16px;">We're here to support you every step of the way.</p>
-
-        <p style="font-size: 16px;">Wishing you a wonderful stay in Pakistan.</p>
+        <p style="font-size: 16px;">
+            If you have any feedback or suggestions to help us improve our services, or if you would like to book future services, our <strong>Member Services Team</strong> is always here to help.
+        </p>
 
         <p style="font-size: 16px;">
-            Warm regards,<br>
-            Members Support Team<br>
+            We look forward to welcoming you again in the future.
+        </p>
+
+        <p style="font-size: 16px; font-weight: bold;">Warm regards,</p>
+        <p style="font-size: 16px;">
+            Member Support Team<br>
             <strong>Pak Connections</strong><br>
             <em>“Your Personal Assistant in Pakistan”</em>
         </p>
 
         <hr style="margin: 30px 0;">
 
-        
         @include('emails.partials.footer')
 
+        
     </div>
 </body>
-
 </html>

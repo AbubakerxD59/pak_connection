@@ -215,8 +215,8 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="table-responsive">
-                                                            <table class="table table-striped table-bordered"
-                                                                id="booked_services_dataTable">
+                                                            <table class="table table-striped table-bordered booked_services_dataTable"
+                                                                id="">
                                                                 <thead>
                                                                     <th>ID</th>
                                                                     <th>Customer</th>
@@ -265,6 +265,9 @@
                                         </div>
                                     </div>
                                 @endcan
+
+                                
+
                             </div>
                         </div>
                     </div>
@@ -308,7 +311,7 @@
             "autoWidth": false,
             "responsive": true,
         });
-        var booked_services_dataTable = $('#booked_services_dataTable').DataTable({
+        var booked_services_dataTable = $('.booked_services_dataTable').DataTable({
             "paging": true,
             'iDisplayLength': 10,
             "lengthChange": true,

@@ -108,10 +108,16 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = $this->user->find($id);
+        // $user = $this->user->with([
+        //     'bookServices.service',
+        //     'bookServices.transactions'
+        // ])->find($id);
+
+
         $roles = $this->role->get();
         $promo_codes = $this->promo_code->get();
 
-        // return $promo_codes;
+        // return $user;
 
         return view('admin.users.edit', compact('roles', 'user', 'promo_codes'));
     }
@@ -175,20 +181,30 @@ class UserController extends Controller
             $bookedService->invoice_status = 1;
             $bookedService->status = 5;
 
-            event(new BookedServiceStatusUpdated($bookedService));
+            // event(new BookedServiceStatusUpdated($bookedService));
+
+            // $bookedService->save();
+
+
+            // ============
+
 
             $bookedService->save();
 
-            // Return or redirect to payment link
-            // return response()->json([
-            //     'url' => $paymentLink->url,
-            // ]);
+
+            $bookedService->total_amount = $request->amount;
+            $bookedService->discount_amount = $request->amount - $request->final_price;
+            $bookedService->payable_amount = $request->final_price;
+            $bookedService->service_name = $bookedService->getService();
 
 
-            // add transaction code here 
-            // add transaction code here 
-            // add transaction code here 
-            // add transaction code here 
+            event(new BookedServiceStatusUpdated($bookedService));
+
+            // $bookedService->save();
+
+
+            // ============
+
 
             $this->transaction->create([
                 "user_id" => $bookedService->user_id,
@@ -197,7 +213,13 @@ class UserController extends Controller
                 // "session_id" => $session->id,
                 // "package_id" => $package->id,
                 "promo_id" => $request->promo_code_id ? $request->promo_code_id : "",
-                "total_amount" => $request->final_price * 100,
+
+
+                "total_amount" => $request->amount,
+                "discount_amount" => $request->amount -  $request->final_price,
+                "payable_amount" => $request->final_price,
+
+
                 "invoice_url" => $paymentLink->url,
                 "status" => "0",
             ]);
@@ -209,6 +231,9 @@ class UserController extends Controller
                 'url'     => $paymentLink->url,
             ]);
         } catch (\Exception $e) {
+
+            dd($e->getMessage());
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to generate invoice.',
@@ -228,6 +253,8 @@ class UserController extends Controller
             //     'url'     => '$paymentLink->url',
             // ]);
 
+            $deposit_amount = 100; // fixed in pound
+
 
             $data = $request->validate([
                 'book_service_id' => 'required|exists:book_services,id',
@@ -244,7 +271,7 @@ class UserController extends Controller
 
             // Create a price
             $price = $this->stripe->prices->create([
-                'unit_amount' => 100 * 100, // Amount in cents (i.e. $50.00)
+                'unit_amount' => $deposit_amount * 100, // Amount in cents (i.e. $50.00)
                 'currency' => 'gbp',
                 'product' => $product->id,
             ]);
@@ -264,6 +291,9 @@ class UserController extends Controller
             $bookedService->deposit_status = 1;
             $bookedService->status = 2;
 
+            $bookedService->save();
+
+
             $this->transaction->create([
                 "user_id" => $bookedService->user_id,
                 // "order_id" => $order->id,
@@ -271,14 +301,23 @@ class UserController extends Controller
                 // "session_id" => $session->id,
                 // "package_id" => $package->id,
                 "promo_id" => "",
-                "total_amount" => 100 * 100,
+
+                "total_amount" => $deposit_amount,
+                "discount_amount" => 0,
+                "payable_amount" => $deposit_amount,
+
                 "invoice_url" => $paymentLink->url,
                 "status" => "0",
             ]);
 
+            $bookedService->total_amount = $deposit_amount;
+            $bookedService->discount_amount = 0;
+            $bookedService->payable_amount = $deposit_amount;
+            $bookedService->service_name = $bookedService->getService();
+
+
             event(new BookedServiceStatusUpdated($bookedService));
 
-            $bookedService->save();
 
             return response()->json([
                 'success' => true,
@@ -498,7 +537,16 @@ class UserController extends Controller
 
     public function editBookedService($id)
     {
-        $bookedService = $this->bookService->find($id);
+        $bookedService = $this->bookService->with(['service', 'transactions'])->find($id);
+
+        // return $bookedService;
+
+
+        // $user = $this->user->with([
+        //     'bookServices.service',
+        //     'bookServices.transactions'
+        // ])->find($id);
+
         if ($bookedService) {
             return view("admin.users.edit_booked_service", compact("bookedService"));
         } else {
