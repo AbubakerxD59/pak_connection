@@ -20,7 +20,9 @@
                         <span>
                             <strong class="feature_name">{{ strtoupper($feature->name) }}</strong>
                             <br>
-                            {!! service_book_status($feature->book) !!}
+                            @if ($feature->book)
+                                {!! service_book_status($feature->book) !!}
+                            @endif
                         </span>
                     </div>
                 </div>
