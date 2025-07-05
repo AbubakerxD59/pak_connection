@@ -134,29 +134,15 @@ class UserController extends Controller
                 'final_price'       => 'required|numeric|min:0',
                 'promo_code_id'         => 'nullable|exists:promo_codes,id',
             ]);
-
-
             // Load BookService with its Service
             $bookedService = $this->bookService->with('service')->find($request->book_service_id);
             $serviceName = $bookedService->service->name ?? '-';
-
-
-
             // Load Coupon name if provided
             $promoCode = $this->promo_code->find($request->promo_code_id);
             $promoName = $promoCode->name ?? '-';
-
-            // dd($promoCode);
-
-
-            // Set Stripe secret key
-            // Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-
-            // Create a product (if not already created)
             $product = $this->stripe->products->create([
                 'name' => $serviceName,
             ]);
-
             // Create a price
             $price = $this->stripe->prices->create([
                 'unit_amount' => $request->final_price * 100, // Amount in cents (i.e. $50.00)
@@ -165,7 +151,6 @@ class UserController extends Controller
             ]);
 
             // Create a payment link
-            // $paymentLink = PaymentLink::create([
             $paymentLink = $this->stripe->paymentLinks->create([
                 'line_items' => [
                     [
@@ -174,56 +159,29 @@ class UserController extends Controller
                     ],
                 ],
             ]);
-
             //  Save link to invoice url column
-
             $bookedService->invoice_url = $paymentLink->url;
             $bookedService->invoice_status = 1;
             $bookedService->status = 5;
 
-            // event(new BookedServiceStatusUpdated($bookedService));
-
-            // $bookedService->save();
-
-
-            // ============
-
-
             $bookedService->save();
-
 
             $bookedService->total_amount = $request->amount;
             $bookedService->discount_amount = $request->amount - $request->final_price;
             $bookedService->payable_amount = $request->final_price;
             $bookedService->service_name = $bookedService->getService();
 
-
             event(new BookedServiceStatusUpdated($bookedService));
-
-            // $bookedService->save();
-
-
-            // ============
-
-
             $this->transaction->create([
                 "user_id" => $bookedService->user_id,
-                // "order_id" => $order->id,
                 "book_service_id" => $request->book_service_id,
-                // "session_id" => $session->id,
-                // "package_id" => $package->id,
                 "promo_id" => $request->promo_code_id ? $request->promo_code_id : "",
-
-
                 "total_amount" => $request->amount,
                 "discount_amount" => $request->amount -  $request->final_price,
                 "payable_amount" => $request->final_price,
-
-
                 "invoice_url" => $paymentLink->url,
                 "status" => "0",
             ]);
-
 
             return response()->json([
                 'success' => true,
@@ -231,9 +189,6 @@ class UserController extends Controller
                 'url'     => $paymentLink->url,
             ]);
         } catch (\Exception $e) {
-
-            dd($e->getMessage());
-
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to generate invoice.',
@@ -246,36 +201,22 @@ class UserController extends Controller
     {
 
         try {
-
-            //  return response()->json([
-            //     'success' => true,
-            //     'message' => 'return back temporary.',
-            //     'url'     => '$paymentLink->url',
-            // ]);
-
             $deposit_amount = 100; // fixed in pound
-
-
             $data = $request->validate([
                 'book_service_id' => 'required|exists:book_services,id',
             ]);
-
-
             // Load BookService with its Service
             $bookedService = $this->bookService->with('service')->find($request->book_service_id);
-
             // Create a product (if not already created)
             $product = $this->stripe->products->create([
                 'name' => 'Deposit Payment',
             ]);
-
             // Create a price
             $price = $this->stripe->prices->create([
                 'unit_amount' => $deposit_amount * 100, // Amount in cents (i.e. $50.00)
                 'currency' => 'gbp',
                 'product' => $product->id,
             ]);
-
             // Create a payment link
             // $paymentLink = PaymentLink::create([
             $paymentLink = $this->stripe->paymentLinks->create([
@@ -286,14 +227,10 @@ class UserController extends Controller
                     ],
                 ],
             ]);
-
             $bookedService->deposit_url = $paymentLink->url;
             $bookedService->deposit_status = 1;
             $bookedService->status = 2;
-
             $bookedService->save();
-
-
             $this->transaction->create([
                 "user_id" => $bookedService->user_id,
                 // "order_id" => $order->id,
@@ -309,7 +246,6 @@ class UserController extends Controller
                 "invoice_url" => $paymentLink->url,
                 "status" => "0",
             ]);
-
             $bookedService->total_amount = $deposit_amount;
             $bookedService->discount_amount = 0;
             $bookedService->payable_amount = $deposit_amount;

@@ -151,7 +151,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <i class="nav-icon fas fa-bookmark"></i>
+                                        <i class="nav-icon fas fa-money-bill"></i>
                                         Transactions
                                     </div>
                                     <div class="card-tools">
@@ -166,8 +166,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="table-responsive">
-                                                    <table class="table table-striped table-bordered booked_services_dataTable"
-                                                        id="">
+                                                    <table class="table table-striped table-bordered"
+                                                        id="transactions_dataTable">
                                                         <thead>
 
                                                             <th>Service</th>
@@ -177,25 +177,22 @@
                                                             <th>Status</th>
                                                         </thead>
                                                         <tbody>
+                                                            @foreach ($bookedService->getTransactions() as $transaction)
+                                                                <tr>
+                                                                    <td>{{ $bookedService->name }}</td>
+                                                                    <td>£
+                                                                        {{ number_format($transaction->total_amount, 2) }}
+                                                                    </td>
+                                                                    <td>£
+                                                                        {{ number_format($transaction->discount_amount, 2) }}
+                                                                    </td>
+                                                                    <td>£
+                                                                        {{ number_format($transaction->payable_amount, 2) }}
+                                                                    </td>
 
-                                                            <tr>
-                                                                {{-- <td>{{ $key + 1 }}</td> --}}
-
-                                                                <td>{{ $bookedService->service?->name }}</td>
-                                                                <td>£
-                                                                    {{ number_format($bookedService->transactions?->total_amount, 2) }}
-                                                                </td>
-                                                                <td>£
-                                                                    {{ number_format($bookedService->transactions?->discount_amount, 2) }}
-                                                                </td>
-                                                                <td>£
-                                                                    {{ number_format($bookedService->transactions?->payable_amount, 2) }}
-                                                                </td>
-
-                                                                <td>{!! $bookedService->transactions?->status_view !!}</td>
-
-                                                            </tr>
-
+                                                                    <td>{!! $transaction->status_view !!}</td>
+                                                                </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -214,4 +211,18 @@
 
 @endsection
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+            var transactions_dataTable = $('#transactions_dataTable').DataTable({
+                "paging": true,
+                'iDisplayLength': 10,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
 @endpush

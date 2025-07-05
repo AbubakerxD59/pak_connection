@@ -185,7 +185,7 @@
                                 </div>
                             @endcan
 
-                           
+
 
 
 
@@ -348,8 +348,9 @@
                             clickedBtn = null;
                         }
                         submitBtn.prop('disabled', false).text('Generate');
-
-                        location.reload();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
                     }
                 });
             });
@@ -395,7 +396,9 @@
                             // booked_services_dataTable.ajax.reload();
 
                             // Option 2: Full page reload
-                            location.reload();
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
                         } else {
                             toastr.error(response.message ||
                                 'Failed to create deposit invoice');
@@ -408,7 +411,9 @@
                     complete: function() {
                         $button.prop('disabled', false); // Re-enable the button
                         $button.prop('disabled', false).text('Deposit Payment');
-                        location.reload();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
 
                     }
                 });
@@ -423,20 +428,8 @@
             const bookedServiceId = $button_for_status.data('id');
             const currentStatus = $button_for_status.data('status');
             const currentStatusText = $button_for_status.data('status-text');
-
             toastr.info(`Please wait while we process your request: ${currentStatusText}`);
-
             $button_for_status.prop('disabled', true).text(defaultText);
-
-            // 🔍 Console log all values
-            console.log('Button Element:', $button_for_status);
-            console.log('Booked Service ID:', bookedServiceId);
-            console.log('Current Status:', currentStatus);
-            console.log('Current Status Text:', currentStatusText);
-
-
-            // return true;
-
             $.ajax({
                 url: "{{ route('users.user_crm_status') }}",
                 method: 'POST',
@@ -460,7 +453,9 @@
                 },
                 complete: function() {
                     $button_for_status.prop('disabled', false).text(currentStatusText);
-                    location.reload();
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
                 }
             });
         }

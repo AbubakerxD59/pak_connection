@@ -82,7 +82,7 @@ class BookService extends Model
 
     public function transactions()
     {
-        return $this->hasOne(Transaction::class, 'book_service_id', 'id');
+        return $this->hasMany(Transaction::class, 'book_service_id', 'id');
     }
 
 
@@ -140,5 +140,10 @@ class BookService extends Model
     public function completionStatus()
     {
         return $this->status == 9;
+    }
+
+    public function getTransactions(){
+        $transactions = $this->transactions()->get();
+        return $transactions;
     }
 }
