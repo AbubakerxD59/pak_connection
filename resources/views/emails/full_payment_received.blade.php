@@ -9,13 +9,10 @@
 <body style="font-family: Arial, sans-serif; background-color: #ffffff; margin: 0; padding: 0;">
     <div style="max-width: 700px; margin: 0 auto; padding: 30px; border: 1px solid #e0e0e0;">
 
-        {{-- Top Logo --}}
-        <div style="text-align: center; margin-bottom: 30px;">
-            <img src="{{ asset('images/email/logo-top.png') }}" alt="Pak Connections" style="max-width: 180px;">
-        </div>
+        @include('emails.partials.header')
 
-        {{-- Email Content --}}
-        <p style="font-size: 16px;">Dear Member{{ $name }},</p>
+        <!-- Email Content -->
+      <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
 
         <p style="font-size: 16px;">We’re pleased to confirm that we have received your final payment in full — thank
             you!</p>
@@ -27,7 +24,7 @@
             every step of the way.
         </p>
 
-        {{-- Attach Invoice Info --}}
+        <!-- Invoice Link -->
         <p style="font-size: 16px; font-weight: bold;">{{ $invoice_url }}</p>
 
         <p style="font-size: 16px;"><strong>What Happens Next?</strong></p>
@@ -61,55 +58,8 @@
 
         <hr style="margin: 30px 0;">
 
-        {{-- Useful Contacts --}}
-        <h3 style="font-size: 16px;">Useful Contacts</h3>
-        <table style="font-size: 15px;">
-            <tr>
-                <td><strong>Personal Members Services</strong></td>
-                <td style="padding-left: 20px;">
-                    UK: +44 203 375 3337<br>
-                    WhatsApp: 0044 203 375 3337<br>
-                    Email: MembersSupport@pakconnections.co.uk
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">&nbsp;</td>
-            </tr>
-            <tr>
-                <td><strong>Corporate & Business Members</strong></td>
-                <td style="padding-left: 20px;">
-                    UK: +44 203 375 3337<br>
-                    WhatsApp: 0044 203 375 3337<br>
-                    Email: CorporateSupport@pakconnections.co.uk
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">&nbsp;</td>
-            </tr>
-            <tr>
-                <td><strong>Personal Assistant</strong></td>
-                <td style="padding-left: 20px;">
-                    Pakistan: 0092 320 5023407<br>
-                    WhatsApp: 0092 320 5023407
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">&nbsp;</td>
-            </tr>
-            <tr>
-                <td><strong>Emergency / Crisis / Medical</strong></td>
-                <td style="padding-left: 20px;">
-                    Pakistan: 0092 320 5023407<br>
-                    WhatsApp: 0092 320 5023407<br>
-                    Email: EmergencySupport@pakconnections.co.uk
-                </td>
-            </tr>
-        </table>
+        @include('emails.partials.footer')
 
-        {{-- Bottom-right Logo --}}
-        <div style="text-align: right; margin-top: 40px;">
-            <img src="{{ asset('images/email/logo-bottom.png') }}" alt="Pak Connections Logo" style="max-width: 120px;">
-        </div>
     </div>
 </body>
 

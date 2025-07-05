@@ -24,7 +24,7 @@ class SendInvoiceCreatedMail
      */
     public function handle(BookedServiceStatusUpdated $event): void
     {
-        if ($event->bookedService->status == 4) {
+        if ($event->bookedService->status == 5) {
             Mail::to($event->bookedService->user->email)
                 ->send(new InvoiceCreatedMail($event->bookedService));
         }

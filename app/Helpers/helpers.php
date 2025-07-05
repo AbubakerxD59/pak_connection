@@ -432,7 +432,8 @@ function service_book_status($status)
         "6" => "badge-primary",
         "7" => "badge-primary",
         "8" => "badge-primary",
-        "9" => "badge-success",
+        "9" => "badge-primary",
+        "10" => "badge-success",
     ];
     $div = "<span class='badge " . $classes[$status] . "'>" . $statuses[$status] . "</span>";
     return $div;

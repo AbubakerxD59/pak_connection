@@ -24,7 +24,7 @@ class SendFullPaymentReceivedEmail
      */
     public function handle(BookedServiceStatusUpdated $event): void
     {
-        if ($event->bookedService->status == 5) {
+        if ($event->bookedService->status == 6) {
             Mail::to($event->bookedService->user->email)
                 ->send(new FullPaymentReceivedMail($event->bookedService));
 

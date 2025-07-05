@@ -221,6 +221,14 @@ class UserController extends Controller
     {
 
         try {
+
+            //  return response()->json([
+            //     'success' => true,
+            //     'message' => 'return back temporary.',
+            //     'url'     => '$paymentLink->url',
+            // ]);
+
+
             $data = $request->validate([
                 'book_service_id' => 'required|exists:book_services,id',
             ]);
@@ -285,6 +293,102 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function crmStatusTransaction(Request $request)
+    {
+
+        try {
+
+            //  return response()->json([
+            //     'success' => true,
+            //     'message' => 'return back temporary.',
+            //     'url'     => '$paymentLink->url',
+            // ]);
+
+
+            $data = $request->validate([
+                'book_service_id' => 'required|exists:book_services,id',
+            ]);
+
+
+            // Load BookService with its Service
+            $bookedService = $this->bookService->with('service')->find($request->book_service_id);
+
+
+            $bookedService->status = $request->status;
+
+            event(new BookedServiceStatusUpdated($bookedService));
+
+            $bookedService->save();
+
+
+            // NOT IN USE - START
+            // NOT IN USE 
+            // NOT IN USE 
+
+            // // Create a product (if not already created)
+            // $product = $this->stripe->products->create([
+            //     'name' => $request->status_text,
+            // ]);
+
+            // // Create a price
+            // $price = $this->stripe->prices->create([
+            //     'unit_amount' => 100 * 100, // Amount in cents (i.e. $50.00)
+            //     'currency' => 'gbp',
+            //     'product' => $product->id,
+            // ]);
+
+            // // Create a payment link
+            // // $paymentLink = PaymentLink::create([
+            // $paymentLink = $this->stripe->paymentLinks->create([
+            //     'line_items' => [
+            //         [
+            //             'price' => $price->id,
+            //             'quantity' => 1,
+            //         ],
+            //     ],
+            // ]);
+
+            // $bookedService->deposit_url = $paymentLink->url;
+            // // $bookedService->deposit_status = 1;
+            // $bookedService->status = $request->status;
+
+            // $this->transaction->create([
+            //     "user_id" => $bookedService->user_id,
+            //     // "order_id" => $order->id,
+            //     "book_service_id" => $request->book_service_id,
+            //     // "session_id" => $session->id,
+            //     // "package_id" => $package->id,
+            //     "promo_id" => "",
+            //     "total_amount" => 100 * 100,
+            //     "invoice_url" => $paymentLink->url,
+            //     "status" => "0",
+            // ]);
+
+            // event(new BookedServiceStatusUpdated($bookedService));
+
+            // $bookedService->save();
+
+
+            // NOT IN USE 
+            // NOT IN USE 
+            // NOT IN USE - END
+
+            return response()->json([
+                'success' => true,
+                'message' => $request->status_text . ' action done successfully.',
+                // 'url'     => $paymentLink->url,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate invoice.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
 
     /**
      * Update the specified resource in storage.
