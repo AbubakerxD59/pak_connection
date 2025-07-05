@@ -24,6 +24,8 @@ class Transaction extends Model
         'discount_amount',
         'payable_amount',
         'status',
+        'book_service_id',
+        'customer_id'
     ];
 
 

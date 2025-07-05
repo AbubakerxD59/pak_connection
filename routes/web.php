@@ -37,7 +37,7 @@ Route::get('/', [AuthController::class, 'index']);
 Route::get('/email-preview', function () {
     $bookedService = BookService::with(['user', 'service'])->first();
     // return view('emails.deposit_requested', [
-    return view('emails.invoice_created', [
+    return view('emails.deposit_requested', [
         'bookedService' => $bookedService,
         'paymentLink' => 'https://pakconnections.co.uk/pay-deposit/abc123'
     ]);

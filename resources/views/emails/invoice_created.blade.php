@@ -10,16 +10,19 @@
     <div style="max-width: 700px; margin: 0 auto; padding: 30px; border: 1px solid #e0e0e0;">
 
         @include('emails.partials.header')
-        
+
         {{-- Email Content --}}
-       <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
 
         <p style="font-size: 16px;">
-            We’re excited to let you know that all your requested services have now been prepared, and your itinerary is ready to go!
+            We’re excited to let you know that all your requested services have now been prepared, and your itinerary is
+            ready to go!
         </p>
 
         <p style="font-size: 16px;">
-            Please find your <strong>Final Invoice</strong> attached below, reflecting the full cost of your selected services. This invoice includes all arrangements discussed with your Concierge Manager, and the <strong>£100 deposit</strong> you’ve already paid has been deducted from the total.
+            Please find your <strong>Final Invoice</strong> attached below, reflecting the full cost of your selected
+            services. This invoice includes all arrangements discussed with your Concierge Manager, and the <strong>£100
+                deposit</strong> you’ve already paid has been deducted from the total.
         </p>
 
         <p style="font-size: 16px; font-weight: bold;">Action Required: Complete Your Final Payment</p>
@@ -28,24 +31,45 @@
             To fully confirm and activate your bookings, please use the secure payment link(s) below:
         </p>
 
-        @if(!empty($invoiceLink))
-        <p style="font-size: 16px; font-weight: bold;">
-            <a href="{{ $invoiceLink }}" target="_blank" style="color: #1a73e8; text-decoration: none;">View Final Invoice</a>
-        </p>
-        @endif
+        <table style="width: 100%; border-collapse: collapse; font-size: 16px; margin: 20px 0;">
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Service Name</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">{{ $bookedService->service_name }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Total Amount</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">
+                    £{{ number_format($bookedService->total_amount, 2) }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Discount</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">
+                    £{{ number_format($bookedService->discount_amount, 2) }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Payable Amount</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">
+                    <strong>£{{ number_format($bookedService->payable_amount, 2) }}</strong></td>
+            </tr>
+        </table>
 
-        @if(!empty($paymentLink))
-        <p style="font-size: 16px; font-weight: bold;">
-            <a href="{{ $paymentLink }}" target="_blank" style="color: #1a73e8; text-decoration: none;">Pay Final Balance</a>
-        </p>
-        @endif
+
+        {{-- @if (!empty($bookedService->invoice_url)) --}}
+            <p style="font-size: 16px;">
+                <a href="{{ $bookedService->invoice_url ?? '#' }}" target="_blank"
+                    style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0;">
+                    Pay Final Balance</a>
+            </p>
+        {{-- @endif --}}
+
 
         <p style="font-size: 16px;">
             Once your payment is received:
         </p>
         <ul style="font-size: 16px; padding-left: 20px;">
             <li>All bookings will be locked in and confirmed</li>
-            <li>You will receive an <strong>Itinerary & Schedule</strong> Confirmation with full details and contact information</li>
+            <li>You will receive an <strong>Itinerary & Schedule</strong> Confirmation with full details and contact
+                information</li>
             <li>Our local teams will be on standby for your arrival in Pakistan</li>
         </ul>
 
@@ -54,7 +78,8 @@
         </p>
 
         <p style="font-size: 16px;">
-            Thank you for choosing <strong>Pak Connections</strong>. We look forward to welcoming you soon and ensuring your visit is seamless, stress-free, and unforgettable.
+            Thank you for choosing <strong>Pak Connections</strong>. We look forward to welcoming you soon and ensuring
+            your visit is seamless, stress-free, and unforgettable.
         </p>
 
         <p style="font-size: 16px;">
@@ -69,7 +94,7 @@
 
         <hr style="margin: 30px 0;">
 
-        
+
         @include('emails.partials.footer')
 
     </div>

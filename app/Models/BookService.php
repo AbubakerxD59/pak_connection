@@ -79,6 +79,14 @@ class BookService extends Model
         return $status;
     }
 
+
+    public function transactions()
+    {
+        return $this->hasOne(Transaction::class, 'book_service_id', 'id');
+    }
+
+
+
     public function depositStatus()
     {
         if ($this->status == 1 && $this->deposit_status == 0 && empty($this->deposit_url)) {
@@ -103,7 +111,7 @@ class BookService extends Model
         return $this->status == 2 && $this->deposit_status == 1;
     }
 
-     public function inprogressStatus()
+    public function inprogressStatus()
     {
         return $this->status == 3;
     }

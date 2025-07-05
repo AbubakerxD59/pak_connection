@@ -140,6 +140,78 @@
             </form>
         </div>
     @endcan
+
+    {{-- Transactions --}}
+    @can('edit_booked_service')
+        <div class="page-content">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <i class="nav-icon fas fa-bookmark"></i>
+                                        Transactions
+                                    </div>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                            title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-list">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-bordered booked_services_dataTable"
+                                                        id="">
+                                                        <thead>
+
+                                                            <th>Service</th>
+                                                            <th>Total Amount</th>
+                                                            <th>Discount Amount</th>
+                                                            <th>Payable Amount</th>
+                                                            <th>Status</th>
+                                                        </thead>
+                                                        <tbody>
+
+                                                            <tr>
+                                                                {{-- <td>{{ $key + 1 }}</td> --}}
+
+                                                                <td>{{ $bookedService->service?->name }}</td>
+                                                                <td>£
+                                                                    {{ number_format($bookedService->transactions?->total_amount, 2) }}
+                                                                </td>
+                                                                <td>£
+                                                                    {{ number_format($bookedService->transactions?->discount_amount, 2) }}
+                                                                </td>
+                                                                <td>£
+                                                                    {{ number_format($bookedService->transactions?->payable_amount, 2) }}
+                                                                </td>
+
+                                                                <td>{!! $bookedService->transactions?->status_view !!}</td>
+
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    @endcan
+
+
 @endsection
 @push('scripts')
 @endpush

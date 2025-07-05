@@ -108,6 +108,14 @@ class PackageController extends Controller
     {
         $package = $this->package->find($id);
         $features = $this->feature->get();
+
+        // $package = $this->package->with([
+        //     'bookServices.service',
+        //     'bookServices.transactions'
+        // ])->find($id);
+
+        // return $package;
+
         return view('admin.packages.edit', compact('package', 'features'));
     }
 
