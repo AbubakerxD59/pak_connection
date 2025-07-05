@@ -30,7 +30,7 @@
     @if ($service->depositStatus())
         <div>
             <span class="btn btn-outline-dark btn-sm deposit-payment-btn " data-id="{{ $service->id }}">
-                {{ $statusText }} - 2
+                {{ $statusText }} 
             </span>
         </div>
     @endif
@@ -40,7 +40,7 @@
         <div>
             <span class="btn btn-outline-dark btn-sm  update-next-status" data-id="{{ $service->id }}"
                 data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}">
-                {{ $statusText }} - 3
+                {{ $statusText }} 
             </span>
         </div>
     @endif
@@ -50,7 +50,7 @@
         <div>
             <button type="button" class="btn btn-outline-dark btn-sm update-next-status" data-id="{{ $service->id }}"
                 data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}">
-                {{ $statusText }} - 4
+                {{ $statusText }} 
             </button>
         </div>
     @endif
@@ -60,7 +60,7 @@
          <div>
             <button type="button" class="btn btn-outline-dark btn-sm generate-invoice-btn" data-bs-toggle="modal"
                 data-bs-target="#invoiceModal" data-id="{{ $service->id }}">
-                {{ $statusText }} - 5
+                {{ $statusText }} 
             </button>
         </div>
     @endif
@@ -81,7 +81,7 @@
             <span class="btn btn-outline-dark btn-sm confirm-full-payment-btn update-next-status"
                 data-id="{{ $service->id }}" data-status="{{ $nextStatus }}"
                 data-status-text="{{ $dataIdText }}">
-                {{ $statusText }} - 6
+                {{ $statusText }}
             </span>
         </div>
     @endif
@@ -91,7 +91,7 @@
         <div>
             <span class="btn btn-outline-dark btn-sm update-next-status" data-id="{{ $service->id }}"
                 data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}">
-                {{ $statusText }} - 7
+                {{ $statusText }} 
             </span>
         </div>
     @endif
@@ -101,7 +101,7 @@
         <div>
             <span class="btn btn-outline-dark btn-sm update-next-status" data-id="{{ $service->id }}"
                 data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}">
-                {{ $statusText }} - 8
+                {{ $statusText }} 
             </span>
         </div>
     @endif
@@ -111,7 +111,7 @@
         <div>
             <span class="btn btn-outline-dark btn-sm update-next-status" data-id="{{ $service->id }}"
                 data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}">
-                {{ $statusText }} - 9
+                {{ $statusText }} 
             </span>
         </div>
     @endif
