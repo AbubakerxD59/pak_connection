@@ -413,7 +413,7 @@
     </script>
 
 
-    <script>
+      <script>
         function handleStatusAction(button, routeUrl, defaultText = 'Processing...') {
             const $button_for_status = $(button);
             const bookedServiceId = $button_for_status.data('id');
@@ -455,6 +455,60 @@
         $(document).ready(function() {
             $(document).on('click', '.update-next-status', function() {
                 handleStatusAction(this, "{{ route('users.deposit_payment') }}", 'Processing...');
+            });
+        });
+
+
+        // status schedule : modal script
+        $(document).ready(function() {
+            let selectedButton = null;
+
+            $(document).on('click', '.update-schedule-status', function() {
+                selectedButton = $(this);
+                $('#book_service_id').val(selectedButton.data('id'));
+                $('#status').val(selectedButton.data('status'));
+                $('#status_text').val(selectedButton.data('status-text'));
+            });
+
+            $('#statusUpdateForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                let submitButton = $(this).find('button[type="submit"]');
+                submitButton.prop('disabled', true).text('Uploading...');
+
+
+                // const formData = new FormData(this);
+
+                for (let [key, value] of formData.entries()) {
+                    console.log(`${key}:`, value);
+                }
+
+                // return true;
+
+                $.ajax({
+                    url: "{{ route('users.user_crm_status') }}",
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#statusUpdateModal').modal('hide');
+                        } else {
+                            toastr.error(response.message || 'Something went wrong.');
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = xhr.responseJSON?.message || 'An error occurred.';
+                        toastr.error(errorMessage);
+                    },
+                    complete: function() {
+                        submitButton.prop('disabled', false).text('Submit');
+                        setTimeout(() => location.reload(), 1000);
+                    }
+                });
             });
         });
     </script>

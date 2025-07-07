@@ -89,8 +89,9 @@
     {{-- when status is : 6 --}}
     @if ($service->scheduleStatus())
         <div>
-            <span class="btn btn-outline-dark btn-sm update-next-status" data-id="{{ $service->id }}"
-                data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}">
+            <span class="btn btn-outline-dark btn-sm update-schedule-status" data-id="{{ $service->id }}"
+                data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}"
+                data-bs-toggle="modal" data-bs-target="#statusUpdateModal">
                 {{ $statusText }}
             </span>
         </div>

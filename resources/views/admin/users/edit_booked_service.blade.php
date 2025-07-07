@@ -557,6 +557,8 @@
             });
         });
 
+
+        // status schedule : modal script
         $(document).ready(function() {
             let selectedButton = null;
 
