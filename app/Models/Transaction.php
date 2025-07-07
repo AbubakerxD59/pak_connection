@@ -29,6 +29,12 @@ class Transaction extends Model
         'customer_id'
     ];
 
+    // In a model or config
+    static public $status_array = [
+        0 => 'order',
+        1 => 'invoice',
+        2 => 'deposit',
+    ];
 
     public function order()
     {
@@ -42,11 +48,11 @@ class Transaction extends Model
     }
 
 
-    // copied from order table
-    static public $status_array = [
-        "0" => "Payment Pending",
-        "1" => "Paid",
-        "2" => "Payment Failed",
+    // not in use
+    static public $transaction_types = [
+        0 => 'order',
+        1 => 'invoice',
+        2 => 'deposit',
     ];
 
     protected $appends = ["status_view"];
@@ -104,10 +110,9 @@ class Transaction extends Model
         if (!empty($this->promo_id)) {
             $promo = $this->promo()->first();
             $package = $this->package()->first();
-            if($package){
+            if ($package) {
                 $total = calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1);
-            }
-            else{
+            } else {
                 $total = 0;
             }
             return '£' . $total;
