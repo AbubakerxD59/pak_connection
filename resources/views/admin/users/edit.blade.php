@@ -312,14 +312,7 @@
                     promo_code_id: $('#promo_code_id').val(),
                 };
 
-                // console.log('Form Data:', data);
-                // console.log('Token:', data._token);
-                // console.log('Booked Service ID:', data.book_service_id);
-                // console.log('Amount:', data.amount);
-                // console.log('Final Price:', data.final_price);
-                // console.log('Promo Code ID:', data.promo_code_id);
-
-                // return true;
+                
 
                 $.ajax({
                     type: 'POST',

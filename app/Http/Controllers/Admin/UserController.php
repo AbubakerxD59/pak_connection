@@ -274,6 +274,7 @@ class UserController extends Controller
 
         try {
 
+            // return $request;
             //  return response()->json([
             //     'success' => true,
             //     'message' => 'return back temporary.',
@@ -281,9 +282,13 @@ class UserController extends Controller
             // ]);
 
 
+
             $data = $request->validate([
                 'book_service_id' => 'required|exists:book_services,id',
+                'pdf_file' => 'nullable|file|mimes:pdf|max:15120', // 5MB
             ]);
+
+
 
 
             // Load BookService with its Service
@@ -292,9 +297,29 @@ class UserController extends Controller
 
             $bookedService->status = $request->status;
 
-            event(new BookedServiceStatusUpdated($bookedService));
+            $filePath = null;
+
+            if ($request->hasFile('pdf_file')) {
+                $file = $request->file('pdf_file');
+
+                // Generate unique filename: timestamp + original extension
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+                // Store file in 'storage/app/public/pdf_uploads' and get full path
+                $filePath = $file->storeAs('pdf_uploads', $fileName, 'public');
+                
+                $bookedService->schedule_created = true;
+                $bookedService->schedule_pdf = $filePath ?? null;
+                
+            }
 
             $bookedService->save();
+
+
+            $bookedService->transaction = $this->transaction->where('book_service_id', $bookedService->id)->first();
+
+            event(new BookedServiceStatusUpdated($bookedService));
+
 
 
             // NOT IN USE - START
@@ -349,12 +374,17 @@ class UserController extends Controller
             // NOT IN USE 
             // NOT IN USE - END
 
+            // dd('try block');
+
             return response()->json([
                 'success' => true,
                 'message' => $request->status_text . ' action done successfully.',
                 // 'url'     => $paymentLink->url,
             ]);
         } catch (\Exception $e) {
+
+            // dd($e->getMessage());
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to generate invoice.',
@@ -475,16 +505,26 @@ class UserController extends Controller
     {
         $bookedService = $this->bookService->with(['service', 'transactions'])->find($id);
 
+
+        // use App\Models\BookService;
+        $nextStatus = $bookedService->status + 1;
+        $statusLabel = BookService::$status_array[$nextStatus] ?? null;
+        $statusText = $statusLabel ? 'Make ' . $statusLabel : null;
+        $dataIdText = $statusLabel ? $statusLabel : null;
+
+        $bookedService->nextStatus = $nextStatus;
+        $bookedService->statusLabel = $statusLabel;
+        $bookedService->statusText = $statusText;
+        $bookedService->dataIdText = $dataIdText;
+
         // return $bookedService;
 
+        $promo_codes = $this->promo_code->get();
 
-        // $user = $this->user->with([
-        //     'bookServices.service',
-        //     'bookServices.transactions'
-        // ])->find($id);
+
 
         if ($bookedService) {
-            return view("admin.users.edit_booked_service", compact("bookedService"));
+            return view("admin.users.edit_booked_service", compact("bookedService", "promo_codes"));
         } else {
             return back();
         }

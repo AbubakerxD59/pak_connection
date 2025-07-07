@@ -44,3 +44,75 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- Status Update Modal -->
+<div class="modal fade" id="statusUpdateModal" tabindex="-1" aria-labelledby="statusUpdateModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="statusUpdateForm" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="statusUpdateModalLabel">Upload PDF for Status Update</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="book_service_id" id="book_service_id">
+                    <input type="hidden" name="status" id="status">
+                    <input type="hidden" name="status_text" id="status_text">
+
+                    <div class="mb-3">
+                        <label for="pdf_file" class="form-label">Upload Itinerary & Schedule (PDF) File</label>
+                        <input type="file" name="pdf_file" id="pdf_file" accept="application/pdf"
+                            class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="statusUpdateModal_new" tabindex="-1" role="dialog" aria-labelledby="statusUpdateModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusUpdateModalLabel">Upload PDF for Status Update</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <form id="statusUpdateForm" enctype="multipart/form-data">
+                @csrf
+
+                <input type="hidden" name="book_service_id" id="book_service_id">
+                <input type="hidden" name="status" id="status">
+                <input type="hidden" name="status_text" id="status_text">
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="pdf_file" class="form-label">Upload Itinerary & Schedule (PDF)</label>
+                        <input type="file" name="pdf_file" id="pdf_file" accept="application/pdf"
+                            class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

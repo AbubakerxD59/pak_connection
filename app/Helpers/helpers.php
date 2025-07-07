@@ -175,12 +175,12 @@ function saveVideo($folderName, $file)
     return $fileName;
 }
 
-function getImage($folderName = null, $fileName, $parentFolder = 'uploads')
+function getImage($folderName = null, $fileName=null, $parentFolder = 'uploads')
 {
     return asset($parentFolder . '/' . $folderName . '/' . $fileName);
 }
 
-function getVideo($folderName, $fileName)
+function getVideo($folderName, $fileName=null)
 {
     return asset('uploads/' . $folderName . '/' . $fileName);
 }
@@ -438,3 +438,4 @@ function service_book_status($status)
     $div = "<span class='badge " . $classes[$status] . "'>" . $statuses[$status] . "</span>";
     return $div;
 }
+
