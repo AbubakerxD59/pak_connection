@@ -179,6 +179,7 @@ class UserController extends Controller
                 "total_amount" => $request->amount,
                 "discount_amount" => $request->amount -  $request->final_price,
                 "payable_amount" => $request->final_price,
+                "transaction_type" => "invoice",
                 "invoice_url" => $paymentLink->url,
                 "status" => "0",
             ]);
@@ -242,6 +243,7 @@ class UserController extends Controller
                 "total_amount" => $deposit_amount,
                 "discount_amount" => 0,
                 "payable_amount" => $deposit_amount,
+                "transaction_type" => "deposit",
 
                 "invoice_url" => $paymentLink->url,
                 "status" => "0",

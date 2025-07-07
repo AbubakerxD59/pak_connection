@@ -23,6 +23,7 @@ class Transaction extends Model
         'package_amount',
         'discount_amount',
         'payable_amount',
+        'transaction_type',
         'status',
         'book_service_id',
         'customer_id'
