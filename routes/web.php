@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [AuthController::class, 'index']);
+// Route::get('/', [AuthController::class, 'index']);
 // Route::get('/email-template', function () {
 //     return view('emails.deposit_requested');
 // });
@@ -156,7 +156,7 @@ Route::middleware(['auth'])->group(function () {
 // Strip routes
 Route::name('frontend.')->group(function () {
     Route::middleware(["frontend"])->group(function () {
-        Route::get('home', [HomeController::class, 'index'])->name('home');
+        Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::get('buy-membership/{id?}', [HomeController::class, 'buyMembership'])->name('buy_memebership');
         Route::post('checkout', [HomeController::class, 'checkout'])->name('checkout');
         Route::get('success', [HomeController::class, 'success'])->name('checkout_success');

@@ -33,6 +33,7 @@
                                                     <table class="table table-striped table-bordered" id="transactions_dt">
                                                         <thead>
                                                             <th>Customer</th>
+                                                            <th>Member ID</th>
                                                             <th>Order ID</th>
                                                             <th>Package</th>
                                                             <th>Amount</th>
@@ -73,6 +74,7 @@
                                                         <thead>
                                                             <th>Order ID</th>
                                                             <th>Customer</th>
+                                                            <th>Member ID</th>
                                                             <th>Package</th>
                                                             <th>Coupon</th>
                                                             <th>Package Amount</th>
@@ -122,7 +124,10 @@
                     data: 'customer_name'
                 },
                 {
-                    data: 'order_id'
+                    data: 'member_id'
+                },
+                {
+                    data: 'order_num'
                 },
                 {
                     data: 'package_name'
@@ -165,10 +170,13 @@
                 url: "{{ route('orders.dataTable') }}",
             },
             columns: [{
-                    data: 'id'
+                    data: 'order_num'
                 },
                 {
                     data: 'customer_name'
+                },
+                {
+                    data: 'member_id'
                 },
                 {
                     data: 'package_name'

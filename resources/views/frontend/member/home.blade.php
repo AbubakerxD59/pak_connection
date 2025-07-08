@@ -69,11 +69,20 @@
                 })
             });
             // Submit feature form
+
+
             $(document).on('submit', '#submitFeatureForm', function(event) {
                 event.preventDefault();
                 var form = $("#submitFeatureForm");
                 var modal = $('#feature_fields');
                 var formData = new FormData(this);
+                var submitBtn = $('#saveBtn');
+
+                submitBtn.prop('disabled', true).text('Sending...');
+
+                toastr.info("We’re processing your request. Please wait a moment...");
+
+
                 $.ajax({
                     url: "{{ route('frontend.member.bookService') }}",
                     method: "POST",
@@ -82,9 +91,12 @@
                     processData: false,
                     data: formData,
                     success: function(response) {
+
                         if (response.success) {
                             modal.modal('toggle');
                             modal.find('.card-body').empty();
+
+                            // ✅ Show success alert
                             Swal.fire({
                                 title: "Success!",
                                 text: response.message,
@@ -92,6 +104,9 @@
                                 showConfirmButton: false,
                                 timer: 1500
                             });
+
+                            // 🔵 NEW: Show success toast with response message
+                            toastr.success(response.message);
                         } else {
                             Swal.fire({
                                 title: "Error!",
@@ -100,11 +115,21 @@
                                 showConfirmButton: false,
                                 timer: 1500
                             });
+
+                            // 🔵 NEW: Show error toast with response message
                             toastr.error(response.message);
                         }
+
+                        submitBtn.prop('disabled', false).text('Send');
+                    },
+                    error: function(xhr) {
+                        // 🔵 NEW: Handle general errors
+                        submitBtn.prop('disabled', false).text('Send');
+                        toastr.error("Something went wrong. Please try again.");
                     }
-                })
+                });
             });
+
         });
     </script>
 @endpush

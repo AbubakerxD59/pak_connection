@@ -44,6 +44,7 @@ class HomeController extends Controller
     public function index()
     {
         $packages = $this->package->get();
+        // dd($packages);
         return view('frontend.home', compact('packages'));
     }
 

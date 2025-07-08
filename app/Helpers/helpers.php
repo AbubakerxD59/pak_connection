@@ -175,12 +175,12 @@ function saveVideo($folderName, $file)
     return $fileName;
 }
 
-function getImage($folderName = null, $fileName=null, $parentFolder = 'uploads')
+function getImage($folderName = null, $fileName = null, $parentFolder = 'uploads')
 {
     return asset($parentFolder . '/' . $folderName . '/' . $fileName);
 }
 
-function getVideo($folderName, $fileName=null)
+function getVideo($folderName, $fileName = null)
 {
     return asset('uploads/' . $folderName . '/' . $fileName);
 }
@@ -231,11 +231,21 @@ function get_total_orders($type = null)
 
 function get_status_view($type)
 {
+
+
     if ($type == '1') {
-        $div = '<span><i class="fa fa-check" style="color: green"></i></span>';
+        $div = "<span class='badge badge-success'>Paid</span>";
     } else if ($type == '0') {
-        $div = '<span><i class="fa fa-times" style="color: red"></i></span>';
+        $div = "<span class='badge badge-danger'>Unpaid</span>";
+    } else {
+        $div = "<span class='badge badge-secondary'>Unknown</span>";
     }
+
+    // if ($type == '1') {
+    //     $div = '<span><i class="fa fa-check" style="color: green"></i></span>';
+    // } else if ($type == '0') {
+    //     $div = '<span><i class="fa fa-times" style="color: red"></i></span>';
+    // }
     return $div;
 }
 
@@ -437,10 +447,8 @@ function service_book_status($status)
     ];
     // $div = "<span class='badge " . $classes[$status] . "'>" . $statuses[$status] . "</span>";
     // return $div;
-       $class = $classes[$status] ?? 'badge-secondary'; // fallback class
+    $class = $classes[$status] ?? 'badge-secondary'; // fallback class
     $label = $statuses[$status] ?? 'Unknown';        // fallback label
 
     return "<span class='badge {$class}'>{$label}</span>";
-    
 }
-

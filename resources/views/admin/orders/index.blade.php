@@ -22,8 +22,9 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-striped table-bordered" id="dataTable">
                                                         <thead>
-                                                            <th>ID</th>
+                                                            <th>Order Number</th>
                                                             <th>Customer</th>
+                                                            <th>Member ID</th>
                                                             <th>Package</th>
                                                             <th>Coupon</th>
                                                             <th>Package Amount</th>
@@ -65,10 +66,13 @@
                 url: "{{ route('orders.dataTable') }}",
             },
             columns: [{
-                    data: 'id'
+                    data: 'order_num'
                 },
                 {
                     data: 'customer_name'
+                },
+                {
+                    data: 'member_id'
                 },
                 {
                     data: 'package_name'
