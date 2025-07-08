@@ -19,6 +19,7 @@ class Order extends Model
         "package_id",
         "promo_id",
         "total_amount",
+        "order_num",
         "status",
     ];
 
@@ -136,5 +137,15 @@ class Order extends Model
     {
         $package = $this->package()->first();
         return $package ? $package->price : 0;
+    }
+
+    public static function generateAvailableOrderNum(): string
+    {
+        do {
+            // Generate random 6-digit number (with leading zeros if needed)
+            $orderNum = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        } while (Order::where('order_num', $orderNum)->exists());
+
+        return $orderNum;
     }
 }

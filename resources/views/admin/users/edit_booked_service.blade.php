@@ -111,18 +111,127 @@
                                             <div class="col-md-3">
                                                 <label for="status" class="form-label">Status</label>
                                             </div>
-                                            <div class="col-md-9">
-                                                <select name="status" id="status" class="form-control">
-                                                    @foreach (\app\Models\BookService::getStatuses() as $id => $value)
-                                                        <option value="{{ $id }}"
-                                                            {{ $bookedService->status == $id ? 'selected' : '' }}>
-                                                            {{ $value }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('service')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
+
+                                            {{-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< --}}
+
+
+
+
+                                            {{--  when status is :1. --}}
+                                            @if ($bookedService->depositStatus())
+                                                <div>
+                                                    <span class="btn btn-outline-dark btn-sm deposit-payment-btn "
+                                                        data-id="{{ $bookedService->id }}">
+                                                        Request Deposit
+                                                    </span>
+                                                </div>
+                                            @endif
+
+                                            {{-- when status is : 2 --}}
+                                            @if ($bookedService->depositPaidStatus())
+                                                <div>
+                                                    <span class="btn btn-outline-dark btn-sm  update-next-status"
+                                                        data-id="{{ $bookedService->id }}"
+                                                        data-status="{{ $bookedService->nextStatus }}"
+                                                        data-status-text="{{ $bookedService->dataIdText }}">
+                                                        {{ $bookedService->statusText }}
+                                                    </span>
+                                                </div>
+                                            @endif
+
+                                            {{-- when status is : 3 --}}
+                                            @if ($bookedService->inprogressStatus())
+                                                <div>
+                                                    <button type="button"
+                                                        class="btn btn-outline-dark btn-sm update-next-status"
+                                                        data-id="{{ $bookedService->id }}"
+                                                        data-status="{{ $bookedService->nextStatus }}"
+                                                        data-status-text="{{ $bookedService->dataIdText }}">
+                                                        {{ $bookedService->statusText }}
+                                                    </button>
+                                                </div>
+                                            @endif
+
+                                            {{-- when status is  4 --}}
+                                            @if ($bookedService->invoiceStatus())
+                                                <div>
+                                                    <button type="button"
+                                                        class="btn btn-outline-dark btn-sm generate-invoice-btn"
+                                                        data-bs-toggle="modal" data-bs-target="#invoiceModal"
+                                                        data-id="{{ $bookedService->id }}">
+                                                        Create Invoice
+                                                    </button>
+                                                </div>
+                                            @endif
+
+
+
+                                            {{-- when status is : 5 --}}
+                                            @if ($bookedService->fullPaymentStatus())
+                                                <div>
+                                                    <span
+                                                        class="btn btn-outline-dark btn-sm confirm-full-payment-btn update-next-status"
+                                                        data-id="{{ $bookedService->id }}"
+                                                        data-status="{{ $bookedService->nextStatus }}"
+                                                        data-status-text="{{ $bookedService->dataIdText }}">
+                                                        {{ $bookedService->statusText }}
+                                                    </span>
+                                                </div>
+                                            @endif
+
+                                            {{-- when status is : 6 --}}
+                                            @if ($bookedService->scheduleStatus())
+                                                <div>
+                                                    
+
+                                                    <span class="btn btn-outline-dark btn-sm update-schedule-status"
+                                                        data-id="{{ $bookedService->id }}"
+                                                        data-status="{{ $bookedService->nextStatus }}"
+                                                        data-status-text="{{ $bookedService->dataIdText }}"
+                                                        data-bs-toggle="modal" data-bs-target="#statusUpdateModal">
+                                                        {{ $bookedService->statusText }}
+                                                    </span>
+
+                                                </div>
+                                            @endif
+
+                                            {{-- when status is : 7 --}}
+                                            @if ($bookedService->preArrivalStatus())
+                                                <div>
+                                                    <span class="btn btn-outline-dark btn-sm update-next-status"
+                                                        data-id="{{ $bookedService->id }}"
+                                                        data-status="{{ $bookedService->nextStatus }}"
+                                                        data-status-text="{{ $bookedService->dataIdText }}">
+                                                        {{ $bookedService->statusText }}
+                                                    </span>
+                                                </div>
+                                            @endif
+
+                                            {{-- when status is : 8 --}}
+                                            @if ($bookedService->arrivalStatus())
+                                                <div>
+                                                    <span class="btn btn-outline-dark btn-sm update-next-status"
+                                                        data-id="{{ $bookedService->id }}"
+                                                        data-status="{{ $bookedService->nextStatus }}"
+                                                        data-status-text="{{ $bookedService->dataIdText }}">
+                                                        {{ $bookedService->statusText }}
+                                                    </span>
+                                                </div>
+                                            @endif
+
+                                            {{-- when status is : 9 --}}
+                                            @if ($bookedService->completionStatus())
+                                                <div>
+                                                    <span class="btn btn-outline-dark btn-sm update-next-status"
+                                                        data-id="{{ $bookedService->id }}"
+                                                        data-status="{{ $bookedService->nextStatus }}"
+                                                        data-status-text="{{ $bookedService->dataIdText }}">
+                                                        {{ $bookedService->statusText }}
+                                                    </span>
+                                                </div>
+                                            @endif
+                                            {{-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> --}}
+
                                         </div>
 
                                         <div class="col-12 text-right">
@@ -206,8 +315,13 @@
                 </div>
             </section>
         </div>
+
+
+
     @endcan
 
+    @include('admin.booked-services.generate_invoice_modal')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 @endsection
 @push('scripts')
@@ -222,6 +336,278 @@
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            let clickedBtn = null;
+
+            // Handle modal open and reset form
+            $(document).on('click', '.generate-invoice-btn', function() {
+                const serviceId = $(this).data('id');
+                clickedBtn = $(this); // track the clicked button
+
+                // Reset form fields
+                $('#modalBookedServiceId').val(serviceId);
+                $('#amount').val('');
+                $('#final_price').val('');
+                $('#promo_code_id').prop('selectedIndex', 0);
+            });
+
+            // Calculate final price based on amount and selected coupon
+            function calculateFinalPrice() {
+                const amount = parseFloat($('#amount').val());
+                const selectedOption = $('#promo_code_id option:selected');
+                const discountType = selectedOption.data('discount-type');
+                const discountAmount = parseFloat(selectedOption.data('discount-amount'));
+
+                if (!amount || isNaN(amount)) {
+                    $('#final_price').val('');
+                    return;
+                }
+
+                let final = amount;
+
+                if (discountType === 'percent') {
+                    final -= (discountAmount / 100) * amount;
+                } else if (discountType === 'fixed') {
+                    final -= discountAmount;
+                }
+
+                final = Math.max(final, 0); // prevent negative values
+                $('#final_price').val(final.toFixed(2));
+            }
+
+            // Bind events
+            $('#amount').on('input', calculateFinalPrice);
+            $('#promo_code_id').on('change', calculateFinalPrice);
+
+            // Handle form submission
+            $('#invoiceForm').on('submit', function(e) {
+                e.preventDefault();
+
+                // let submitBtn = $('#submitBtn'); // Adjust selector as needed
+                // let form = $('#invoiceForm'); // Adjust selector as needed
+
+                const form = $(this);
+                const submitBtn = form.find('button[type="submit"]');
+
+                // Disable both buttons
+                if (clickedBtn) clickedBtn.prop('disabled', true).text('Processing...');
+                submitBtn.prop('disabled', true).text('Generating...');
+
+                // Show toast message
+                toastr.info(
+                    "Submitting your invoice request. Please wait while we process your details...");
+
+                const data = {
+                    _token: form.find('input[name="_token"]').val(),
+                    book_service_id: $('#modalBookedServiceId').val(),
+                    amount: $('#amount').val(),
+                    final_price: $('#final_price').val(),
+                    promo_code_id: $('#promo_code_id').val(),
+                };
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('users.book_service_invoice') }}",
+                    data: data,
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                        } else {
+                            toastr.error(response.message || 'Something went wrong!');
+                        }
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.message || 'An error occurred.';
+                        toastr.error(errorMsg);
+                    },
+                    complete: function() {
+                        $('#invoiceModal').modal('hide');
+                        form[0].reset();
+
+                        // Re-enable buttons
+                        if (clickedBtn) {
+                            clickedBtn.prop('disabled', false).text('Generate Invoice');
+                            clickedBtn = null;
+                        }
+                        submitBtn.prop('disabled', false).text('Generate');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.deposit-payment-btn', function() {
+
+                toastr.info(
+                    "Please wait while we generate your deposit invoice. This may take a few seconds..."
+                );
+
+
+                let $button = $(this);
+                $button.prop('disabled', true); // Disable the button
+
+                // Check if it is disabled
+                console.log('Button disabled:', $button.prop('disabled')); // should log `true`
+                $button.text('Processing...');
+
+
+                let bookedServiceId = $button.data('id');
+
+                $.ajax({
+                    url: "{{ route('users.deposit_payment') }}", // Your actual route
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        book_service_id: bookedServiceId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+
+                            // Option 1: Reload the DataTable (only if using AJAX source)
+                            // booked_services_dataTable.ajax.reload();
+
+                            // Option 2: Full page reload
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            toastr.error(response.message ||
+                                'Failed to create deposit invoice');
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = xhr.responseJSON?.message || 'An error occurred.';
+                        toastr.error(errorMessage);
+                    },
+                    complete: function() {
+                        $button.prop('disabled', false); // Re-enable the button
+                        $button.prop('disabled', false).text('Deposit Payment');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
+
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        function handleStatusAction(button, routeUrl, defaultText = 'Processing...') {
+            const $button_for_status = $(button);
+            const bookedServiceId = $button_for_status.data('id');
+            const currentStatus = $button_for_status.data('status');
+            const currentStatusText = $button_for_status.data('status-text');
+            toastr.info(`Please wait while we process your request: ${currentStatusText}`);
+            $button_for_status.prop('disabled', true).text(defaultText);
+            $.ajax({
+                url: "{{ route('users.user_crm_status') }}",
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    book_service_id: bookedServiceId,
+                    status: currentStatus,
+                    status_text: currentStatusText
+                },
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+
+                    } else {
+                        toastr.error(response.message || 'Something went wrong.');
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = xhr.responseJSON?.message || 'An error occurred.';
+                    toastr.error(errorMessage);
+                },
+                complete: function() {
+                    $button_for_status.prop('disabled', false).text(currentStatusText);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }
+            });
+        }
+
+
+        $(document).ready(function() {
+            $(document).on('click', '.update-next-status', function() {
+                handleStatusAction(this, "{{ route('users.deposit_payment') }}", 'Processing...');
+            });
+        });
+
+
+        // status schedule : modal script
+        $(document).ready(function() {
+            let selectedButton = null;
+
+            $(document).on('click', '.update-schedule-status', function() {
+                selectedButton = $(this);
+                $('#book_service_id').val(selectedButton.data('id'));
+                $('#status').val(selectedButton.data('status'));
+                $('#status_text').val(selectedButton.data('status-text'));
+            });
+
+            $('#statusUpdateForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                let submitButton = $(this).find('button[type="submit"]');
+                submitButton.prop('disabled', true).text('Uploading...');
+
+
+                // const formData = new FormData(this);
+
+                for (let [key, value] of formData.entries()) {
+                    console.log(`${key}:`, value);
+                }
+
+                // return true;
+
+                $.ajax({
+                    url: "{{ route('users.user_crm_status') }}",
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#statusUpdateModal').modal('hide');
+                        } else {
+                            toastr.error(response.message || 'Something went wrong.');
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = xhr.responseJSON?.message || 'An error occurred.';
+                        toastr.error(errorMessage);
+                    },
+                    complete: function() {
+                        submitButton.prop('disabled', false).text('Submit');
+                        setTimeout(() => location.reload(), 1000);
+                    }
+                });
             });
         });
     </script>

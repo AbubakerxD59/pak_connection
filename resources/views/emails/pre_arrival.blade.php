@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Reminder: Your Upcoming Travel & Itinerary Schedule</title>
@@ -12,7 +13,7 @@
 
         {{-- Email Content --}}
         <p style="font-size: 16px;">
-            <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
         </p>
 
         <p style="font-size: 16px;">
@@ -21,9 +22,17 @@
             to ensure a smooth, stress-free visit.
         </p>
 
-        <p style="font-size: 16px; font-weight: bold; color: #cc0000;">
+        {{-- <p style="font-size: 16px; font-weight: bold; color: #cc0000;">
             STAFF: Please re-attach the Itinerary & Schedule (PDF) here.
-        </p>
+        </p> --}}
+
+        @if ($bookedService->schedule_created)
+            {{-- <a href="{{ asset('storage/' . $bookedService->schedule_pdf) }}" target="_blank" --}}
+            <a href="{{ url('storage/' . $bookedService->schedule_pdf) }}" target="_blank"
+                style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-weight: bold;">
+                Click here to see Itinerary & Schedule (PDF).
+            </a>
+        @endif
 
         <p style="font-size: 16px;">
             Kindly take a moment to review your schedule. For any updates, changes, or additional service requests,
@@ -47,4 +56,5 @@
         </div>
     </div>
 </body>
+
 </html>

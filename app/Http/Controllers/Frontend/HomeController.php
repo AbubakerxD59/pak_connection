@@ -102,7 +102,7 @@ class HomeController extends Controller
             $session["mode"] = "subscription";
             $session["success_url"] = route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}";
             $session["cancel_url"] = route('frontend.home');
-            $session = $this->stripe->checkout->sessions->create($session);
+            $session = $this->stripe->checkout->sessions->create($session);  // dd and check with txt file
             // Checkout session
             if ($user) {
                 $update = [
@@ -149,7 +149,14 @@ class HomeController extends Controller
                 "session_id" => $session->id,
                 "package_id" => $package->id,
                 "promo_id" => $promo ? $promo->id : "",
-                "total_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                // "total_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+
+                "total_amount" => $package->price,
+                "discount_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "payable_amount" => $promo ? $package->price -  calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+
+                "order_num" => Order::generateAvailableOrderNum(),
+
                 "status" => "0",
             ]);
 
@@ -160,7 +167,12 @@ class HomeController extends Controller
                 "session_id" => $session->id,
                 "package_id" => $package->id,
                 "promo_id" => $promo ? $promo->id : "",
-                "total_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+
+                "total_amount" => $package->price,
+                "discount_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "payable_amount" => $promo ? $package->price -  calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "transaction_type" => "order",
+
                 "status" => "0",
             ]);
 

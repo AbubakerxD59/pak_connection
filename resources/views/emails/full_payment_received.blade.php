@@ -25,7 +25,34 @@
         </p>
 
         <!-- Invoice Link -->
-        <p style="font-size: 16px; font-weight: bold;">{{ $invoice_url }}</p>
+        {{-- <p style="font-size: 16px; font-weight: bold;">{{ $invoice_url }}</p> --}}
+        <table style="width: 100%; border-collapse: collapse; font-size: 16px; margin: 20px 0;">
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Service Name</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">{{ $bookedService->transaction?->service_name }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Total Amount</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">
+                    £{{ number_format($bookedService->transaction?->total_amount, 2) }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Discount</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">
+                    £{{ number_format($bookedService->transaction?->discount_amount, 2) }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Payable Amount</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">
+                    <strong>£{{ number_format($bookedService->transaction?->payable_amount, 2) }}</strong></td>
+            </tr>
+            <tr>
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Status</th>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc; color:green">
+                    <strong>Paid</strong></td>
+            </tr>
+        </table>
+
 
         <p style="font-size: 16px;"><strong>What Happens Next?</strong></p>
         <ol style="font-size: 16px; padding-left: 20px;">

@@ -16,6 +16,7 @@ use App\Http\Controllers\Frontend\MemberController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Models\BookService;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +42,11 @@ Route::get('/email-preview', function () {
         'bookedService' => $bookedService,
         'paymentLink' => 'https://pakconnections.co.uk/pay-deposit/abc123'
     ]);
+});
+
+Route::get('/test-order-num', function () {
+    $orderNum = Order::generateAvailableOrderNum();
+    return "Generated Order Number: " . $orderNum;
 });
 
 

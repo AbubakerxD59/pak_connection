@@ -175,12 +175,12 @@ function saveVideo($folderName, $file)
     return $fileName;
 }
 
-function getImage($folderName = null, $fileName, $parentFolder = 'uploads')
+function getImage($folderName = null, $fileName=null, $parentFolder = 'uploads')
 {
     return asset($parentFolder . '/' . $folderName . '/' . $fileName);
 }
 
-function getVideo($folderName, $fileName)
+function getVideo($folderName, $fileName=null)
 {
     return asset('uploads/' . $folderName . '/' . $fileName);
 }
@@ -435,6 +435,12 @@ function service_book_status($status)
         "9" => "badge-primary",
         "10" => "badge-success",
     ];
-    $div = "<span class='badge " . $classes[$status] . "'>" . $statuses[$status] . "</span>";
-    return $div;
+    // $div = "<span class='badge " . $classes[$status] . "'>" . $statuses[$status] . "</span>";
+    // return $div;
+       $class = $classes[$status] ?? 'badge-secondary'; // fallback class
+    $label = $statuses[$status] ?? 'Unknown';        // fallback label
+
+    return "<span class='badge {$class}'>{$label}</span>";
+    
 }
+
