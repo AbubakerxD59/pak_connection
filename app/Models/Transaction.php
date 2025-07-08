@@ -168,4 +168,17 @@ class Transaction extends Model
         $package = $this->package()->first();
         return $package ? $package->price : 0;
     }
+
+    
+    public function scopePaymentLink($query,$paymentLink)
+    {
+        $query->where('session_id', $paymentLink);
+    }
+
+    
+    public function scopeSession($query,$session_id)
+    {
+        $query->where('session_id', $session_id);
+    }
+    
 }
