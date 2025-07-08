@@ -341,7 +341,7 @@
                         submitBtn.prop('disabled', false).text('Generate');
                         setTimeout(() => {
                             location.reload();
-                        }, 2000);
+                        }, 1000);
                     }
                 });
             });
@@ -387,9 +387,9 @@
                             // booked_services_dataTable.ajax.reload();
 
                             // Option 2: Full page reload
-                            setTimeout(() => {
-                                location.reload();
-                            }, 2000);
+                            // setTimeout(() => {
+                            //     location.reload();
+                            // }, 1000);
                         } else {
                             toastr.error(response.message ||
                                 'Failed to create deposit invoice');
@@ -402,9 +402,9 @@
                     complete: function() {
                         $button.prop('disabled', false); // Re-enable the button
                         $button.prop('disabled', false).text('Deposit Payment');
-                        setTimeout(() => {
-                            location.reload();
-                        }, 2000);
+                        // setTimeout(() => {
+                        //     location.reload();
+                        // }, 1000);
 
                     }
                 });
@@ -444,9 +444,9 @@
                 },
                 complete: function() {
                     $button_for_status.prop('disabled', false).text(currentStatusText);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
                 }
             });
         }
@@ -506,7 +506,7 @@
                     },
                     complete: function() {
                         submitButton.prop('disabled', false).text('Submit');
-                        setTimeout(() => location.reload(), 1000);
+                        // setTimeout(() => location.reload(), 1000);
                     }
                 });
             });

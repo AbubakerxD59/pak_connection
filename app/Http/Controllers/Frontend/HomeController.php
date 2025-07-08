@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Events\BookedServiceStatusUpdated;
 use Exception;
 use App\Models\Role;
 use App\Models\User;
@@ -13,6 +14,7 @@ use App\Models\WebhookCall;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\BookService;
 use App\Models\Transaction;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -26,7 +28,8 @@ class HomeController extends Controller
     private $order;
     private $webhook;
     private $transaction;
-    public function __construct(Package $package, User $user, Role $role, PromoCode $promoCode, Order $order, WebhookCall $webhook, Transaction $transaction)
+    private $bookService;
+    public function __construct(Package $package, User $user, Role $role, PromoCode $promoCode, Order $order, WebhookCall $webhook, Transaction $transaction, BookService $bookService)
     {
         $this->package = $package;
         $this->user = $user;
@@ -35,6 +38,7 @@ class HomeController extends Controller
         $this->order = $order;
         $this->webhook = $webhook;
         $this->transaction = $transaction;
+        $this->bookService = $bookService;
         $this->stripe = new StripeClient(env('STRIPE_SECRET'));
     }
     public function index()
@@ -183,6 +187,156 @@ class HomeController extends Controller
         }
     }
 
+    public function showcheckout(Request $request)
+    {
+
+        $stripe_product = $this->stripe->products->create([
+            'name' => 'test produt',
+            'active' => true,
+        ]);
+
+        $stripe_amount = $this->stripe->prices->create([
+            'currency' => 'gbp',
+            'active' => true,
+            'product' => $stripe_product->id,
+            'unit_amount_decimal' => 99 * 100,
+            'recurring' => [
+                'interval' => 'year',
+                'interval_count' => '1'
+            ]
+        ]);
+
+        // dd($stripe_product, $stripe_amount);
+
+        $rules = [
+            'full_name' => 'required',
+            'email' => 'required',
+            'whatsapp_number' => 'required',
+            'city' => 'required',
+            'country' => 'required',
+            'promo' => 'sometimes',
+            'emergency_full_name' => 'required',
+            'emergency_phone_number' => 'required',
+        ];
+        // if (!auth()->check()) {
+        //     $rules['password'] = 'required|confirmed|min:6';
+        // }
+        $data = $request->validate($rules);
+        $package = $this->package->find($request->package_id);
+        if ($package) {
+            $session = array();
+            $promo = '';
+            if (!empty($request->promo)) {
+                $promo = $this->promoCode->search($request->promo)->active()->first();
+                if ($promo) {
+                    if (!$promo->valid()) {
+                        return redirect()->back()->with('error', 'Invalid Promo Code!');
+                    }
+                } else {
+                    return redirect()->back()->with('error', 'Invalid Promo Code!');
+                }
+            }
+
+            $user = $this->user->search($request->email)->first();
+            if (auth()->check()) {
+                $user = auth()->user();
+            }
+            // Checkout session
+            $session["line_items"] = [["price" => $package->stripe_price_id, "quantity" => "1"]];
+            $session["shipping_address_collection"] = ["allowed_countries" => ["GB", "PK"]];
+            if ($user && $user->customer_id) {
+                $session["customer"] = $user->customer_id;
+            } else {
+                $session["customer_email"] = $request->email;
+            }
+            if ($promo) {
+                $session["discounts"] = [["coupon" => $promo->stripe_coupon_id]];
+            }
+            $session["mode"] = "subscription";
+            $session["success_url"] = route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}";
+            $session["cancel_url"] = route('frontend.home');
+            $session = $this->stripe->checkout->sessions->create($session);  // dd and check with txt file
+            // Checkout session
+            if ($user) {
+                $update = [
+                    'full_name' => $request->full_name,
+                    'whatsapp_number' => $request->whatsapp_number,
+                    'phone_number' => $request->phone_number,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                    'address' => $request->address,
+                    'stripe_id' => $session->id,
+                    'status' => 1,
+                    'emergency_full_name' => $request->has("emergency_full_name") && $request->emergency_full_name ? $request->emergency_full_name : null,
+                    'emergency_phone_number' => $request->has("emergency_phone_number") && $request->emergency_phone_number ? $request->emergency_phone_number : null,
+                ];
+                if (empty($user->membership_id)) {
+                    $update["membership_id"] =  rand(100000, 999999);
+                }
+                $user->update($update);
+            } else {
+                $user = $this->user->create([
+                    'full_name' => $request->full_name,
+                    'email' => $request->email,
+                    'password' => $request->password,
+                    'whatsapp_number' => $request->whatsapp_number,
+                    'phone_number' => $request->phone_number,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                    'address' => $request->address,
+                    'membership_id' => rand(100000, 999999),
+                    'stripe_id' => $session->id,
+                    'status' => 1,
+                    'emergency_full_name' => $request->has("emergency_full_name") && $request->emergency_full_name ? $request->emergency_full_name : null,
+                    'emergency_phone_number' => $request->has("emergency_phone_number") && $request->emergency_phone_number ? $request->emergency_phone_number : null,
+                ]);
+            }
+            $role = $this->role->where('name', 'Customer')->first();
+            if (!empty($role)) {
+                $user->assignRole($role->name);
+            }
+
+            // $this->order->create([
+            $order = $this->order->create([
+                "user_id" => $user->id,
+                "session_id" => $session->id,
+                "package_id" => $package->id,
+                "promo_id" => $promo ? $promo->id : "",
+                // "total_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+
+                "total_amount" => $package->price,
+                "discount_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "payable_amount" => $promo ? $package->price -  calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+
+                "order_num" => Order::generateAvailableOrderNum(),
+
+                "status" => "0",
+            ]);
+
+
+            $this->transaction->create([
+                "user_id" => $user->id,
+                "order_id" => $order->id,
+                "session_id" => $session->id,
+                "package_id" => $package->id,
+                "promo_id" => $promo ? $promo->id : "",
+
+                "total_amount" => $package->price,
+                "discount_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "payable_amount" => $promo ? $package->price -  calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "transaction_type" => "order",
+
+                "status" => "0",
+            ]);
+
+            dd($session);
+
+            return redirect($session->url);
+        } else {
+            return redirect()->back()->with('error', 'Package not Found!');
+        }
+    }
+
     public function success(Request $request)
     {
         $customer = null;
@@ -229,17 +383,58 @@ class HomeController extends Controller
                     "payload" => $session,
                     "exception" => "",
                 ]);
-                $order = $this->order->where('session_id', $session->id)->unpaid()->first();
-                if ($order) {
-                    $order->update([
-                        "customer_id" => $session->customer,
-                        "status" => $status
-                    ]);
-                    $user = $this->user->find($order->user_id);
-                    $user->update([
-                        "customer_id" => $session->customer
-                    ]);
+
+                // get transaction here 
+                // unpaid pick krni hai check status 
+                // check type is checkout ya order
+                // if type is deposit or invoice
+                // bookservice se id utha hai uska status increment krwa dena hai or email yahan se bhej deni 
+
+
+                // <<<<<<<<<<<<<<<<<<<<<
+
+                $transaction = $this->transaction
+                    ->where('status', 0)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                if ($transaction) {
+                    $type = $transaction->transaction_type;
+
+                    if ($type === 'order') {
+                        $order = $this->order->where('session_id', $session->id)->unpaid()->first();
+                        if ($order) {
+                            $order->update([
+                                "customer_id" => $session->customer,
+                                "status" => $status
+                            ]);
+                            $user = $this->user->find($order->user_id);
+                            $user->update([
+                                "customer_id" => $session->customer
+                            ]);
+                        }
+                    }
+
+
+                    if (in_array($type, ['deposit', 'invoice'])) {
+                        $bookServiceId = $transaction->book_service_id ?? null;
+
+                        if ($bookServiceId) {
+                            $bookedService = $this->bookService->find($bookServiceId);
+
+                            if ($bookedService) {
+                                $bookedService->status += 1;
+                                $bookedService->save();
+
+                                // Send email notification
+                                event(new BookedServiceStatusUpdated($bookedService));
+                            }
+                        }
+                    }
                 }
+
+                // >>>>>>>>>>>>>>>>>>>>>
+
             default:
                 info("Received unknown event type" . $event->type);
         }

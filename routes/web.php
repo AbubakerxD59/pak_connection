@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\BookedServiceStatusUpdated;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FieldController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Models\BookService;
 use App\Models\Order;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +49,46 @@ Route::get('/email-preview', function () {
 Route::get('/test-order-num', function () {
     $orderNum = Order::generateAvailableOrderNum();
     return "Generated Order Number: " . $orderNum;
+});
+
+Route::get('checkout', [HomeController::class, 'showcheckout'])->name('checkout.form');
+
+Route::get('/test-transaction-update', function () {
+    // Get the most recent unpaid transaction
+    $transaction = Transaction::where('status', 0)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+    if (!$transaction) {
+        return 'No unpaid transaction found.';
+    }
+
+    $type = $transaction->transaction_type;
+
+    if (in_array($type, ['deposit', 'invoice'])) {
+        $bookServiceId = $transaction->book_service_id ?? null;
+
+        if ($bookServiceId) {
+            // Using repository if available, otherwise fallback to model
+            $bookedService = BookService::find($bookServiceId);
+
+            if ($bookedService) {
+                $bookedService->status += 1;
+                $bookedService->save();
+
+                // Fire the event to trigger any listeners or emails
+                event(new BookedServiceStatusUpdated($bookedService));
+
+                return 'Booked service status updated and event dispatched.';
+            }
+
+            return 'Booked service not found.';
+        }
+
+        return 'No booked service ID found in transaction.';
+    }
+
+    return 'Transaction type is not deposit or invoice.';
 });
 
 

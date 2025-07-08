@@ -14,9 +14,7 @@
                 </select>
             @elseif($field->field->type == 'textarea')
                 <textarea class="form-control" name="fields[{{ $field->field->name }}]" id="{{ $field->field->name }}" required
-                    disabled>
-                    {{ $field->value }}
-                    </textarea>
+                    disabled>{{ $field->value }}</textarea>
             @else
                 <input type="text" class="form-control" name="fields[{{ $field->field->name }}]"
                     id="{{ $field->field->name }}" value="{{ $field->value }}" required disabled>
