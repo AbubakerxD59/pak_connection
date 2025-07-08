@@ -171,10 +171,13 @@ class UserController extends Controller
             $bookedService->payable_amount = $request->final_price;
             $bookedService->service_name = $bookedService->getService();
 
+            
             event(new BookedServiceStatusUpdated($bookedService));
+            
             $this->transaction->create([
                 "user_id" => $bookedService->user_id,
                 "book_service_id" => $request->book_service_id,
+                "session_id" => $paymentLink->id, 
                 "promo_id" => $request->promo_code_id ? $request->promo_code_id : "",
                 "total_amount" => $request->amount,
                 "discount_amount" => $request->amount -  $request->final_price,
@@ -228,6 +231,9 @@ class UserController extends Controller
                     ],
                 ],
             ]);
+
+            // dd($paymentLink);
+
             $bookedService->deposit_url = $paymentLink->url;
             $bookedService->deposit_status = 1;
             $bookedService->status = 2;
@@ -236,7 +242,7 @@ class UserController extends Controller
                 "user_id" => $bookedService->user_id,
                 // "order_id" => $order->id,
                 "book_service_id" => $request->book_service_id,
-                // "session_id" => $session->id,
+                "session_id" => $paymentLink->id,
                 // "package_id" => $package->id,
                 "promo_id" => "",
 

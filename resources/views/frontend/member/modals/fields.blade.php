@@ -11,8 +11,7 @@
                     @endforeach
                 </select>
             @elseif($field->type == 'textarea')
-                <textarea class="form-control" name="fields[{{ $field->name }}]" id="{{ $field->name }}" required>
-                    </textarea>
+                <textarea class="form-control" name="fields[{{ $field->name }}]" id="{{ $field->name }}" required></textarea>
             @else
                 <input type="{{ $field->type }}" class="form-control" name="fields[{{ $field->name }}]"
                     id="{{ $field->name }}" onclick="this.showPicker()" required>
