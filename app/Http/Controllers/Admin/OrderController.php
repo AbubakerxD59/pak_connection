@@ -119,6 +119,8 @@ class OrderController extends Controller
 
         $orders = $orders->get();
         foreach ($orders as $k => $val) {
+            $orders[$k]['order_num'] = $val->order_num ?? '-/-';
+            $orders[$k]['member_id'] = $val->user ? $val->user->membership_id : '-/-';
             $orders[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->user->full_name . ' (' . $val->user->email . ')</a>' : '-';
             $orders[$k]['package_name'] = $val->package ? '<a href="' . route("packages.edit", $val->package->id) . '">' . $val->package->name . '</a>' : '-';
             $orders[$k]['coupon_name'] = $val->promo ? '<a href="' . route("promo-code.edit", $val->promo->id) . '">' . $val->promo->name . '</a>' : '-';
@@ -126,7 +128,7 @@ class OrderController extends Controller
             $orders[$k]['discount_amount'] = $val->getDiscount();
             $orders[$k]['total_amount'] = $val->getTotal();
             $orders[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
-            $orders[$k]['status_view'] = $val->status_view;
+            $orders[$k]['status_view'] = get_status_view($val->status);
             $orders[$k]['action'] = view('admin.orders.action')->with('order', $val)->render();
             $orders[$k] = $val;
         }

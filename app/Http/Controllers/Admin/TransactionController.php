@@ -102,14 +102,16 @@ class TransactionController extends Controller
             $transactions = $transactions->get();
             foreach ($transactions as $k => $val) {
                 $transactions[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->user->full_name . ' (' . $val->user->email . ')</a>' : '-';
+                $transactions[$k]['member_id'] = $val->user ? $val->user->membership_id : '-/-';
                 $transactions[$k]['order_id'] = $val->order ? $val->order->id : '-';
+                $transactions[$k]['order_num'] = $val->order->order_num ?? '-/-';
                 $transactions[$k]['package_name'] = $val->package ? '<a href="' . route("packages.edit", $val->package->id) . '">' . $val->package->name . '</a>' : '-';
                 $transactions[$k]['coupon_name'] = $val->promo ? '<a href="' . route("promo-code.edit", $val->promo->id) . '">' . $val->promo->name . '</a>' : '-';
                 $transactions[$k]['package_amount'] = $val->package ? '£' . $val->package->price : '-';
                 $transactions[$k]['discount_amount'] = $val->getDiscount();
                 $transactions[$k]['total_amount'] = $val->getTotal();
                 $transactions[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
-                $transactions[$k]['status_view'] = $val->status_view;
+                $orders[$k]['status_view'] = get_status_view($val->status);
                 $transactions[$k]['action'] = view('admin.transactions.action')->with('transaction', $val)->render();
                 $transactions[$k] = $val;
             }

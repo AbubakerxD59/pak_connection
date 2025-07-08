@@ -220,6 +220,7 @@
                                                                 <thead>
                                                                     <th>ID</th>
                                                                     <th>Customer</th>
+                                                                    <th>Member ID</th>
                                                                     <th>Service</th>
                                                                     <th>Status</th>
                                                                     <th>Action</th>
@@ -229,6 +230,7 @@
                                                                         <tr>
                                                                             <td>{{ $key + 1 }}</td>
                                                                             <td>{{ $service->user->full_name }}</td>
+                                                                            <td>{{ $service->user->membership_id }}</td>
                                                                             <td>{{ $service->service->name }}</td>
                                                                             <td>{!! service_book_status($service->status) !!}</td>
                                                                             <td>
