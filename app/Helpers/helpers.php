@@ -231,21 +231,11 @@ function get_total_orders($type = null)
 
 function get_status_view($type)
 {
-
-
     if ($type == '1') {
         $div = "<span class='badge badge-success'>Paid</span>";
-    } else if ($type == '0') {
-        $div = "<span class='badge badge-danger'>Unpaid</span>";
     } else {
-        $div = "<span class='badge badge-secondary'>Unknown</span>";
+        $div = "<span class='badge badge-danger'>Unpaid</span>";
     }
-
-    // if ($type == '1') {
-    //     $div = '<span><i class="fa fa-check" style="color: green"></i></span>';
-    // } else if ($type == '0') {
-    //     $div = '<span><i class="fa fa-times" style="color: red"></i></span>';
-    // }
     return $div;
 }
 

@@ -25,7 +25,7 @@
 
         {{-- Bottom Logo --}}
         <div style="text-align: right; margin-top: 40px;">
-            <img src="{{ asset('assets/img/site_logo.jpg') }}" alt="Pak Connections" style="max-width: 200px;">
+            <img src="https://adminpakconnection.netforcedemo.com/assets/img/site_logo.jpg" alt="Pak Connections" style="max-width: 200px;">
         </div>
     </div>
 </body>

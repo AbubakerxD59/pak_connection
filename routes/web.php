@@ -2,6 +2,7 @@
 
 use App\Events\BookedServiceStatusUpdated;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BookServiceController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Admin\OrderController;
@@ -86,15 +87,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::controller(UserController::class)->prefix('users/')->name('users.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
-        Route::get("edit/{id}/booked-service", "editBookedService")->name("booked_service.edit");
-        Route::put("update/{id}/booked-service", "updateBookedService")->name("booked_service.update");
-        Route::delete("delete/{id}/booked-service", "deleteBookedService")->name("booked_service.delete");
-
-        Route::post('/booked-service/invoice/', 'createInvoice')->name('book_service_invoice');
-        Route::post('/deposit-payment', 'depositPayment')->name('deposit_payment');
-        Route::post('/user-crm-status', 'crmStatusTransaction')->name('user_crm_status');
-
-
     });
 
     //  Roles
@@ -115,7 +107,6 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(PackageController::class)->prefix('packages/')->name('packages.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
         Route::post('add-facility', 'addFacility')->name('add_facility');
-        Route::get("show-booked-service", "showBookedService")->name("show_booked_service");
     });
 
     // Features
@@ -150,6 +141,16 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('transactions', TransactionController::class)->except('show');
     Route::controller(TransactionController::class)->prefix('transactions/')->name('transactions.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
+    });
+
+    // Booked Services
+    Route::resource('booked-services', BookServiceController::class)->except('show');
+    Route::controller(BookServiceController::class)->prefix('booked-services/')->name('booked-services.')->group(function () {
+        Route::get('dataTable', 'dataTable')->name('dataTable');
+        Route::get("view", "view")->name("view");
+        Route::post('/booked-services/create-invoice/', 'createInvoice')->name('createInvoice');
+        Route::post('/requet-deposit', 'requestDeposit')->name('requestDeposit');
+        Route::post('/upload-schedule', 'uploadSchedule')->name('uploadSchedule');
     });
 });
 

@@ -54,9 +54,6 @@ class Transaction extends Model
         1 => 'invoice',
         2 => 'deposit',
     ];
-
-    protected $appends = ["status_view"];
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

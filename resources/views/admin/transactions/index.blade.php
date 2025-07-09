@@ -141,9 +141,8 @@
                 {
                     data: 'discount_amount'
                 },
-
                 {
-                    data: 'status_view'
+                    data: 'trans_status_view'
                 },
                 {
                     data: 'date'

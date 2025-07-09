@@ -1,29 +1,3 @@
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Reset Password</title>
-</head>
-<body>
-    <h2>Hello {{ $user->name }}</h2>
-
-    <p>You recently requested to reset your password.</p>
-
-    <p>
-        <a href="{{ $user->token }}" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none;">
-            Reset Password
-        </a>
-    </p>
-
-    <p>This link will expire in 60 minutes.</p>
-
-    <p>If you didn't request this, you can safely ignore this email.</p>
-
-    <p>Regards,<br>Your App Team</p>
-</body>
-</html> --}}
-
-
 <!DOCTYPE html>
 <html lang="en">
 

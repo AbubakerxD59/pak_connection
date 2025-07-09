@@ -215,8 +215,8 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="table-responsive">
-                                                            <table class="table table-striped table-bordered booked_services_dataTable"
-                                                                id="">
+                                                            <table class="table table-striped table-bordered"
+                                                                id="booked_services_dataTable">
                                                                 <thead>
                                                                     <th>ID</th>
                                                                     <th>Customer</th>
@@ -225,40 +225,6 @@
                                                                     <th>Status</th>
                                                                     <th>Action</th>
                                                                 </thead>
-                                                                <tbody>
-                                                                    @foreach ($package->load('bookServices')->bookServices as $key => $service)
-                                                                        <tr>
-                                                                            <td>{{ $key + 1 }}</td>
-                                                                            <td>{{ $service->user->full_name }}</td>
-                                                                            <td>{{ $service->user->membership_id }}</td>
-                                                                            <td>{{ $service->service->name }}</td>
-                                                                            <td>{!! service_book_status($service->status) !!}</td>
-                                                                            <td>
-                                                                                <div class="row">
-                                                                                    <div>
-                                                                                        <span
-                                                                                            class="btn btn-outline-success btn-sm view_booked_service"
-                                                                                            data-id="{{ $service->id }}">
-                                                                                            View
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    @can('edit_booked_services')
-                                                                                        <div>
-                                                                                            <a href="{{ route('users.booked_service.edit', $service->id) }}"
-                                                                                                class="btn btn-outline-primary btn-sm mx-1">Edit</a>
-                                                                                        </div>
-                                                                                    @endcan
-                                                                                    @can('delete_booked_services')
-                                                                                        <div>
-                                                                                            <a href="{{ route('users.booked_service.delete', $service->id) }}"
-                                                                                                class="btn btn-outline-danger btn-sm mx-1">Delete</a>
-                                                                                        </div>
-                                                                                    @endcan
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
@@ -267,9 +233,6 @@
                                         </div>
                                     </div>
                                 @endcan
-
-                                
-
                             </div>
                         </div>
                     </div>
@@ -313,16 +276,6 @@
             "autoWidth": false,
             "responsive": true,
         });
-        var booked_services_dataTable = $('.booked_services_dataTable').DataTable({
-            "paging": true,
-            'iDisplayLength': 10,
-            "lengthChange": true,
-            "searching": true,
-            "ordering": false,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
     </script>
     <script>
         $('#featureForm').on('submit', function(event) {
@@ -340,7 +293,6 @@
             formData.append('_token', token);
             formData.append('package_id', package_id);
             formData.append('feature_ids', feature_ids);
-
             $.ajax({
                 url: "{{ route('packages.add_facility') }}",
                 type: 'POST',
@@ -365,25 +317,6 @@
                 }
             });
         });
-        $(document).on('click', '.view_booked_service', function() {
-            var service_id = $(this).data('id');
-            $.ajax({
-                url: "{{ route('packages.show_booked_service') }}",
-                type: "GET",
-                data: {
-                    "id": service_id
-                },
-                success: function(response) {
-                    if (response.status) {
-                        $("#view_booked_service").find(".modal-body").html(response.body);
-                        $("#view_booked_service").find(".modal-title").html(response.title);
-                        $("#view_booked_service").modal('toggle');
-                    } else {
-                        toastr.error(response.error);
-                    }
-                }
-            });
-        })
     </script>
     <script>
         $('#check_all').on('click', function() {
@@ -394,4 +327,5 @@
             }
         });
     </script>
+    @include('admin.booked-services.js.script')
 @endpush

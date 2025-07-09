@@ -90,8 +90,8 @@
     @if ($service->scheduleStatus())
         <div>
             <span class="btn btn-outline-dark btn-sm update-schedule-status" data-id="{{ $service->id }}"
-                data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}"
-                data-bs-toggle="modal" data-bs-target="#statusUpdateModal">
+                data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}" data-bs-toggle="modal"
+                data-bs-target="#statusUpdateModal">
                 {{ $statusText }}
             </span>
         </div>
@@ -132,14 +132,13 @@
     </div>
     @can('edit_booked_services')
         <div>
-            <a href="{{ route('users.booked_service.edit', $service->id) }}"
-                class="btn btn-outline-primary btn-sm">Edit</a>
+            <a href="{{ route('booked-services.edit', $service->id) }}" class="btn btn-outline-primary btn-sm">Edit</a>
         </div>
     @endcan
     @can('delete_booked_services')
         <div>
-            <form action="{{ route('users.booked_service.delete', $service->id) }}" method="POST"
-                style="display:inline-block;" onsubmit="return confirmDelete(event)">
+            <form action="{{ route('booked-services.destroy', $service->id) }}" method="POST" style="display:inline-block;"
+                onsubmit="return confirmDelete(event)">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>

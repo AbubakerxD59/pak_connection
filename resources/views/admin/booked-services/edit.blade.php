@@ -3,8 +3,7 @@
 @section('page_content')
     @can('edit_booked_service')
         <div class="page-content">
-            <form method="POST" action="{{ route('users.booked_service.update', $bookedService->id) }}"
-                enctype="multipart/form-data">
+            <form method="POST" action="{{ route('booked-services.update', $bookedService->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="content-header clearfix">
@@ -182,7 +181,7 @@
                                             {{-- when status is : 6 --}}
                                             @if ($bookedService->scheduleStatus())
                                                 <div>
-                                                    
+
 
                                                     <span class="btn btn-outline-dark btn-sm update-schedule-status"
                                                         data-id="{{ $bookedService->id }}"
@@ -237,7 +236,7 @@
                                         <div class="col-12 text-right">
                                             <button type="submit"
                                                 class="btn btn-outline-success">{{ __('users.btn_submit_text') }}</button>
-                                            <a href="{{ route('users.index') }}"
+                                            <a href="{{ route('users.edit', $bookedService->user_id) }}"
                                                 class="btn btn-outline-dark">{{ __('users.btn_cancel_text') }}</a>
                                         </div>
                                     </div>
@@ -299,7 +298,7 @@
                                                                         {{ number_format($transaction->payable_amount, 2) }}
                                                                     </td>
 
-                                                                    <td>{!! $transaction->status_view !!}</td>
+                                                                    <td>{!! get_status_view($transaction->status) !!}</td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>
@@ -415,7 +414,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('users.book_service_invoice') }}",
+                    url: "{{ route('booked-services.createInvoice') }}",
                     data: data,
                     success: function(response) {
                         if (response.success) {
@@ -472,7 +471,7 @@
                 let bookedServiceId = $button.data('id');
 
                 $.ajax({
-                    url: "{{ route('users.deposit_payment') }}", // Your actual route
+                    url: "{{ route('booked-services.requestDeposit') }}", // Your actual route
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -521,7 +520,7 @@
             toastr.info(`Please wait while we process your request: ${currentStatusText}`);
             $button_for_status.prop('disabled', true).text(defaultText);
             $.ajax({
-                url: "{{ route('users.user_crm_status') }}",
+                url: "{{ route('booked-services.uploadSchedule') }}",
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -553,7 +552,7 @@
 
         $(document).ready(function() {
             $(document).on('click', '.update-next-status', function() {
-                handleStatusAction(this, "{{ route('users.deposit_payment') }}", 'Processing...');
+                handleStatusAction(this, "{{ route('booked-services.requestDeposit') }}", 'Processing...');
             });
         });
 
@@ -586,7 +585,7 @@
                 // return true;
 
                 $.ajax({
-                    url: "{{ route('users.user_crm_status') }}",
+                    url: "{{ route('booked-services.uploadSchedule') }}",
                     method: 'POST',
                     data: formData,
                     processData: false,

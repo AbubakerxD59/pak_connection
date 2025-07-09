@@ -55,6 +55,18 @@ class BookService extends Model
         $query->where('user_id', $search["user_id"])->where('package_id', $search["package_id"])->where('service_id', $search["service_id"]);
     }
 
+    public function scopeDatatableSearch($query, $search)
+    {
+        $query->whereHas("user", function ($q) use ($search) {
+            $q->where("full_name", "like", "%$search%");
+            $q->orWhere("email", "like", "%$search%");
+            $q->orWhere("membership_id", "like", "%$search%");
+        })
+        ->orWhereHas("service", function ($q) use ($search) {
+                $q->where("name", "like", "%$search%");
+            });
+    }
+
     public function getUser()
     {
         $user = $this->user()->first();
@@ -142,7 +154,8 @@ class BookService extends Model
         return $this->status == 9;
     }
 
-    public function getTransactions(){
+    public function getTransactions()
+    {
         $transactions = $this->transactions()->get();
         return $transactions;
     }

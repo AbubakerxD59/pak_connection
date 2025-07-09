@@ -226,26 +226,4 @@ class PackageController extends Controller
         }
         return response()->json($response);
     }
-
-    public function showBookedService(Request $request)
-    {
-        $id = $request->id;
-        $bookedService = $this->bookService->find($id);
-        if ($bookedService) {
-            $fields = $bookedService->bookFields()->get();
-            $view = view("admin.packages.fields", compact("fields", "bookedService"))->render();
-            $title = strtoupper($bookedService->getPackage()) . '-' . strtoupper($bookedService->getService());
-            $response = [
-                "status" => true,
-                "body" => $view,
-                "title" => $title
-            ];
-        } else {
-            $response = [
-                "status" => false,
-                "message" => "Something went wrong!"
-            ];
-        }
-        return $response;
-    }
 }
