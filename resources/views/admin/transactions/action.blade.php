@@ -6,11 +6,12 @@
     @endcan
     @can('delete_transactions')
         <div>
-            <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" class="delete_form">
+            <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" class="delete_form d-inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-outline-danger btn-sm delete-btn"
-                    onclick="confirmDelete(event)">Delete</button>
+                >Delete</button>
+                    {{-- onclick="confirmDelete(event)" --}}
             </form>
         </div>
     @endcan

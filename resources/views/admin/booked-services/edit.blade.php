@@ -349,6 +349,8 @@
                 const serviceId = $(this).data('id');
                 clickedBtn = $(this); // track the clicked button
 
+                
+
                 // Reset form fields
                 $('#modalBookedServiceId').val(serviceId);
                 $('#amount').val('');

@@ -141,6 +141,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('transactions', TransactionController::class)->except('show');
     Route::controller(TransactionController::class)->prefix('transactions/')->name('transactions.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
+
+        Route::get('dashboard-order-dataTable', 'dashOrderDataTable')->name('dashboard.order.dataTable');
+        Route::get('order-payments', 'viewOrderPayments')->name('view.order.payments');
+        Route::get('services-payments', 'viewBookServicePayments')->name('view.order.book.service');
+
+        Route::get('dashboard-service-dataTable', 'dashServiceDataTable')->name('dashboard.service.dataTable');
+        Route::get('order-earnings', 'viewOrderEarnings')->name('view.order.earnings');
+        Route::get('services-earnings', 'viewBookServiceEarnings')->name('view.book.service.earnings');
     });
 
     // Booked Services
