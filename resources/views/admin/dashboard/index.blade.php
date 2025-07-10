@@ -40,6 +40,21 @@
                         </div>
                     </div>
 
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>{{ '£' . count_paid_order_transactions() }}</h3>
+                                <p>Order Earnings</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-wallet"></i>
+                            </div>
+                            <a href="{{ route('transactions.view.order.earnings') }}" class="small-box-footer">More info
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
 
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-success">
@@ -56,20 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>{{ '£' . count_paid_order_transactions() }}</h3>
-                                <p>Order Earnings</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-wallet"></i>
-                            </div>
-                            <a href="{{ route('transactions.view.order.earnings') }}" class="small-box-footer">More info
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    </div>
+                    
 
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
@@ -101,6 +103,23 @@
                             </a>
                         </div>
                     </div>
+
+
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-secondary">
+                            <div class="inner">
+                                <h3>{{  count_book_services() }}</h3>
+                                <p>Booked Service</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-wallet"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-sm-6">

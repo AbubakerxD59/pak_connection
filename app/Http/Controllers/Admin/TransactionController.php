@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
+use App\Models\BookService;
+use App\Models\Feature;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
 
     private $transaction;
-    public function __construct(Transaction $transaction)
+    private $bookService;
+    public function __construct(Transaction $transaction, BookService $bookService)
     {
         // permissions
         $this->middleware('permission:view_transactions', ['only' => ['index']]);
@@ -20,6 +23,7 @@ class TransactionController extends Controller
         // permissions
 
         $this->transaction = $transaction;
+        $this->bookService = $bookService;
     }
 
     /**
@@ -33,7 +37,7 @@ class TransactionController extends Controller
         return view('admin.transactions.index', compact('transactions'));
     }
 
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -111,10 +115,21 @@ class TransactionController extends Controller
                 $transactions[$k]['package_amount'] = $val->package ? '£' . $val->package->price : '-';
                 $transactions[$k]['discount_amount'] = $val->getDiscount();
                 $transactions[$k]['total_amount'] = $val->getTotal();
+                $transactions[$k]['transaction_type'] = ucfirst($val->transaction_type);
                 $transactions[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
                 $transactions[$k]['trans_status_view'] = get_status_view($val->status);
                 $transactions[$k]['action'] = view('admin.transactions.action')->with('transaction', $val)->render();
                 $transactions[$k] = $val;
+
+                $book_Service = $this->bookService->find($val->book_service_id);
+                $feature_Service = Feature::find($book_Service->service_id);
+
+                $transactions[$k]['total_amount'] = str_replace('£', '', $val->total_amount);
+                $transactions[$k]['discount_amount'] = str_replace('£', '', $val->discount_amount);
+                $transactions[$k]['payable_amount'] = str_replace('£', '', $val->payable_amount);
+
+                // $transactions[$k]['service_name'] = $book_Service ? $book_Service->getService() : '-';
+                $transactions[$k]['service_name'] = $feature_Service->name ?? '-';
             }
 
             return response()->json([
@@ -145,7 +160,7 @@ class TransactionController extends Controller
         return view('admin.dashboard.payments_book_service', compact('transactions'));
     }
 
-    
+
 
     public function dashOrderDataTable(Request $request)
     {
@@ -156,7 +171,7 @@ class TransactionController extends Controller
             $iTotalRecords = $this->transaction;
             $transactions = $this->transaction->with('user', 'package', 'promo');
 
-            
+
             if ($request->filter_type == 'order') {
                 $transactions = $transactions->where('transaction_type', 'order')->whereNotNull("order_id");
             } else {
@@ -171,7 +186,7 @@ class TransactionController extends Controller
             $totalRecordswithFilter = clone $transactions;
             $transactions->orderBy('id', 'ASC');
 
-            
+
 
             // transaction_type == order
 
@@ -180,7 +195,7 @@ class TransactionController extends Controller
             $transactions = $transactions->limit(intval($data['length']));
 
             $transactions = $transactions->get();
-        
+
 
             foreach ($transactions as $k => $val) {
                 $transactions[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->user->full_name . ' (' . $val->user->email . ')</a>' : '-';
@@ -229,7 +244,7 @@ class TransactionController extends Controller
         return view('admin.dashboard.earnings_book_service', compact('transactions'));
     }
 
-    
+
 
     public function dashServiceDataTable(Request $request)
     {
@@ -240,7 +255,7 @@ class TransactionController extends Controller
             $iTotalRecords = $this->transaction;
             $transactions = $this->transaction->with('user', 'package', 'promo');
 
-            
+
             if ($request->filter_type == 'order') {
                 $transactions = $transactions->where('transaction_type', 'order')->whereNotNull("order_id");
             } else {
@@ -255,7 +270,7 @@ class TransactionController extends Controller
             $totalRecordswithFilter = clone $transactions;
             $transactions->paid()->orderBy('id', 'ASC');
 
-            
+
 
             // transaction_type == order
 
@@ -264,7 +279,7 @@ class TransactionController extends Controller
             $transactions = $transactions->limit(intval($data['length']));
 
             $transactions = $transactions->get();
-        
+
 
             foreach ($transactions as $k => $val) {
                 $transactions[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->user->full_name . ' (' . $val->user->email . ')</a>' : '-';

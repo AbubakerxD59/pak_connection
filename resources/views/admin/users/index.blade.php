@@ -22,10 +22,10 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-striped table-bordered" id="dataTable">
                                                         <thead>
-                                                            <th>{{ __('users.id') }}</th>
+                                                            {{-- <th>{{ __('users.id') }}</th> --}}
+                                                            <th>Membership ID</th>
                                                             {{-- <th>{{ __('users.profile_pic') }}</th> --}}
                                                             <th>{{ __('users.full_name') }}</th>
-                                                            <th>Membership ID</th>
                                                             <th>Email</th>
                                                             <th>Whatsapp#</th>
                                                             <th>City</th>
@@ -71,14 +71,15 @@
             ajax: {
                 url: "{{ route('users.dataTable') }}",
             },
-            columns: [{
-                    data: 'id'
-                },
-                {
-                    data: 'name_link'
-                },
+            columns: [
                 {
                     data: 'membership_id'
+                },
+                // {
+                //     data: 'id'
+                // },
+                {
+                    data: 'name_link'
                 },
                 {
                     data: 'email_username'

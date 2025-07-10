@@ -218,9 +218,9 @@
                                                             <table class="table table-striped table-bordered"
                                                                 id="booked_services_dataTable">
                                                                 <thead>
-                                                                    <th>ID</th>
-                                                                    <th>Customer</th>
+                                                                    {{-- <th>ID</th> --}}
                                                                     <th>Member ID</th>
+                                                                    <th>Customer</th>
                                                                     <th>Service</th>
                                                                     <th>Status</th>
                                                                     <th>Action</th>
