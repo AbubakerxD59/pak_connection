@@ -51,10 +51,12 @@ class Order extends Model
         $query->whereHas("user", function ($q) use ($search) {
             $q->where("full_name", "like", "%{$search}%");
             $q->orWhere("email", "like", "%{$search}%");
+            $q->orWhere("membership_id", "like", "%{$search}%");
         })
             ->orWhereHas("package", function ($q) use ($search) {
                 $q->where("name", "like", "%{$search}%");
-            });
+            })
+            ->orWhere("order_num", "like", "%{$search}%");
     }
 
     public function scopeUnpaid($query)

@@ -74,9 +74,13 @@ class Transaction extends Model
         $query->whereHas("user", function ($q) use ($search) {
             $q->where("full_name", "like", "%{$search}%");
             $q->orWhere("email", "like", "%{$search}%");
+            $q->orWhere("membership_id", "like", "%{$search}%");
         })
             ->orWhereHas("package", function ($q) use ($search) {
                 $q->where("name", "like", "%{$search}%");
+            })
+            ->orWhereHas("order", function ($q) use ($search) {
+                $q->where("order_num", "like", "%{$search}%");
             });
     }
 
@@ -166,16 +170,15 @@ class Transaction extends Model
         return $package ? $package->price : 0;
     }
 
-    
-    public function scopePaymentLink($query,$paymentLink)
+
+    public function scopePaymentLink($query, $paymentLink)
     {
         $query->where('session_id', $paymentLink);
     }
 
-    
-    public function scopeSession($query,$session_id)
+
+    public function scopeSession($query, $session_id)
     {
         $query->where('session_id', $session_id);
     }
-    
 }
