@@ -112,24 +112,18 @@ class TransactionController extends Controller
                 $transactions[$k]['order_num'] = $val->order->order_num ?? '-/-';
                 $transactions[$k]['package_name'] = $val->package ? '<a href="' . route("packages.edit", $val->package->id) . '">' . $val->package->name . '</a>' : '-';
                 $transactions[$k]['coupon_name'] = $val->promo ? '<a href="' . route("promo-code.edit", $val->promo->id) . '">' . $val->promo->name . '</a>' : '-';
-                $transactions[$k]['package_amount'] = $val->package ? '£' . $val->package->price : '-';
                 $transactions[$k]['discount_amount'] = $val->getDiscount();
+                $transactions[$k]['payable'] = '£' . $val->payable_amount;
                 $transactions[$k]['total_amount'] = $val->getTotal();
                 $transactions[$k]['transaction_type'] = ucfirst($val->transaction_type);
                 $transactions[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
                 $transactions[$k]['trans_status_view'] = get_status_view($val->status);
                 $transactions[$k]['action'] = view('admin.transactions.action')->with('transaction', $val)->render();
-                $transactions[$k] = $val;
-
-                $book_Service = $this->bookService->find($val->book_service_id);
-                $feature_Service = Feature::find($book_Service->service_id);
-
-                $transactions[$k]['total_amount'] = str_replace('£', '', $val->total_amount);
-                $transactions[$k]['discount_amount'] = str_replace('£', '', $val->discount_amount);
+                // $transactions[$k]['total_amount'] = str_replace('£', '', $val->total_amount);
+                // $transactions[$k]['discount_amount'] = str_replace('£', '', $val->discount_amount);
                 $transactions[$k]['payable_amount'] = str_replace('£', '', $val->payable_amount);
-
-                // $transactions[$k]['service_name'] = $book_Service ? $book_Service->getService() : '-';
-                $transactions[$k]['service_name'] = $feature_Service->name ?? '-';
+                $transactions[$k]['service_name'] = $val->getService();
+                $transactions[$k] = $val;
             }
 
             return response()->json([

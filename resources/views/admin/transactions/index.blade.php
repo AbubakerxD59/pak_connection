@@ -36,10 +36,9 @@
                                                             <th>Member ID</th>
                                                             <th>Order ID</th>
                                                             <th>Package</th>
-                                                            <th>Amount</th>
-                                                            <th>Package Amount</th>
-                                                            <th>Discount Amount</th>
-                                                            <th>Type</th>
+                                                            <th>Total</th>
+                                                            <th>Discount</th>
+                                                            <th>Payable</th>
                                                             <th>Status</th>
                                                             <th>Date</th>
                                                             <th>Action</th>
@@ -95,7 +94,7 @@
                             </div>
 
                         </div>
-                        
+
                     </div>
                 </div>
             </section>
@@ -119,11 +118,7 @@
             ajax: {
                 url: "{{ route('transactions.dataTable') }}",
             },
-            columns: [
-                // {
-                //     data: 'id'
-                // },
-                {
+            columns: [{
                     data: 'customer_name'
                 },
                 {
@@ -139,13 +134,10 @@
                     data: 'total_amount'
                 },
                 {
-                    data: 'package_amount'
-                },
-                {
                     data: 'discount_amount'
                 },
                 {
-                    data:'transaction_type'
+                    data: 'payable'
                 },
                 {
                     data: 'trans_status_view'

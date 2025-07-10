@@ -238,9 +238,9 @@ function get_status_view($type)
     //     $div = "<span class='badge badge-danger'>Unpaid</span>";
     // }
     if ($type == '1') {
-        $div = "<span class='btn btn-sm btn-outline-success'>Paid</span>";
+        $div = "<span class='btn btn-sm btn-success'>Paid</span>";
     } else {
-        $div = "<span class='btn btn-sm btn-outline-danger'>Unpaid</span>";
+        $div = "<span class='btn btn-sm btn-danger'>Unpaid</span>";
     }
     return $div;
 }

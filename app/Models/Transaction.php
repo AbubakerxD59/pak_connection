@@ -102,7 +102,7 @@ class Transaction extends Model
             $discount = calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 0);
             return '£' . $discount;
         } else {
-            return '£' . "0";
+            return '£' . "0.00";
         }
     }
 
@@ -180,5 +180,15 @@ class Transaction extends Model
     public function scopeSession($query, $session_id)
     {
         $query->where('session_id', $session_id);
+    }
+
+    public function getService()
+    {
+        $bookService = $this->bookService()->first();
+        if ($bookService) {
+            $service = $bookService->service()->first();
+            return $service ? $service->name : '-';
+        }
+        return '-';
     }
 }
