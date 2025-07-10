@@ -33,6 +33,7 @@ class TransactionController extends Controller
         return view('admin.transactions.index', compact('transactions'));
     }
 
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -119,6 +120,174 @@ class TransactionController extends Controller
             return response()->json([
                 'draw' => intval($data['draw']),
                 'iTotalRecords' => $iTotalRecords->count(),
+                'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
+                'aaData' => $transactions,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function viewOrderPayments()
+    {
+        // return view("admin.transactions.index");
+        $transactions = Transaction::with(['user', 'order', 'promo', 'package'])->latest()->get();
+        // return $transactions;
+        return view('admin.dashboard.payments_order', compact('transactions'));
+    }
+
+    public function viewBookServicePayments()
+    {
+        // return view("admin.transactions.index");
+        $transactions = Transaction::with(['user', 'order', 'promo', 'package'])->latest()->get();
+        // return $transactions;
+        return view('admin.dashboard.payments_book_service', compact('transactions'));
+    }
+
+    
+
+    public function dashOrderDataTable(Request $request)
+    {
+
+        try {
+            $data = $request->all();
+            $search = @$data['search']['value'];
+            $iTotalRecords = $this->transaction;
+            $transactions = $this->transaction->with('user', 'package', 'promo');
+
+            
+            if ($request->filter_type == 'order') {
+                $transactions = $transactions->where('transaction_type', 'order')->whereNotNull("order_id");
+            } else {
+                $transactions = $transactions->where('transaction_type', '<>', 'order'); // or '<>'
+            }
+
+
+
+            if (!empty($search)) {
+                $transactions = $transactions->search($search);
+            }
+            $totalRecordswithFilter = clone $transactions;
+            $transactions->orderBy('id', 'ASC');
+
+            
+
+            // transaction_type == order
+
+            /*Set limit offset */
+            $transactions = $transactions->offset(intval($data['start']));
+            $transactions = $transactions->limit(intval($data['length']));
+
+            $transactions = $transactions->get();
+        
+
+            foreach ($transactions as $k => $val) {
+                $transactions[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->user->full_name . ' (' . $val->user->email . ')</a>' : '-';
+                $transactions[$k]['member_id'] = $val->user ? $val->user->membership_id : '-/-';
+                $transactions[$k]['order_id'] = $val->order ? $val->order->id : '-';
+                $transactions[$k]['order_num'] = $val->order->order_num ?? '-/-';
+                $transactions[$k]['package_name'] = $val->package ? '<a href="' . route("packages.edit", $val->package->id) . '">' . $val->package->name . '</a>' : '-';
+                $transactions[$k]['coupon_name'] = $val->promo ? '<a href="' . route("promo-code.edit", $val->promo->id) . '">' . $val->promo->name . '</a>' : '-';
+                $transactions[$k]['package_amount'] = $val->package ? '£' . $val->package->price : '-';
+                $transactions[$k]['discount_amount'] = $val->getDiscount();
+                $transactions[$k]['total_amount'] = $val->getTotal();
+                $transactions[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
+                $transactions[$k]['trans_status_view'] = get_status_view($val->status);
+                $transactions[$k]['action'] = view('admin.transactions.action')->with('transaction', $val)->render();
+                $transactions[$k] = $val;
+            }
+
+            return response()->json([
+                'draw' => intval($data['draw']),
+                'iTotalRecords' => $iTotalRecords->count(),
+                'iTotalRecords' => $iTotalRecords,
+                // $iTotalRecords = $this->transaction->whereNotNull("order_id")->count();
+
+                'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
+                'aaData' => $transactions,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function viewOrderEarnings()
+    {
+        // return view("admin.transactions.index");
+        $transactions = Transaction::with(['user', 'order', 'promo', 'package'])->latest()->get();
+        // return $transactions;
+        return view('admin.dashboard.earnings_order', compact('transactions'));
+    }
+
+    public function viewBookServiceEarnings()
+    {
+        // return view("admin.transactions.index");
+        $transactions = Transaction::with(['user', 'order', 'promo', 'package'])->latest()->get();
+        // return $transactions;
+        return view('admin.dashboard.earnings_book_service', compact('transactions'));
+    }
+
+    
+
+    public function dashServiceDataTable(Request $request)
+    {
+
+        try {
+            $data = $request->all();
+            $search = @$data['search']['value'];
+            $iTotalRecords = $this->transaction;
+            $transactions = $this->transaction->with('user', 'package', 'promo');
+
+            
+            if ($request->filter_type == 'order') {
+                $transactions = $transactions->where('transaction_type', 'order')->whereNotNull("order_id");
+            } else {
+                $transactions = $transactions->where('transaction_type', '<>', 'order'); // or '<>'
+            }
+
+
+
+            if (!empty($search)) {
+                $transactions = $transactions->search($search);
+            }
+            $totalRecordswithFilter = clone $transactions;
+            $transactions->paid()->orderBy('id', 'ASC');
+
+            
+
+            // transaction_type == order
+
+            /*Set limit offset */
+            $transactions = $transactions->offset(intval($data['start']));
+            $transactions = $transactions->limit(intval($data['length']));
+
+            $transactions = $transactions->get();
+        
+
+            foreach ($transactions as $k => $val) {
+                $transactions[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->user->full_name . ' (' . $val->user->email . ')</a>' : '-';
+                $transactions[$k]['member_id'] = $val->user ? $val->user->membership_id : '-/-';
+                $transactions[$k]['order_id'] = $val->order ? $val->order->id : '-';
+                $transactions[$k]['order_num'] = $val->order->order_num ?? '-/-';
+                $transactions[$k]['package_name'] = $val->package ? '<a href="' . route("packages.edit", $val->package->id) . '">' . $val->package->name . '</a>' : '-';
+                $transactions[$k]['coupon_name'] = $val->promo ? '<a href="' . route("promo-code.edit", $val->promo->id) . '">' . $val->promo->name . '</a>' : '-';
+                $transactions[$k]['package_amount'] = $val->package ? '£' . $val->package->price : '-';
+                $transactions[$k]['discount_amount'] = $val->getDiscount();
+                $transactions[$k]['total_amount'] = $val->getTotal();
+                $transactions[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
+                $transactions[$k]['trans_status_view'] = get_status_view($val->status);
+                $transactions[$k]['action'] = view('admin.transactions.action')->with('transaction', $val)->render();
+                $transactions[$k] = $val;
+            }
+
+            return response()->json([
+                'draw' => intval($data['draw']),
+                'iTotalRecords' => $iTotalRecords->count(),
+                'iTotalRecords' => $iTotalRecords,
+                // $iTotalRecords = $this->transaction->whereNotNull("order_id")->count();
+
                 'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
                 'aaData' => $transactions,
             ]);

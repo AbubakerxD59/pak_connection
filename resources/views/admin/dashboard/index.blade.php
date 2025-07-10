@@ -28,31 +28,64 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>10</h3>
-                                <p>Payments</p>
+                                <h3>{{ count_order_transactions() }}</h3>
+                                <p>Order Payments</p>
                             </div>
                             <div class="icon">
                                 <i class="fa fa-credit-card"></i>
                             </div>
-                            <a href="" class="small-box-footer">More info
+                            <a href="{{ route('transactions.view.order.payments') }}" class="small-box-footer">More info
                                 <i class="fas fa-arrow-circle-right"></i>
                             </a>
                         </div>
                     </div>
+
+
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>{{ count_services_transactions() }}</h3>
+                                <p>Services Payments</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-credit-card"></i>
+                            </div>
+                            <a href="{{ route('transactions.view.order.book.service') }}" class="small-box-footer">More info
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>{{ getEarnings() }}</h3>
-                                <p>Earnings</p>
+                                <h3>{{ count_paid_order_transactions() }}</h3>
+                                <p>Order Earnings</p>
                             </div>
                             <div class="icon">
                                 <i class="fa fa-wallet"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info
+                            <a href="{{ route('transactions.view.order.earnings') }}" class="small-box-footer">More info
                                 <i class="fas fa-arrow-circle-right"></i>
                             </a>
                         </div>
                     </div>
+
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>{{ count_paid_services_transactions() }}</h3>
+                                <p>Services Earnings</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-wallet"></i>
+                            </div>
+                            <a href="{{ route('transactions.view.book.service.earnings') }}" class="small-box-footer">More info
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <div class="inner">
@@ -119,8 +152,8 @@
                                     <div class="chart tab-pane" id="yearly-user-chart"
                                         style="position: relative; height: 300px;">
                                         <canvas id="yearly-user-chart-canvas" height="0"
-                                            style="height: 0px; display: block; width: 0px;" class="chartjs-render-monitor"
-                                            width="0"></canvas>
+                                            style="height: 0px; display: block; width: 0px;"
+                                            class="chartjs-render-monitor" width="0"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +171,8 @@
                                 <div class="card-tools">
                                     <ul class="nav nav-pills ml-auto">
                                         <li class="nav-item">
-                                            <a class="nav-link active" href="#weekly-order-chart" data-toggle="tab">Week</a>
+                                            <a class="nav-link active" href="#weekly-order-chart"
+                                                data-toggle="tab">Week</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="#monthly-order-chart" data-toggle="tab">Month</a>

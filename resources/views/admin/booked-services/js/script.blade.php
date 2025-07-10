@@ -61,11 +61,17 @@
         $(document).on('click', '.generate-invoice-btn', function() {
             const serviceId = $(this).data('id');
             clickedBtn = $(this); // track the clicked button
+
+            console.log('called 1');
+
             // Reset form fields
             $('#modalBookedServiceId').val(serviceId);
             $('#amount').val('');
             $('#final_price').val('');
             $('#promo_code_id').prop('selectedIndex', 0);
+            // $("#invoiceModal").modal("show");
+            $("#invoiceModal").modal("toggle");
+
         });
         // Calculate final price based on amount and selected coupon
         function calculateFinalPrice() {
@@ -124,7 +130,8 @@
                     toastr.error(errorMsg);
                 },
                 complete: function() {
-                    $('#invoiceModal').modal('hide');
+                    // $('#invoiceModal').modal('hide');
+
                     form[0].reset();
 
                     // Re-enable buttons
@@ -133,9 +140,11 @@
                         clickedBtn = null;
                     }
                     submitBtn.prop('disabled', false).text('Generate');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
+                    $("#invoiceModal").modal("toggle");
+
                 }
             });
         });
@@ -216,6 +225,11 @@
             $('#book_service_id').val(selectedButton.data('id'));
             $('#status').val(selectedButton.data('status'));
             $('#status_text').val(selectedButton.data('status-text'));
+
+            // console.log('before');
+            $('#statusUpdateModal').modal('toggle');
+            // return true;
+            // console.log('after');
         });
         $('#statusUpdateForm').on('submit', function(e) {
             e.preventDefault();
@@ -237,7 +251,8 @@
                     if (response.success) {
                         booked_services_dataTable.ajax.reload();
                         toastr.success(response.message);
-                        $('#statusUpdateModal').modal('hide');
+                        // $('#statusUpdateModal').modal('hide');
+                        $('#statusUpdateModal').modal('toggle');
                     } else {
                         toastr.error(response.message || 'Something went wrong.');
                     }

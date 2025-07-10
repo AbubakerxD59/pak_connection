@@ -6,11 +6,11 @@
     @endcan
     @can('delete_package')
         <div>
-            <form action="{{ route('packages.destroy', $package->id) }}" method="POST" class="delete_form">
+            <form action="{{ route('packages.destroy', $package->id) }}" method="POST" class="delete_form d-inline">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-outline-danger btn-sm delete-btn"
-                    onclick="confirmDelete(event)">Delete</button>
+                <button type="submit" class="btn btn-outline-danger btn-sm delete-btn">Delete</button>
+                {{-- onclick="confirmDelete(event)" --}}
             </form>
         </div>
     @endcan

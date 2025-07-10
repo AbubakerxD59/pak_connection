@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\Category;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Exceptions\InvalidFormatException;
@@ -441,4 +442,87 @@ function service_book_status($status)
     $label = $statuses[$status] ?? 'Unknown';        // fallback label
 
     return "<span class='badge {$class}'>{$label}</span>";
+}
+
+
+if (!function_exists('count_order_transactions')) {
+    function count_order_transactions()
+    {
+        return Transaction::where('transaction_type', 'order')->count();
+    }
+}
+
+if (!function_exists('count_services_transactions')) {
+    function count_services_transactions()
+    {
+        return Transaction::where('transaction_type', '!=', 'order')->count();
+    }
+}
+
+if (!function_exists('count_paid_order_transactions')) {
+    function count_paid_order_transactions()
+    {
+        return Transaction::where('transaction_type', 'order')->where('status', 1)->count();
+    }
+}
+
+if (!function_exists('count_paid_services_transactions')) {
+    function count_paid_services_transactions()
+    {
+        return Transaction::where('transaction_type', '!=', 'order')->where('status', 1)->count();
+    }
+}
+
+if (!function_exists('count_unpaid_order_transactions')) {
+    function count_unpaid_order_transactions()
+    {
+        return Transaction::where('transaction_type', 'order')->where('status', 0)->count();
+    }
+}
+
+if (!function_exists('count_unpaid_services_transactions')) {
+    function count_unpaid_services_transactions()
+    {
+        return Transaction::where('transaction_type', '!=', 'order')->where('status', 0)->count();
+    }
+}
+
+
+
+
+
+if (!function_exists('sum_paid_order_payable_amount')) {
+    function sum_paid_order_payable_amount()
+    {
+        return Transaction::where('transaction_type', 'order')
+            ->where('status', 1)
+            ->sum('payable_amount');
+    }
+}
+
+if (!function_exists('sum_paid_service_payable_amount')) {
+    function sum_paid_service_payable_amount()
+    {
+        return Transaction::where('transaction_type', '!=', 'order')
+            ->where('status', 1)
+            ->sum('payable_amount');
+    }
+}
+
+if (!function_exists('sum_unpaid_order_payable_amount')) {
+    function sum_unpaid_order_payable_amount()
+    {
+        return Transaction::where('transaction_type', 'order')
+            ->where('status', 0)
+            ->sum('payable_amount');
+    }
+}
+
+if (!function_exists('sum_unpaid_service_payable_amount')) {
+    function sum_unpaid_service_payable_amount()
+    {
+        return Transaction::where('transaction_type', '!=', 'order')
+            ->where('status', 0)
+            ->sum('payable_amount');
+    }
 }
