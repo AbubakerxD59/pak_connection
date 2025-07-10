@@ -16,7 +16,7 @@
                         <label for="amount" class="form-label">Amount (£)</label>
                         <input type="number" name="amount" id="amount" class="form-control" required>
                     </div>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="promo_code_id" class="form-label">Select Promo Code</label>
                         <select name="promo_code_id" id="promo_code_id" class="form-control">
                             <option value="">Select Promo</option>
@@ -28,7 +28,7 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
                     <div class="mb-3">
                         <label class="form-label">Final Amount (£)</label>

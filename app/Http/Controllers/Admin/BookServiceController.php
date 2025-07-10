@@ -140,14 +140,14 @@ class BookServiceController extends Controller
                 'book_service_id' => 'required|exists:book_services,id',
                 'amount'            => 'required|numeric|min:0',
                 'final_price'       => 'required|numeric|min:0',
-                'promo_code_id'         => 'nullable|exists:promo_codes,id',
+                // 'promo_code_id'         => 'nullable|exists:promo_codes,id',
             ]);
             // Load BookService with its Service
             $bookedService = $this->bookService->with('service')->find($request->book_service_id);
             $serviceName = $bookedService->service->name ?? '-';
             // Load Coupon name if provided
-            $promoCode = $this->promoCode->find($request->promo_code_id);
-            $promoName = $promoCode->name ?? '-';
+            // $promoCode = $this->promoCode->find($request->promo_code_id);
+            // $promoName = $promoCode->name ?? '-';
             $product = $this->stripe->products->create([
                 'name' => $serviceName,
             ]);

@@ -268,20 +268,25 @@ class HomeController extends Controller
 
                     if (in_array($type, ['deposit', 'invoice'])) {
                         $bookServiceId = $transaction->book_service_id ?? null;
-
                         if ($bookServiceId) {
                             $bookedService = $this->bookService->find($bookServiceId);
-
                             if ($bookedService) {
-                                $bookedService->status += 1;
-                                $bookedService->save();
+                                if ($transaction->type == "deposit") {
+                                    $status = 3;
+                                }
 
+                                if ($transaction->type == "invoice") {
+                                    $status = 6;
+                                }
+
+                                $bookedService->status = $status;
+                                $bookedService->save();
                                 // Send email notification
                                 event(new BookedServiceStatusUpdated($bookedService));
                             }
                         }
                     }
-                    
+
                     $transaction->update([
                         'customer_id' => $session->customer,
                         'status' => 1
