@@ -159,6 +159,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/booked-services/create-invoice/', 'createInvoice')->name('createInvoice');
         Route::post('/requet-deposit', 'requestDeposit')->name('requestDeposit');
         Route::post('/upload-schedule', 'uploadSchedule')->name('uploadSchedule');
+
+        
+
+        // Route::get('dashboard-bookservice-dataTable', 'datatable')->name('dashboard.bookservice.dataTable');
+        Route::get('dashboard-bookservice-dataTable', 'dashBookServiceDatatable')->name('dashboard.bookservice.dataTable');
+        Route::get('all-book-services', 'viewBookedServices')->name('view.bookservice');
     });
 });
 

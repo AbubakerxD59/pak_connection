@@ -263,6 +263,42 @@
 
                 @endcan
 
+
+                  {{-- Book Service --}}
+                @can('view_booked_services')
+                    @php
+                        $field = in_array(request()->route()->getName(), [
+                            'booked-services.index',
+                            'booked-services.create',
+                            'booked-services.edit',
+                            'booked-services.view.bookservice',
+                            
+                        ])
+                            ? true
+                            : false;
+                    @endphp
+                    <li class="nav-item {{ $field ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ $field ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>
+                                Book Services
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                @can('view_booked_services')
+                                    <a href="{{ route('booked-services.view.bookservice') }}"
+                                        class="nav-link {{ in_array(request()->route()->getName(), ['booked-services.view.bookservice', 'booked-services.create', 'booked-services.edit','booked-services.index']) ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-dot-circle"></i>
+                                        <p>Book Service</p>
+                                    </a>
+                                @endcan
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
+
                 {{-- Earnings --}}
                 {{-- <li class="nav-item">
                     <a href="#" class="nav-link">

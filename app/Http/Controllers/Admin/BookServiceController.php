@@ -303,4 +303,53 @@ class BookServiceController extends Controller
             ], 500);
         }
     }
+
+
+    public function viewBookedServices()
+    {
+        return view('admin.dashboard.all_book_service');
+    }
+
+    public function dashBookServiceDatatable(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $search = @$data['search']['value'];
+            $iTotalRecords = $this->bookService;
+            $services = $this->bookService->with('user','package');
+
+            if (!empty($search)) {
+                $services = $services->datatableSearch($search);
+            }
+            $totalRecordswithFilter = clone $services;
+            $services->orderBy('id', 'ASC');
+
+            /*Set limit offset */
+            $services = $services->offset(intval($data['start']));
+            $services = $services->limit(intval($data['length']));
+
+            $services = $services->get();
+            foreach ($services as $k => $val) {
+                $services[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->getUser() . ' (' . $val->user->email . ')</a>' : '-';
+                $services[$k]['membership_id'] = $val->user ? $val->user->membership_id : '-/-';
+                
+                $services[$k]['service'] = $val->getService();
+                $services[$k]['package'] = $val->getPackage() ?? '';
+
+                $services[$k]['status_view'] = service_book_status($val->status);
+                // $services[$k]['status_view'] = service_book_status($val->status);
+                $services[$k]['action'] = view('admin.booked-services.actions')->with('service', $val)->render();
+                $services[$k] = $val;
+            }
+
+            return response()->json([
+                'draw' => intval($data['draw']),
+                'iTotalRecords' => $iTotalRecords->count(),
+                'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
+                'aaData' => $services,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

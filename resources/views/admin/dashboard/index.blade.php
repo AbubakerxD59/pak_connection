@@ -114,7 +114,7 @@
                             <div class="icon">
                                 <i class="fa fa-wallet"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info
+                            <a href="{{ route('booked-services.view.bookservice') }}" class="small-box-footer">More info
                                 <i class="fas fa-arrow-circle-right"></i>
                             </a>
                         </div>

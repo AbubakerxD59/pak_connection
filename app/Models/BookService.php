@@ -16,11 +16,11 @@ class BookService extends Model
         "status",
     ];
 
-    // status order change by abdul moiz
+    
     static public $status_array = [
         "1" => "Order Received",
         "2" => "Deposit Requested",
-        "3" => "Deposit Paid", // added by abdul moiz
+        "3" => "Deposit Paid", 
         "4" => "Order in Progress",
         "5" => "Invoice Created",
         "6" => "Full Payment Received",
@@ -61,6 +61,7 @@ class BookService extends Model
             $q->where("full_name", "like", "%$search%");
             $q->orWhere("email", "like", "%$search%");
             $q->orWhere("membership_id", "like", "%$search%");
+            $q->orWhere("whatsapp_number", "like", "%{$search}%");
         })
             ->orWhereHas("service", function ($q) use ($search) {
                 $q->where("name", "like", "%$search%");
