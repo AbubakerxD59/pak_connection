@@ -59,7 +59,7 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>{{ count_paid_order_transactions() }}</h3>
+                                <h3>{{ '£' . count_paid_order_transactions() }}</h3>
                                 <p>Order Earnings</p>
                             </div>
                             <div class="icon">
@@ -74,13 +74,14 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>{{ count_paid_services_transactions() }}</h3>
+                                <h3>{{ '£' . count_paid_services_transactions() }}</h3>
                                 <p>Services Earnings</p>
                             </div>
                             <div class="icon">
                                 <i class="fa fa-wallet"></i>
                             </div>
-                            <a href="{{ route('transactions.view.book.service.earnings') }}" class="small-box-footer">More info
+                            <a href="{{ route('transactions.view.book.service.earnings') }}" class="small-box-footer">More
+                                info
                                 <i class="fas fa-arrow-circle-right"></i>
                             </a>
                         </div>

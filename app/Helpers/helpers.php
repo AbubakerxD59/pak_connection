@@ -462,14 +462,14 @@ if (!function_exists('count_services_transactions')) {
 if (!function_exists('count_paid_order_transactions')) {
     function count_paid_order_transactions()
     {
-        return Transaction::where('transaction_type', 'order')->where('status', 1)->count();
+        return Transaction::where('transaction_type', 'order')->where('status', 1)->sum('payable_amount');
     }
 }
 
 if (!function_exists('count_paid_services_transactions')) {
     function count_paid_services_transactions()
     {
-        return Transaction::where('transaction_type', '!=', 'order')->where('status', 1)->count();
+        return Transaction::where('transaction_type', '!=', 'order')->where('status', 1)->sum('payable_amount');
     }
 }
 
