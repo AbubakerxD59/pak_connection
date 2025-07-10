@@ -66,6 +66,10 @@ class User extends Authenticatable
         return $this->hasMany(BookService::class, 'user_id', 'id');
     }
 
+    public function transactions(){
+        return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
+
     public function bookFields(){
         return $this->hasMany(BookFeild::class, 'user_id', 'id');
     }

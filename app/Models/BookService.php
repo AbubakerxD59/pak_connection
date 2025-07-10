@@ -62,7 +62,7 @@ class BookService extends Model
             $q->orWhere("email", "like", "%$search%");
             $q->orWhere("membership_id", "like", "%$search%");
         })
-        ->orWhereHas("service", function ($q) use ($search) {
+            ->orWhereHas("service", function ($q) use ($search) {
                 $q->where("name", "like", "%$search%");
             });
     }

@@ -174,6 +174,10 @@ class UserController extends Controller
     {
         $user = $this->user->find($id);
         if ($user) {
+            $user->order()->delete();
+            $user->bookServices()->delete();
+            $user->bookFields()->delete();
+            $user->transactions()->delete();
             if ($user->delete()) {
                 return back()->with('success', 'Customer deleted successfully!');
             } else {

@@ -271,11 +271,11 @@ class HomeController extends Controller
                         if ($bookServiceId) {
                             $bookedService = $this->bookService->find($bookServiceId);
                             if ($bookedService) {
-                                if ($transaction->type == "deposit") {
+                                if ($type == "deposit") {
                                     $status = 3;
                                 }
 
-                                if ($transaction->type == "invoice") {
+                                if ($type == "invoice") {
                                     $status = 6;
                                 }
 
