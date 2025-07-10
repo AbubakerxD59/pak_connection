@@ -16,14 +16,15 @@
             ajax: {
                 url: "{{ route('booked-services.dataTable') }}",
             },
-            columns: [{
-                    data: 'id'
+            columns: [
+                // {
+                //     data: 'id'
+                // },
+                {
+                    data: 'membership_id'
                 },
                 {
                     data: 'customer_name'
-                },
-                {
-                    data: 'membership_id'
                 },
                 {
                     data: 'service'

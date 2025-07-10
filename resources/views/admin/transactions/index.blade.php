@@ -39,8 +39,10 @@
                                                             <th>Amount</th>
                                                             <th>Package Amount</th>
                                                             <th>Discount Amount</th>
+                                                            <th>Type</th>
                                                             <th>Status</th>
                                                             <th>Date</th>
+                                                            <th>Action</th>
                                                         </thead>
                                                     </table>
                                                 </div>
@@ -93,6 +95,7 @@
                             </div>
 
                         </div>
+                        
                     </div>
                 </div>
             </section>
@@ -142,11 +145,17 @@
                     data: 'discount_amount'
                 },
                 {
+                    data:'transaction_type'
+                },
+                {
                     data: 'trans_status_view'
                 },
                 {
                     data: 'date'
                 },
+                {
+                    data: 'action'
+                }
             ],
         });
     </script>

@@ -232,10 +232,15 @@ function get_total_orders($type = null)
 
 function get_status_view($type)
 {
+    // if ($type == '1') {
+    //     $div = "<span class='badge badge-success'>Paid</span>";
+    // } else {
+    //     $div = "<span class='badge badge-danger'>Unpaid</span>";
+    // }
     if ($type == '1') {
-        $div = "<span class='badge badge-success'>Paid</span>";
+        $div = "<span class='btn btn-sm btn-outline-success'>Paid</span>";
     } else {
-        $div = "<span class='badge badge-danger'>Unpaid</span>";
+        $div = "<span class='btn btn-sm btn-outline-danger'>Unpaid</span>";
     }
     return $div;
 }
@@ -524,5 +529,13 @@ if (!function_exists('sum_unpaid_service_payable_amount')) {
         return Transaction::where('transaction_type', '!=', 'order')
             ->where('status', 0)
             ->sum('payable_amount');
+    }
+}
+
+
+if (!function_exists('count_book_services')) {
+    function count_book_services()
+    {
+        return BookService::count();
     }
 }
