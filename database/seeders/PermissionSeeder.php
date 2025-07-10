@@ -33,6 +33,8 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'manage_orders', 'label' => 'Manage Orders', 'parent_id' => '', 'route_name' => 'orders'],
 
+            ['name' => 'manage_transactions', 'label' => 'Manage Transactions', 'parent_id' => '', 'route_name' => 'transactions'],
+
             ['name' => 'manage_fields', 'label' => 'Manage Fields', 'parent_id' => '', 'route_name' => 'fields'],
 
             ['name' => 'manage_booked_services', 'label' => 'Manage Booked Services', 'parent_id' => '', 'route_name' => 'booked_service'],
@@ -121,11 +123,11 @@ class PermissionSeeder extends Seeder
             ['name' => 'delete_fields', 'label' => 'Delete Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.destroy'],
             
             // Manage Fields
-            ['name' => 'view_booked_services', 'label' => 'View Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => ''],
+            ['name' => 'view_booked_services', 'label' => 'View Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => 'booked-services.index'],
 
-            ['name' => 'edit_booked_services', 'label' => 'Edit Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => ''],
+            ['name' => 'edit_booked_services', 'label' => 'Edit Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => 'booked-services.edit'],
 
-            ['name' => 'delete_booked_services', 'label' => 'Delete Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => ''],
+            ['name' => 'delete_booked_services', 'label' => 'Delete Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => 'booked-services.destroy'],
 
 
         ];
@@ -133,6 +135,9 @@ class PermissionSeeder extends Seeder
             foreach ($permissions as $permission) {
                 if (!empty($permission['parent_id'])) {
                     $parent_id = Permission::where('name', $permission['parent_id'])->first();
+                    if(empty($parent_id)){
+                        dd($permission);
+                    }
                     $permission['parent_id'] = $parent_id->id;
                 }
                 $data = [
