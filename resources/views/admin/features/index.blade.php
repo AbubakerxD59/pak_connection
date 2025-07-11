@@ -19,6 +19,11 @@
                         <i class="fas fa-plus-square"></i>
                         Add new
                     </a>
+
+                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadPdfModal">
+                        Upload Book Service PDF
+                    </button>
+
                 </div>
             </div>
             <section class="content">

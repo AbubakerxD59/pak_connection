@@ -160,11 +160,18 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/requet-deposit', 'requestDeposit')->name('requestDeposit');
         Route::post('/upload-schedule', 'uploadSchedule')->name('uploadSchedule');
 
-        
+
 
         // Route::get('dashboard-bookservice-dataTable', 'datatable')->name('dashboard.bookservice.dataTable');
         Route::get('dashboard-bookservice-dataTable', 'dashBookServiceDatatable')->name('dashboard.bookservice.dataTable');
         Route::get('all-book-services', 'viewBookedServices')->name('view.bookservice');
+
+
+        Route::post('booked-service-pdfs/store', 'uploadBookServicePDF')->name('upload-pdfs');
+        Route::get('bookservice-pdf-datatable', 'bookServicePDFDatatable')->name('pdf.dataTable');
+        Route::delete('bookservice-pdf-delete/{id}', 'destroyBookServicePDF')->name('pdf.delete');
+
+        
     });
 });
 

@@ -81,4 +81,73 @@
     </div>
 </div>
 
+<!-- Upload PDF Modal -->
+<div class="modal fade" id="uploadPdfModal" tabindex="-1" aria-labelledby="uploadPdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="uploadPdfForm" method="POST" enctype="multipart/form-data" class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title">Upload PDF for Booked Service</h5>
 
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+
+                    <input type="text" name="pdf_id" id="pdf_id">
+
+                    <label for="booked_service_id" class="form-label">Select Booked Service</label>
+                    <select name="booked_service_id" id="booked_service_id" class="form-control" required>
+                        <option value="{{ $bookedService->id }}">{{ $bookedService->getService() }}</option>
+                    </select>
+                    {{-- @foreach ($bookedServices as $service)
+                        <option value="{{ $service->id }}">{{ $service->id }} - {{ $service->service_name }}</option>
+                    @endforeach --}}
+                </div>
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Email Subject</label>
+                    <input type="text" name="subject" id="subject" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="text" class="form-label">Email Body</label>
+                    <textarea name="text" class="form-control" rows="4" id="text" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="file" class="form-label">Upload PDF</label>
+                    <input type="file" name="file" class="form-control" accept="application/pdf">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="uploadPdfBtn" class="btn btn-primary">Upload</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- View PDF Modal -->
+<div class="modal fade" id="viewPdfModal" tabindex="-1" role="dialog" aria-labelledby="viewPdfModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document"> <!-- use modal-xl for wide PDF view -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">PDF Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5><strong>Subject:</strong> <span id="pdfSubjectView"></span></h5>
+                <p><strong>Message:</strong> <span id="pdfTextView"></span></p>
+                <p>
+                    <strong>PDF File:</strong>
+                    <a href="#" id="pdfDownloadLink" target="_blank" class="btn btn-outline-primary btn-sm">
+                        View PDF
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
