@@ -96,7 +96,7 @@
             <div class="modal-body">
                 <div class="mb-3">
 
-                    <input type="text" name="pdf_id" id="pdf_id">
+                    <input type="hidden" name="pdf_id" id="pdf_id">
 
                     <label for="booked_service_id" class="form-label">Select Booked Service</label>
                     <select name="booked_service_id" id="booked_service_id" class="form-control" required>
