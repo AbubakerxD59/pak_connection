@@ -45,6 +45,10 @@ class MemberController extends Controller
         $feature = $this->feature->find($id);
         if ($feature) {
             $package = $user->getPackage();
+
+            // check booking ka status if it is order complete
+            // tehn show modals.fields wala dekhana edit fields wala nhi dikhana
+
             if ($feature->book) {
                 $bookService = $user->bookServices()->where("package_id", $package->id)->where("service_id", $feature->id)->latest()->first();
                 $bookFields = $user->bookFields()->where("book_service_id", $bookService->id)->get();

@@ -2,7 +2,7 @@
 
     <div>
         <button type="button" class="btn btn-outline-success btn-sm view-pdf-btn" data-subject="{{ $service->subject }}"
-            data-text="{{ $service->text }}" data-file="{{ asset($service->file) }}" data-toggle="modal"
+            data-text="{{ $service->text }}" data-file="{{ asset($service->file) }}" data-toggle="modal" data-pdf_id="{{ $service->id }}"
             data-target="#viewPdfModal">
             View
         </button>
@@ -12,7 +12,7 @@
         <div>
             <button type="button" class="btn btn-sm btn-outline-primary edit-pdf-btn" data-pdf_id="{{ $service->id }}"
                 data-book_service_id="{{ $service->book_service_id }}" data-subject="{{ $service->subject }}"
-                data-text="{{ $service->text }}" id="openUploadModalBtn" data-toggle="modal" data-target="#uploadPdfModal">
+                data-text="{{ $service->text }}" id="openUploadModal_Btn" data-toggle="modal" data-target="#uploadPdfModal">
                 Edit
             </button>
             {{-- data-toggle="modal" data-target="#uploadPdfModal" --}}

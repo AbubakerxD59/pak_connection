@@ -170,6 +170,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('booked-service-pdfs/store', 'uploadBookServicePDF')->name('upload-pdfs');
         Route::get('bookservice-pdf-datatable', 'bookServicePDFDatatable')->name('pdf.dataTable');
         Route::delete('bookservice-pdf-delete/{id}', 'destroyBookServicePDF')->name('pdf.delete');
+        Route::post('send-pdfs-email', 'sendBookServicePDFEmail')->name('send-pdf-email');
 
         
     });

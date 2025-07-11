@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Events\BookedServiceStatusUpdated;
+use App\Events\BookServicePdfUploaded;
+use App\Listeners\SendBookServicePdfEmail;
 use App\Listeners\SendDepositRequestedMail;
 use App\Listeners\SendFullPaymentReceivedEmail;
 use App\Listeners\SendInvoiceCreatedMail;
@@ -43,6 +45,10 @@ class EventServiceProvider extends ServiceProvider
 
             SendDepositPaidMail::class,
 
+        ],
+
+        BookServicePdfUploaded::class => [
+            SendBookServicePdfEmail::class,
         ],
     ];
 

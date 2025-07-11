@@ -26,10 +26,7 @@
                                         </div>
                                         <div class="card-tools">
 
-                                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#uploadPdfModal">
-                                                Upload PDF
-                                            </button>
+
 
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse"
                                                 title="Collapse">
@@ -239,7 +236,7 @@
 
 
                                             {{-- when status is : 10 --}}
-                                            @if ($bookedService->status)
+                                            @if ($bookedService->status == 10)
                                                 <div>
                                                     <button disabled class="btn btn-outline-dark btn-sm">
                                                         Order Completed
@@ -352,6 +349,11 @@
                                         Book Service PDF
                                     </div>
                                     <div class="card-tools">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#uploadPdfModal" id="openUploadModalBtn">
+                                            Add New
+                                        </button>
+
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse"
                                             title="Collapse">
                                             <i class="fas fa-minus"></i>
@@ -684,7 +686,7 @@
             ///////////////////////////////////////////////////////////////////////////
 
             $('#uploadPdfForm').on('submit', function(e) {
-                e.preventDefault(); // ✅ Very important
+                e.preventDefault();
 
                 var formData = new FormData(this);
                 var $btn = $('#uploadPdfBtn');
@@ -693,7 +695,7 @@
                 $btn.prop('disabled', true).html('Uploading...');
 
                 $.ajax({
-                    url: "{{ route('booked-services.upload-pdfs') }}", // ✅ Custom route
+                    url: "{{ route('booked-services.upload-pdfs') }}",
                     type: 'POST',
                     data: formData,
                     contentType: false,
@@ -749,15 +751,91 @@
                 const subject = $(this).data('subject');
                 const text = $(this).data('text');
                 const file = $(this).data('file');
+                const get_pdf_id = $(this).data('pdf_id');
 
+
+                $('#pdfIdView').val(get_pdf_id);
                 $('#pdfSubjectView').text(subject);
                 $('#pdfTextView').text(text);
-                    $('#pdfDownloadLink').attr('href', file); // set the PDF URL
+                $('#pdfDownloadLink').attr('href', file); // set the PDF URL
 
                 $('#viewPdfModal').modal('show');
             });
 
 
+            $('#viewPdfForm').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+                var $btn = $('#uploadPdfBtn');
+                var originalText = $btn.html();
+
+                $btn.prop('disabled', true).html('Uploading...');
+
+                $.ajax({
+                    url: "{{ route('booked-services.send-pdf-email') }}", // update this route accordingly
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        toastr.success('Email sent successfully.');
+
+                        // ✅ Hide modal and reset form
+                        $('#viewPdfModal').modal('hide');
+                        $('#viewPdfForm')[0].reset();
+                    },
+                    error: function(xhr) {
+                        toastr.error('Something went wrong.');
+                    },
+                    complete: function() {
+                        $btn.prop('disabled', false).html(originalText);
+
+                        // ✅ Fix overlay issue and mouse events
+                        setTimeout(function() {
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                        }, 500);
+                    }
+                });
+            });
+
+
+
+        });
+    </script>
+
+    <script>
+        $('#viewPdfModal').on('hidden.bs.modal', function() {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        });
+    </script>
+
+    <script>
+        $('#uploadPdfModal').on('hidden.bs.modal', function() {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        });
+    </script>
+
+
+
+    <script>
+        $('#statusUpdateModal').on('hidden.bs.modal', function() {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        });
+    </script>
+
+    <script>
+        $('#invoiceModal').on('hidden.bs.modal', function() {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
         });
     </script>
 @endpush

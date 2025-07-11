@@ -50,7 +50,7 @@
 <!-- Status Update Modal -->
 <div class="modal fade" id="statusUpdateModal" tabindex="-1" aria-labelledby="statusUpdateModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <form id="statusUpdateForm" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
@@ -82,8 +82,11 @@
 </div>
 
 <!-- Upload PDF Modal -->
-<div class="modal fade" id="uploadPdfModal" tabindex="-1" aria-labelledby="uploadPdfModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+{{-- <div class="modal fade" id="uploadPdfModal" tabindex="-1" aria-labelledby="uploadPdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog"> --}}
+<div class="modal fade" id="uploadPdfModal" tabindex="-1" role="dialog" aria-labelledby="uploadPdfModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <form id="uploadPdfForm" method="POST" enctype="multipart/form-data" class="modal-content">
             @csrf
             <div class="modal-header">
@@ -121,7 +124,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" id="uploadPdfBtn" class="btn btn-primary">Upload</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Cancel</button>
             </div>
         </form>
     </div>
@@ -130,24 +133,40 @@
 <!-- View PDF Modal -->
 <div class="modal fade" id="viewPdfModal" tabindex="-1" role="dialog" aria-labelledby="viewPdfModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document"> <!-- use modal-xl for wide PDF view -->
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">PDF Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5><strong>Subject:</strong> <span id="pdfSubjectView"></span></h5>
-                <p><strong>Message:</strong> <span id="pdfTextView"></span></p>
-                <p>
-                    <strong>PDF File:</strong>
-                    <a href="#" id="pdfDownloadLink" target="_blank" class="btn btn-outline-primary btn-sm">
-                        View PDF
-                    </a>
-                </p>
-            </div>
+            <form id="viewPdfForm" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">PDF Details</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" id="pdfIdView" name="pdf_id">
+
+                    <input type="hidden" value="{{ $bookedService->id }}" name="book_service_id"
+                        id="view_book_service_id">
+                    <input type="hidden" value="{{ $bookedService->user_id }}" name="user_id" id="viw_user_id">
+
+                    <h5><strong>Subject:</strong> <span id="pdfSubjectView"></span></h5>
+                    <p><strong>Message:</strong> <span id="pdfTextView"></span></p>
+                    <p>
+                        <strong>PDF File:</strong>
+                        <a href="#" id="pdfDownloadLink" target="_blank"
+                            class="btn btn-outline-primary btn-sm">
+                            View PDF
+                        </a>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="uploadPdfBtn" class="btn btn-primary">Upload</button>
+                    <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
