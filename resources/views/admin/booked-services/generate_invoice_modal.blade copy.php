@@ -103,8 +103,7 @@
 
                     <label for="booked_service_id" class="form-label">Select Booked Service</label>
                     <select name="booked_service_id" id="booked_service_id" class="form-control" required>
-                        {{-- <option value="{{ $bookedService->id }}">{{ $bookedService->getService() }}</option> --}}
-                        <option value="{{ $service->id }}">{{ $service->getService() }}</option>
+                        <option value="{{ $bookedService->id }}">{{ $bookedService->getService() }}</option>
                         {{-- @foreach ($bookedServices as $service)
                             <option value="{{ $service->id }}">{{ $service->id }} - {{ $service->service_name }}
                             </option>
@@ -149,14 +148,9 @@
 
                     <input type="hidden" id="pdfIdView" name="pdf_id">
 
-                    {{-- <input type="hidden" value="{{ $bookedService->id }}" name="book_service_id"
+                    <input type="hidden" value="{{ $bookedService->id }}" name="book_service_id"
                         id="view_book_service_id">
-                    <input type="hidden" value="{{ $bookedService->user_id }}" name="user_id" id="viw_user_id"> --}}
-
-                    
-                    <input type="hidden" value="{{ $service->id }}" name="book_service_id"
-                        id="view_book_service_id">
-                    <input type="hidden" value="{{ $service->user_id }}" name="user_id" id="viw_user_id">
+                    <input type="hidden" value="{{ $bookedService->user_id }}" name="user_id" id="viw_user_id">
 
                     <h5><strong>Subject:</strong> <span id="pdfSubjectView"></span></h5>
                     <p><strong>Message:</strong> <span id="pdfTextView"></span></p>

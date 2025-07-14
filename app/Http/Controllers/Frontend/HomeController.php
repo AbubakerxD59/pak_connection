@@ -17,6 +17,8 @@ use App\Http\Controllers\Controller;
 use App\Models\BookService;
 use App\Models\Transaction;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Carbon\Carbon;
+
 
 class HomeController extends Controller
 {
@@ -154,7 +156,6 @@ class HomeController extends Controller
                 "session_id" => $session->id,
                 "package_id" => $package->id,
                 "promo_id" => $promo ? $promo->id : "",
-                // "total_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
 
                 "total_amount" => $package->price,
                 "discount_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
@@ -179,6 +180,20 @@ class HomeController extends Controller
                 "transaction_type" => "order",
 
                 "status" => "0",
+            ]);
+
+            // update packages fields
+            $user = $this->user->find($order->user_id);
+
+            // $pkg_end_time = $package->duration + $package->date_type;
+            $pkg_str_time = Carbon::now();
+            $pkg_end_time = $this->assignPackage($pkg_str_time, $package);
+
+            $user->update([
+                "package_id" => $package->id,
+                "pkg_start_time" => $session->customer,
+                "pkg_end_time" => $pkg_end_time,
+                "package_status" => $package->status,
             ]);
 
 
@@ -299,5 +314,21 @@ class HomeController extends Controller
                 info("Received unknown event type" . $event->type);
         }
         return response("Here", 200);
+    }
+
+    public function assignPackage($currentTime, Package $package)
+    {
+
+        $pkg_end_time = match ($package->date_type) {
+            'year'  => $currentTime->copy()->addYears($package->duration),
+            'month' => $currentTime->copy()->addMonths($package->duration),
+            'day'   => $currentTime->copy()->addDays($package->duration),
+            'hour'  => $currentTime->copy()->addHours($package->duration),
+            default => $currentTime,
+        };
+
+        $pkg_end_time->setTime($pkg_end_time->hour, 0, 0);
+
+        return $pkg_end_time;
     }
 }

@@ -1,30 +1,10 @@
 @extends('admin.layouts.secure')
-@section('page_title', 'Services')
+@section('page_title', 'Book Services')
 @section('page_content')
     @can('view_user')
         <div class="page-content">
-            <div class="content-header clearfix">
-                <h1 class="float-left">Services</h1>
-                <div class="float-right d-flex">
-                    <form action="{{ route('fields.import') }}" method="POST" enctype="multipart/form-data" id="importForm">
-                        @csrf
-                        <input type="file" name="import" id="import" class="form-control d-none"
-                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                        <label for="import" class="btn btn-primary my-0 mx-2">
-                            <i class="fa fa-download"></i>
-                            Import
-                        </label>
-                    </form>
-                    <a class="btn btn-primary" data-toggle="modal" data-target="#add_features_modal">
-                        <i class="fas fa-plus-square"></i>
-                        Add new
-                    </a>
-
-                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadPdfModal">
-                        Upload Book Service PDF
-                    </button>
-
-                </div>
+         <div class="content-header clearfix">
+                <h1 class="float-left">Book Service</h1>
             </div>
             <section class="content">
                 <div class="container-fluid">
@@ -38,13 +18,15 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-striped table-bordered table-sortable"
                                                         id="dataTable">
-                                                        <thead>
-                                                            <th></th>
-                                                            <th>ID</th>
-                                                            <th>Icon</th>
-                                                            <th>Name</th>
-                                                            <th>Action</th>
-                                                        </thead>
+                                                         <thead>
+                                                                {{-- <th>ID</th> --}}
+                                                                <th>Member ID</th>
+                                                                <th>Customer</th>
+                                                                <th>Service</th>
+                                                                <th>Package</th>
+                                                                <th>Status</th>
+                                                                <th>Action</th>
+                                                            </thead>
                                                     </table>
                                                 </div>
                                             </div>
@@ -75,19 +57,22 @@
             "processing": true,
             "serverSide": true,
             ajax: {
-                url: "{{ route('features.dataTable') }}",
+                url: "{{ route('booked-services.dashboard.bookservice.dataTable') }}",
             },
-            columns: [{
-                    data: 'order_span'
+            columns: [ {
+                    data: 'membership_id'
                 },
                 {
-                    data: 'order'
+                    data: 'customer_name'
                 },
                 {
-                    data: 'icon_image'
+                    data: 'service'
                 },
                 {
-                    data: 'name_link'
+                    data:'package'
+                },
+                {
+                    data: 'status_view'
                 },
                 {
                     data: 'action'
@@ -132,4 +117,10 @@
             });
         });
     </script>
+@endpush
+
+@include('admin.booked-services.generate_invoice_modal')
+@include('admin.packages.view_booked_service')
+@push('scripts')
+    @include('admin.booked-services.js.script')
 @endpush

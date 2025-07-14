@@ -7,7 +7,10 @@ use App\Models\BookService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Events\BookedServiceStatusUpdated;
+use App\Events\BookServicePdfUploaded;
+use App\Models\BookedServicePdf;
 use App\Models\Transaction;
+use App\Models\User;
 
 class BookServiceController extends Controller
 {
@@ -15,15 +18,20 @@ class BookServiceController extends Controller
     private $promoCode;
     private $transaction;
     private $stripe;
-    public function __construct(BookService $bookService, PromoCode $promoCode, Transaction $transaction)
+    private $bookedservicepdf;
+    private $user;
+    public function __construct(BookService $bookService, PromoCode $promoCode, Transaction $transaction, BookedServicePdf $bookedservicepdf, User $user)
     {
         $this->bookService = $bookService;
         $this->promoCode = $promoCode;
         $this->transaction = $transaction;
+        $this->bookedservicepdf = $bookedservicepdf;
+        $this->user = $user;
         $this->stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
     }
     public function edit($id = null)
     {
+        // return $id;
         $bookedService = $this->bookService->with(['service', 'transactions'])->find($id);
         $nextStatus = $bookedService->status + 1;
         $statusLabel = BookService::$status_array[$nextStatus] ?? null;
@@ -278,16 +286,31 @@ class BookServiceController extends Controller
             $bookedService = $this->bookService->with('service')->find($request->book_service_id);
             $bookedService->status = $request->status;
             $filePath = null;
+            // if ($request->hasFile('pdf_file')) {
+            //     $file = $request->file('pdf_file');
+            //     // Generate unique filename: timestamp + original extension
+            //     $fileName = time() . '.' . $file->getClientOriginalExtension();
+            //     // Store file in 'storage/app/public/pdf_uploads' and get full path
+            //     $filePath = $file->storeAs('pdf_uploads', $fileName, 'public');
+
+            //     $bookedService->schedule_created = true;
+            //     $bookedService->schedule_pdf = $filePath ?? null;
+            // }
+
             if ($request->hasFile('pdf_file')) {
                 $file = $request->file('pdf_file');
-                // Generate unique filename: timestamp + original extension
-                $fileName = time() . '.' . $file->getClientOriginalExtension();
-                // Store file in 'storage/app/public/pdf_uploads' and get full path
-                $filePath = $file->storeAs('pdf_uploads', $fileName, 'public');
 
+                // Generate unique filename
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+                // Move file to public/assets/pdfs directory
+                $file->move(public_path('assets/pdfs'), $fileName);
+
+                // Save the path (relative to public) in DB
                 $bookedService->schedule_created = true;
-                $bookedService->schedule_pdf = $filePath ?? null;
+                $bookedService->schedule_pdf = 'assets/pdfs/' . $fileName;
             }
+
             $bookedService->save();
             $bookedService->transaction = $this->transaction->where('book_service_id', $bookedService->id)->first();
             event(new BookedServiceStatusUpdated($bookedService));
@@ -299,6 +322,197 @@ class BookServiceController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to generate invoice.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    public function viewBookedServices()
+    {
+        return view('admin.dashboard.all_book_service');
+    }
+
+    public function dashBookServiceDatatable(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $search = @$data['search']['value'];
+            $iTotalRecords = $this->bookService;
+            $services = $this->bookService->with('user', 'package');
+
+            if (!empty($search)) {
+                $services = $services->datatableSearch($search);
+            }
+            $totalRecordswithFilter = clone $services;
+            $services->orderBy('id', 'ASC');
+
+            /*Set limit offset */
+            $services = $services->offset(intval($data['start']));
+            $services = $services->limit(intval($data['length']));
+
+            $services = $services->get();
+            foreach ($services as $k => $val) {
+                $services[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->getUser() . ' (' . $val->user->email . ')</a>' : '-';
+                $services[$k]['membership_id'] = $val->user ? $val->user->membership_id : '-/-';
+
+                $services[$k]['service'] = $val->getService();
+                $services[$k]['package'] = $val->getPackage() ?? '';
+
+                $services[$k]['status_view'] = service_book_status($val->status);
+                // $services[$k]['status_view'] = service_book_status($val->status);
+                $services[$k]['action'] = view('admin.booked-services.actions')->with('service', $val)->render();
+                $services[$k] = $val;
+            }
+
+            return response()->json([
+                'draw' => intval($data['draw']),
+                'iTotalRecords' => $iTotalRecords->count(),
+                'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
+                'aaData' => $services,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
+
+    public function uploadBookServicePDF(Request $request)
+    {
+        $request->validate([
+            'pdf_id' => 'nullable|integer|exists:booked_service_pdfs,id',
+            'booked_service_id' => 'required|exists:book_services,id',
+            'subject' => 'required|string|max:255',
+            'text' => 'required|string',
+            'file' => 'nullable|file|mimes:pdf|max:10240', // File is optional for update
+        ]);
+
+        $filename = null;
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('assets/pdfs'), $filename);
+        }
+
+        // Preserve old file if no new one uploaded during update
+        if ($request->filled('pdf_id') && !$filename) {
+            $existing = $this->bookedservicepdf->find($request->pdf_id);
+            if ($existing) {
+                $filename = basename($existing->file);
+            }
+        }
+
+        $this->bookedservicepdf->updateOrCreate(
+            ['id' => $request->pdf_id],
+            [
+                'book_service_id' => $request->booked_service_id,
+                'subject' => $request->subject,
+                'text' => $request->text,
+                'file' => 'assets/pdfs/' . $filename,
+            ]
+        );
+
+        return response()->json(['success' => true, 'message' => 'PDF saved successfully.']);
+    }
+
+
+    public function bookServicePDFDatatable(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $search = @$data['search']['value'];
+            $iTotalRecords = $this->bookedservicepdf;
+            $services = $this->bookedservicepdf;
+
+            if (!empty($search)) {
+                $services = $services->datatableSearch($search);
+            }
+            $totalRecordswithFilter = clone $services;
+            $services->orderBy('id', 'ASC');
+
+            /*Set limit offset */
+            $services = $services->offset(intval($data['start']));
+            $services = $services->limit(intval($data['length']));
+
+            $services = $services->get();
+            foreach ($services as $k => $val) {
+
+                $services[$k]['subject'] = $val->subject ?? '';
+                $services[$k]['text'] = $val->text ?? '';
+
+                $services[$k]['action'] = view('admin.booked-services.pdfactions')->with('service', $val)->render();
+                $services[$k] = $val;
+            }
+
+            return response()->json([
+                'draw' => intval($data['draw']),
+                'iTotalRecords' => $iTotalRecords->count(),
+                'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
+                'aaData' => $services,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function destroyBookServicePDF($id)
+    {
+        $servicepdf = $this->bookedservicepdf->find($id);
+
+        if ($servicepdf) {
+            // Delete file from public/assets/pdfs if exists
+            $filePath = public_path($servicepdf->file);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+
+            $servicepdf->delete();
+            return back()->with("success", "PDF deleted successfully!");
+        } else {
+            return back()->with("error", "Something went wrong!");
+        }
+    }
+
+
+    public function sendBookServicePDFEmail(Request $request)
+    {
+        try {
+            $request->validate([
+                'pdf_id' => 'required|exists:booked_service_pdfs,id',
+                'book_service_id' => 'required|exists:book_services,id',
+                'user_id' => 'required|exists:users,id',
+            ]);
+
+
+
+            $bookedServicePdf = $this->bookedservicepdf->findOrFail($request->pdf_id);
+
+            $user = $this->user->findOrFail($request->user_id); // Adjust if you're using a different User model
+
+            $pdfPath = public_path($bookedServicePdf->file);
+
+            $bookedServicePdf->user = $user;
+
+            // if (!file_exists($pdfPath)) {
+            //     return response()->json(['message' => 'PDF file not found.'], 404);
+            // }
+
+            // dd($bookedServicePdf);
+
+            // Send email
+            event(new BookServicePdfUploaded($bookedServicePdf));
+
+            // return response()->json(['success' => true, 'message' => 'PDF email sent successfully.']);
+            return response()->json([
+                'success' => true,
+                'message' => 'PDF email sent successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send PDF email.',
                 'error'   => $e->getMessage(),
             ], 500);
         }

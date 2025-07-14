@@ -53,11 +53,17 @@ class Feature extends Model
                 $user = Auth::user();
                 $package = $user->getPackage();
                 if ($package) {
-                    $bookedService = $this->bookServices()->search(["user_id" => $user->id, "package_id" => $package->id, "service_id" => $this->id])->first();
+                    // $bookedService = $this->bookServices()->search(["user_id" => $user->id, "package_id" => $package->id, "service_id" => $this->id])->first();
+                    $bookedService = $this->bookServices()->search(["user_id" => $user->id,"package_id" => $package->id,"service_id" => $this->id])->where('status', '!=', 10)->get();
+
+                    // add first with get ()
+                    // and where status not equal to 10 (order completed status)
                 } else {
                     $bookedService = null;
                 }
-                return $bookedService ? $bookedService->status : null;
+                // return $bookedService ? $bookedService->status : null;
+                return count($bookedService) > 0 ? true : false;
+
             }
         );
     }

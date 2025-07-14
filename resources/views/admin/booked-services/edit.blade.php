@@ -25,6 +25,9 @@
                                             Info
                                         </div>
                                         <div class="card-tools">
+
+
+
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse"
                                                 title="Collapse">
                                                 <i class="fas fa-minus"></i>
@@ -117,6 +120,7 @@
 
 
                                             {{--  when status is :1. --}}
+
                                             @if ($bookedService->depositStatus())
                                                 <div>
                                                     <span class="btn btn-outline-dark btn-sm deposit-payment-btn "
@@ -229,6 +233,16 @@
                                                     </span>
                                                 </div>
                                             @endif
+
+
+                                            {{-- when status is : 10 --}}
+                                            @if ($bookedService->status == 10)
+                                                <div>
+                                                    <button disabled class="btn btn-outline-dark btn-sm">
+                                                        Order Completed
+                                                    </button>
+                                                </div>
+                                            @endif
                                             {{-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> --}}
 
                                         </div>
@@ -248,6 +262,8 @@
             </form>
         </div>
     @endcan
+
+
 
     {{-- Transactions --}}
     @can('edit_booked_service')
@@ -319,6 +335,60 @@
 
     @endcan
 
+    {{-- Book Service PDF --}}
+    @can('edit_booked_service')
+        <div class="page-content">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <i class="nav-icon fas fa-money-bill"></i>
+                                        Book Service PDF
+                                    </div>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#uploadPdfModal" id="openUploadModalBtn">
+                                            Add New
+                                        </button>
+
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                            title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-list">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-bordered"
+                                                        id="services_pdf_dataTable">
+                                                        <thead>
+
+                                                            <th>Subject</th>
+                                                            <th>Text</th>
+                                                            <th>Action</th>
+
+                                                        </thead>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    @endcan
+
     @include('admin.booked-services.generate_invoice_modal')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -349,7 +419,7 @@
                 const serviceId = $(this).data('id');
                 clickedBtn = $(this); // track the clicked button
 
-                
+
 
                 // Reset form fields
                 $('#modalBookedServiceId').val(serviceId);
@@ -610,6 +680,166 @@
                     }
                 });
             });
+
+            ///////////////////////////////////////////////////////////////////////////
+            ///////////////////// PDF Book Service Code ///////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////
+
+            $('#uploadPdfForm').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+                var $btn = $('#uploadPdfBtn');
+                var originalText = $btn.html();
+
+                $btn.prop('disabled', true).html('Uploading...');
+
+                $.ajax({
+                    url: "{{ route('booked-services.upload-pdfs') }}",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        toastr.success('PDF uploaded successfully.');
+                        $('#uploadPdfModal').modal('toggle');
+                        $('#uploadPdfForm')[0].reset();
+                        $btn.prop('disabled', false).html(originalText);
+
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
+
+                        services_pdf_dataTable.ajax.reload(null, false);
+                    },
+                    error: function(xhr) {
+                        toastr.error('Something went wrong.');
+                        $btn.prop('disabled', false).html(originalText);
+                    }
+                });
+            });
+
+            $(document).on('click', '.edit-pdf-btn', function() {
+                $('#pdf_id').val($(this).data('pdf_id'));
+                // $('#booked_service_id').val($(this).data('book_service_id'));
+                $('#subject').val($(this).data('subject'));
+                $('#text').val($(this).data('text'));
+                $('#uploadPdfModal').modal('show');
+
+
+            });
+
+            $(document).ready(function() {
+                $('#openUploadModalBtn').on('click', function() {
+
+                    $('#pdf_id').val(''); // clear the hidden input
+
+                    let pdfId = $('#pdf_id').val();
+
+                    if (!pdfId) {
+                        // No pdf_id means creating new → make file required
+                        $('#pdf_file').attr('required', true);
+                    } else {
+                        // Editing existing → make file optional
+                        $('#pdf_file').removeAttr('required');
+                    }
+
+                    $('#uploadPdfForm')[0].reset(); // optional: reset the full form
+                });
+            });
+
+            $(document).on('click', '.view-pdf-btn', function() {
+                const subject = $(this).data('subject');
+                const text = $(this).data('text');
+                const file = $(this).data('file');
+                const get_pdf_id = $(this).data('pdf_id');
+
+
+                $('#pdfIdView').val(get_pdf_id);
+                $('#pdfSubjectView').text(subject);
+                $('#pdfTextView').text(text);
+                $('#pdfDownloadLink').attr('href', file); // set the PDF URL
+
+                $('#viewPdfModal').modal('show');
+            });
+
+
+            $('#viewPdfForm').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+                var $btn = $('#uploadPdfBtn');
+                var originalText = $btn.html();
+
+                $btn.prop('disabled', true).html('Uploading...');
+
+                $.ajax({
+                    url: "{{ route('booked-services.send-pdf-email') }}", // update this route accordingly
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        toastr.success('Email sent successfully.');
+
+                        // ✅ Hide modal and reset form
+                        $('#viewPdfModal').modal('hide');
+                        $('#viewPdfForm')[0].reset();
+                    },
+                    error: function(xhr) {
+                        toastr.error('Something went wrong.');
+                    },
+                    complete: function() {
+                        $btn.prop('disabled', false).html(originalText);
+
+                        // ✅ Fix overlay issue and mouse events
+                        setTimeout(function() {
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                        }, 500);
+                    }
+                });
+            });
+
+
+
         });
     </script>
+
+    <script>
+        $('#viewPdfModal').on('hidden.bs.modal', function() {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        });
+    </script>
+
+    <script>
+        $('#uploadPdfModal').on('hidden.bs.modal', function() {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        });
+    </script>
+
+
+
+    <script>
+        $('#statusUpdateModal').on('hidden.bs.modal', function() {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        });
+    </script>
+
+    <script>
+        $('#invoiceModal').on('hidden.bs.modal', function() {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        });
+    </script>
+@endpush
+
+@push('scripts')
+    @include('admin.booked-services.js.pdfscript')
 @endpush

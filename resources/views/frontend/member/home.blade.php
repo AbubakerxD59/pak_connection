@@ -1,6 +1,13 @@
 @extends('frontend.main')
 @section('body')
     <section class="membership-portal container">
+
+        @if ($isPackageExpired)
+            <div class="alert alert-danger text-center font-weight-bold">
+                Your package has expired. Please renew to continue accessing all services.
+            </div>
+        @endif
+
         <p class="text-center">
             <span class="h4">Package:</span>
             @if (!empty($package))
