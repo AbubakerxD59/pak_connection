@@ -22,9 +22,11 @@ class MemberController extends Controller
         $this->package = $package;
         $this->bookService = $bookService;
     }
-    public function home()
+    public function home_old()
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('bookServices');
+
+        return $user;
         $package = $user->getPackage();
         // return $package;
         if ($package) {
@@ -32,8 +34,45 @@ class MemberController extends Controller
         } else {
             $features = [];
         }
+
+        return $features;
+
         return view('frontend.member.home', compact('package', 'features'));
     }
+
+    public function home()
+    {
+        $user = Auth::user()->load('bookServices');
+        $package = $user->getPackage();
+        $isPackageExpired = $user->package_status == 2;
+        
+
+
+        $features = [];
+
+        if ($package) {
+            $featuresQuery = $package->features()->orderBy("order", "ASC");
+
+            if ($user->package_status == 2) {
+
+                $serviceIds = $user->bookServices
+                    ->where('status', 10)
+                    ->pluck('service_id')
+                    ->unique();
+
+                $features = $featuresQuery
+                    ->whereIn('features.id', $serviceIds)
+                    ->get();
+            } else {
+
+                $features = $featuresQuery->get();
+            }
+        }
+        
+
+        return view('frontend.member.home', compact('package', 'features','isPackageExpired'));
+    }
+
 
     public function getFields(Request $request)
     {

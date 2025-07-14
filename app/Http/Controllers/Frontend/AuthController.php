@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -68,6 +69,18 @@ class AuthController extends Controller
         }
 
         if ($response['success']) {
+
+            // Check if user has package and expiry time
+            if ($user->package_id && $user->pkg_end_time) {
+                $currentTime = Carbon::now();
+                $pkgEndTime = Carbon::parse($user->pkg_end_time);
+
+                if ($currentTime->greaterThan($pkgEndTime) && $user->package_status != 2) {
+                    $user->package_status = 2; 
+                    $user->save();
+                }
+            }
+
             return redirect()->route('frontend.member.home')->with('success', $response['message']);
         } else {
             return redirect()->intended(RouteServiceProvider::MEMBER_INV_CRED)->with('error', $response['message']);

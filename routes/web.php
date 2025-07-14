@@ -47,10 +47,6 @@ Route::get('/email-preview', function () {
     ]);
 });
 
-Route::get('/test-order-num', function () {
-    $orderNum = Order::generateAvailableOrderNum();
-    return "Generated Order Number: " . $orderNum;
-});
 
 
 
