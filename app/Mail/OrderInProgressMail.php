@@ -30,7 +30,7 @@ class OrderInProgressMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Deposit Payment Received – Your Bookings Are Now Being Processed<',
+            subject: 'Deposit Payment Received – Your Bookings Are Now Being Processed',
         );
     }
 

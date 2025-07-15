@@ -8,6 +8,7 @@ use App\Mail\WelcomeEmail;
 use App\Models\BookService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -22,31 +23,23 @@ class MemberController extends Controller
         $this->package = $package;
         $this->bookService = $bookService;
     }
-    public function home_old()
-    {
-        $user = Auth::user()->load('bookServices');
-
-        return $user;
-        $package = $user->getPackage();
-        // return $package;
-        if ($package) {
-            $features = $package->features()->orderBy("order", "ASC")->get();
-        } else {
-            $features = [];
-        }
-
-        return $features;
-
-        return view('frontend.member.home', compact('package', 'features'));
-    }
 
     public function home()
     {
         $user = Auth::user()->load('bookServices');
         $package = $user->getPackage();
-        $isPackageExpired = $user->package_status == 2;
-        
 
+        // Check if user has package and expiry time
+        if ($user->package_id && $user->pkg_end_time) {
+            $currentTime = Carbon::now();
+            $pkgEndTime = Carbon::parse($user->pkg_end_time);
+
+            if ($currentTime->greaterThan($pkgEndTime) && $user->package_status != 2) {
+                $user->update([
+                    "package_status" => 2,
+                ]);
+            }
+        }
 
         $features = [];
 
@@ -56,9 +49,8 @@ class MemberController extends Controller
             if ($user->package_status == 2) {
 
                 $serviceIds = $user->bookServices
-                    ->where('status', 10)
-                    ->pluck('service_id')
-                    ->unique();
+                    ->where('status', '!=', 10)
+                    ->pluck('service_id');
 
                 $features = $featuresQuery
                     ->whereIn('features.id', $serviceIds)
@@ -68,9 +60,13 @@ class MemberController extends Controller
                 $features = $featuresQuery->get();
             }
         }
-        
 
-        return view('frontend.member.home', compact('package', 'features','isPackageExpired'));
+        $isPackageExpired = $user->package_status == 2;
+
+
+
+
+        return view('frontend.member.home', compact('package', 'features', 'isPackageExpired'));
     }
 
 
@@ -84,9 +80,6 @@ class MemberController extends Controller
         $feature = $this->feature->find($id);
         if ($feature) {
             $package = $user->getPackage();
-
-            // check booking ka status if it is order complete
-            // tehn show modals.fields wala dekhana edit fields wala nhi dikhana
 
             if ($feature->book) {
                 $bookService = $user->bookServices()->where("package_id", $package->id)->where("service_id", $feature->id)->latest()->first();
@@ -138,6 +131,7 @@ class MemberController extends Controller
                         ]);
                     }
                 }
+
                 Mail::to($user->email)->send(new WelcomeEmail($user));
                 $response = [
                     "success" => true,

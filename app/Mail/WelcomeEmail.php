@@ -38,7 +38,7 @@ class WelcomeEmail extends Mailable
         return new Content(
             view: 'emails.service_request_form',
             with: [
-                'name' => $this->user->name,
+                'name' => $this->user->full_name,
             ],
         );
     }

@@ -76,8 +76,9 @@ class AuthController extends Controller
                 $pkgEndTime = Carbon::parse($user->pkg_end_time);
 
                 if ($currentTime->greaterThan($pkgEndTime) && $user->package_status != 2) {
-                    $user->package_status = 2; 
-                    $user->save();
+                    $user->update([
+                        "package_status" => 2,
+                    ]);
                 }
             }
 

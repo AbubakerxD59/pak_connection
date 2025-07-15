@@ -3,8 +3,12 @@
     <section class="membership-portal container">
 
         @if ($isPackageExpired)
-            <div class="alert alert-danger text-center font-weight-bold">
-                Your package has expired. Please renew to continue accessing all services.
+            <div class="alert alert-danger text-center font-weight-bold d-flex align-items-center justify-content-between">
+                Your package has expired. Please renew it to continue accessing all services.
+                <br>
+                <a href="{{ route('frontend.home') }}" class="btn btn-sm btn-primary mt-2">
+                    Get Package
+                </a>
             </div>
         @endif
 

@@ -108,16 +108,9 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = $this->user->find($id);
-        // $user = $this->user->with([
-        //     'bookServices.service',
-        //     'bookServices.transactions'
-        // ])->find($id);
-
-
+        
         $roles = $this->role->get();
         $promo_codes = $this->promo_code->get();
-
-        // return $user;
 
         return view('admin.users.edit', compact('roles', 'user', 'promo_codes'));
     }

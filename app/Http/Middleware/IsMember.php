@@ -21,7 +21,7 @@ class IsMember
                 return $next($request);
             }
             if(Auth::user()->getRole() == 'Super Admin'){
-                return redirect(route("admin.dashboard"));
+                return redirect(route("dashboard"));
             }
         } else {
             Auth::logout();

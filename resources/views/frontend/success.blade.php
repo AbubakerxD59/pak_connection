@@ -17,5 +17,6 @@
         </p>
         <h2>You may start by calling us as well</h2>
         <a href="tel:+9252000111" class="btn btn-primary"><i class="fa fa-phone rotate-right"></i>+92-52-000111 (11am-7pm)</a>
+        <div class="mt-4"><a href="{{ route('frontend.member.home') }}" class="btn btn-primary"></i>Go to Home</a></div>
     </div>
 @endsection

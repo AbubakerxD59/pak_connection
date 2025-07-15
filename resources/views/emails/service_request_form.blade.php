@@ -9,13 +9,8 @@
     <div style="max-width: 700px; margin: 0 auto; padding: 30px; border: 1px solid #e0e0e0;">
 
         @include('emails.partials.header')
-        
-        {{-- Email Content --}}
-        {{-- <p style="font-size: 16px;">
-            <strong>Subject:</strong> We have received your <strong>Services Request Form</strong>
-        </p> --}}
 
-        <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear  <strong>{{ $name ?? 'Member' }}</strong>,</p>
 
         <p style="font-size: 16px;">
             Thank you for submitting your <strong>Pak Connections Services Request Order Form</strong> — we’re delighted to begin planning your personalised experience in Pakistan.

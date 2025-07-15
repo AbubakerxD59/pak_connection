@@ -97,7 +97,7 @@
                     data: 'role'
                 },
                 {
-                    data: 'status_span'
+                    data: 'status_view'
                 },
                 {
                     data: 'created'

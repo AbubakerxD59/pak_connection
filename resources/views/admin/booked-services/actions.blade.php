@@ -138,10 +138,9 @@
     @can('delete_booked_services')
         <div>
             <form action="{{ route('booked-services.destroy', $service->id) }}" method="POST" class="delete_form d-inline">
-                {{-- onsubmit="return confirmDelete(event)"> --}}
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                <button type="submit" class="btn btn-outline-danger btn-sm delete-btn">Delete</button>
             </form>
 
         </div>
