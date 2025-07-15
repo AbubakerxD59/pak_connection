@@ -13,13 +13,13 @@ class FullPaymentReceivedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $bookService;
+    public $bookedService;
     /**
      * Create a new message instance.
      */
-    public function __construct($bookService)
+    public function __construct($bookedService)
     {
-        $this->bookService = $bookService;
+        $this->bookedService = $bookedService;
     }
 
     /**
@@ -40,8 +40,8 @@ class FullPaymentReceivedMail extends Mailable
         return new Content(
             view: 'emails.full_payment_received',
             with: [
-                "name" => $this->bookService->user->name,
-                "invoice_url" => $this->bookService->invoice_url,
+                "name" => $this->bookedService->user->full_name,
+                "invoice_url" => $this->bookedService->invoice_url,
             ]
         );
     }

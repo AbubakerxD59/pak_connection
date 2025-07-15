@@ -34,6 +34,15 @@ class User extends Authenticatable
         "customer_id",
         "emergency_full_name",
         "emergency_phone_number",
+        "package_id",
+        "pkg_start_time",
+        "pkg_end_time",
+        "package_status",
+    ];
+
+     static public $status_array = [
+        "0" => "Inactive",
+        "1" => "Active",
     ];
 
     /**
@@ -47,6 +56,8 @@ class User extends Authenticatable
         'otp',
         'otp_expires_at'
     ];
+
+    protected $appends = ["status_view"];
 
     /**
      * The attributes that should be cast.
@@ -62,15 +73,18 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
 
-    public function bookServices(){
+    public function bookServices()
+    {
         return $this->hasMany(BookService::class, 'user_id', 'id');
     }
 
-    public function transactions(){
+    public function transactions()
+    {
         return $this->hasMany(Transaction::class, 'user_id', 'id');
     }
 
-    public function bookFields(){
+    public function bookFields()
+    {
         return $this->hasMany(BookFeild::class, 'user_id', 'id');
     }
 
@@ -78,7 +92,7 @@ class User extends Authenticatable
     {
         // $query->where('full_name', 'like', "%{$value}%")->orWhere('email', 'like', "%{$value}%");
 
-         $query->where(function ($q) use ($value) {
+        $query->where(function ($q) use ($value) {
             $q->where("full_name", "like", "%{$value}%");
             $q->orWhere("email", "like", "%{$value}%");
             $q->orWhere("membership_id", "like", "%{$value}%");
@@ -118,5 +132,22 @@ class User extends Authenticatable
             $package = $latestOrder->package()->first();
         }
         return $latestOrder ? $package : [];
+    }
+
+        protected function statusView(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $status = self::$status_array[$this->status];
+                $div = "";
+                if ($status == "Active") {
+                    $div = "<span class='btn btn-sm btn-success'>" . $status . "</span>";
+                } elseif ($status == "Inactive") {
+                    $div = "<span class='btn btn-sm btn-danger'>" . $status . "</span>";
+                }
+
+                return $div;
+            }
+        );
     }
 }

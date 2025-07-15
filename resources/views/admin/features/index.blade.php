@@ -20,7 +20,7 @@
                         Add new
                     </a>
 
-                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadPdfModal">
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadPdfModal">
                         Upload Book Service PDF
                     </button>
 

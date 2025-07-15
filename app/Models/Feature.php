@@ -58,7 +58,6 @@ class Feature extends Model
                 } else {
                     $bookedService = [];
                 }
-                // return $bookedService ? $bookedService->status : null;
                 return count($bookedService) > 0 ? true : false;
             }
         );

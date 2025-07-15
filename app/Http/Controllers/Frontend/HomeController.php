@@ -46,7 +46,6 @@ class HomeController extends Controller
     public function index()
     {
         $packages = $this->package->get();
-        // dd($packages);
         return view('frontend.home', compact('packages'));
     }
 
@@ -150,7 +149,6 @@ class HomeController extends Controller
                 $user->assignRole($role->name);
             }
 
-            // $this->order->create([
             $order = $this->order->create([
                 "user_id" => $user->id,
                 "session_id" => $session->id,
@@ -182,21 +180,6 @@ class HomeController extends Controller
                 "status" => "0",
             ]);
 
-            // update packages fields
-            $user = $this->user->find($order->user_id);
-
-            // $pkg_end_time = $package->duration + $package->date_type;
-            $pkg_str_time = Carbon::now();
-            $pkg_end_time = $this->assignPackage($pkg_str_time, $package);
-
-            $user->update([
-                "package_id" => $package->id,
-                "pkg_start_time" => $session->customer,
-                "pkg_end_time" => $pkg_end_time,
-                "package_status" => $package->status,
-            ]);
-
-
             return redirect($session->url);
         } else {
             return redirect()->back()->with('error', 'Package not Found!');
@@ -206,10 +189,25 @@ class HomeController extends Controller
 
     public function success(Request $request)
     {
+
         $customer = null;
         try {
             $session = $this->stripe->checkout->sessions->retrieve($request->session_id);
             $user = $this->user->where('stripe_id', $session->id)->first();
+
+            $transaction = $this->transaction->where('session_id', $request->session_id)->first();
+            $package = $this->package->find($transaction->package_id)->first();
+
+            $pkg_str_time = Carbon::now();
+            $pkg_end_time = $this->assignPackage($pkg_str_time, $package);
+
+            $user->update([
+                "package_id" => $package->id,
+                "pkg_start_time" => $pkg_str_time,
+                "pkg_end_time" => $pkg_end_time,
+                "package_status" => 1,
+            ]);
+
         } catch (\Exception $e) {
             throw new NotFoundHttpException();
         }
