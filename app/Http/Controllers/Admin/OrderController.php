@@ -128,7 +128,6 @@ class OrderController extends Controller
             $orders[$k]['discount_amount'] = $val->getDiscount();
             $orders[$k]['total_amount'] = $val->getTotal();
             $orders[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
-            $orders[$k]['status_view'] = get_status_view($val->status);
             $orders[$k]['action'] = view('admin.orders.action')->with('order', $val)->render();
             $orders[$k] = $val;
         }

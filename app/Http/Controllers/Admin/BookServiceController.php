@@ -29,9 +29,12 @@ class BookServiceController extends Controller
         $this->user = $user;
         $this->stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
     }
+    public function index()
+    {
+        return view('admin.dashboard.all_book_service');
+    }
     public function edit($id = null)
     {
-        // return $id;
         $bookedService = $this->bookService->with(['service', 'transactions'])->find($id);
         $nextStatus = $bookedService->status + 1;
         $statusLabel = BookService::$status_array[$nextStatus] ?? null;
@@ -91,6 +94,11 @@ class BookServiceController extends Controller
             if (!empty($search)) {
                 $services = $services->datatableSearch($search);
             }
+            if (isset($data["user_id"])) {
+                $services = $services->where("user_id", $data["user_id"]);
+            } elseif (isset($data["package_id"])) {
+                $services = $services->where("package_id", $data["package_id"]);
+            }
             $totalRecordswithFilter = clone $services;
             $services->orderBy('id', 'ASC');
 
@@ -100,7 +108,8 @@ class BookServiceController extends Controller
 
             $services = $services->get();
             foreach ($services as $k => $val) {
-                $services[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->getUser() . ' (' . $val->user->email . ')</a>' : '-';
+                $services[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->getUser() . ' (' . $val->user->email .
+                    ')</a>' : '-';
                 $services[$k]['membership_id'] = $val->user ? $val->user->membership_id : '-/-';
                 $services[$k]['service'] = $val->getService();
                 $services[$k]['status_view'] = service_book_status($val->status);
@@ -150,12 +159,8 @@ class BookServiceController extends Controller
                 'final_price'       => 'required|numeric|min:0',
                 // 'promo_code_id'         => 'nullable|exists:promo_codes,id',
             ]);
-            // Load BookService with its Service
             $bookedService = $this->bookService->with('service')->find($request->book_service_id);
             $serviceName = $bookedService->service->name ?? '-';
-            // Load Coupon name if provided
-            // $promoCode = $this->promoCode->find($request->promo_code_id);
-            // $promoName = $promoCode->name ?? '-';
             $product = $this->stripe->products->create([
                 'name' => $serviceName,
             ]);
@@ -276,41 +281,21 @@ class BookServiceController extends Controller
 
     public function uploadSchedule(Request $request)
     {
-
         try {
             $data = $request->validate([
                 'book_service_id' => 'required|exists:book_services,id',
                 'pdf_file' => 'nullable|file|mimes:pdf|max:15120', // 5MB
             ]);
-            // Load BookService with its Service
             $bookedService = $this->bookService->with('service')->find($request->book_service_id);
             $bookedService->status = $request->status;
             $filePath = null;
-            // if ($request->hasFile('pdf_file')) {
-            //     $file = $request->file('pdf_file');
-            //     // Generate unique filename: timestamp + original extension
-            //     $fileName = time() . '.' . $file->getClientOriginalExtension();
-            //     // Store file in 'storage/app/public/pdf_uploads' and get full path
-            //     $filePath = $file->storeAs('pdf_uploads', $fileName, 'public');
-
-            //     $bookedService->schedule_created = true;
-            //     $bookedService->schedule_pdf = $filePath ?? null;
-            // }
-
             if ($request->hasFile('pdf_file')) {
                 $file = $request->file('pdf_file');
-
-                // Generate unique filename
                 $fileName = time() . '.' . $file->getClientOriginalExtension();
-
-                // Move file to public/assets/pdfs directory
                 $file->move(public_path('assets/pdfs'), $fileName);
-
-                // Save the path (relative to public) in DB
                 $bookedService->schedule_created = true;
                 $bookedService->schedule_pdf = 'assets/pdfs/' . $fileName;
             }
-
             $bookedService->save();
             $bookedService->transaction = $this->transaction->where('book_service_id', $bookedService->id)->first();
             event(new BookedServiceStatusUpdated($bookedService));
@@ -326,57 +311,6 @@ class BookServiceController extends Controller
             ], 500);
         }
     }
-
-
-    public function viewBookedServices()
-    {
-        return view('admin.dashboard.all_book_service');
-    }
-
-    public function dashBookServiceDatatable(Request $request)
-    {
-        try {
-            $data = $request->all();
-            $search = @$data['search']['value'];
-            $iTotalRecords = $this->bookService;
-            $services = $this->bookService->with('user', 'package');
-
-            if (!empty($search)) {
-                $services = $services->datatableSearch($search);
-            }
-            $totalRecordswithFilter = clone $services;
-            $services->orderBy('id', 'ASC');
-
-            /*Set limit offset */
-            $services = $services->offset(intval($data['start']));
-            $services = $services->limit(intval($data['length']));
-
-            $services = $services->get();
-            foreach ($services as $k => $val) {
-                $services[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->getUser() . ' (' . $val->user->email . ')</a>' : '-';
-                $services[$k]['membership_id'] = $val->user ? $val->user->membership_id : '-/-';
-
-                $services[$k]['service'] = $val->getService();
-                $services[$k]['package'] = $val->getPackage() ?? '';
-
-                $services[$k]['status_view'] = service_book_status($val->status);
-                // $services[$k]['status_view'] = service_book_status($val->status);
-                $services[$k]['action'] = view('admin.booked-services.actions')->with('service', $val)->render();
-                $services[$k] = $val;
-            }
-
-            return response()->json([
-                'draw' => intval($data['draw']),
-                'iTotalRecords' => $iTotalRecords->count(),
-                'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
-                'aaData' => $services,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-
-
 
     public function uploadBookServicePDF(Request $request)
     {
@@ -441,7 +375,6 @@ class BookServiceController extends Controller
 
                 $services[$k]['subject'] = $val->subject ?? '';
                 $services[$k]['text'] = $val->text ?? '';
-
                 $services[$k]['action'] = view('admin.booked-services.pdfactions')->with('service', $val)->render();
                 $services[$k] = $val;
             }

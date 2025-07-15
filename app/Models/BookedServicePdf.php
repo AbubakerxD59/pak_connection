@@ -20,4 +20,10 @@ class BookedServicePdf extends Model
     {
         return $this->belongsTo(BookService::class);
     }
+
+    public function scopeDatatableSearch($query, $search)
+    {
+        $query->orWhere("subject", "like", "%$search%");
+        $query->orWhere("text", "like", "%$search%");
+    }
 }

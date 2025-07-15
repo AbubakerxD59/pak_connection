@@ -155,20 +155,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/booked-services/create-invoice/', 'createInvoice')->name('createInvoice');
         Route::post('/requet-deposit', 'requestDeposit')->name('requestDeposit');
         Route::post('/upload-schedule', 'uploadSchedule')->name('uploadSchedule');
+        Route::get('all-book-services', 'index')->name('view.bookservice');
 
-
-
-        // Route::get('dashboard-bookservice-dataTable', 'datatable')->name('dashboard.bookservice.dataTable');
-        Route::get('dashboard-bookservice-dataTable', 'dashBookServiceDatatable')->name('dashboard.bookservice.dataTable');
-        Route::get('all-book-services', 'viewBookedServices')->name('view.bookservice');
-
-
+        // pdf table routes, make resource route and seperate controller
         Route::post('booked-service-pdfs/store', 'uploadBookServicePDF')->name('upload-pdfs');
         Route::get('bookservice-pdf-datatable', 'bookServicePDFDatatable')->name('pdf.dataTable');
         Route::delete('bookservice-pdf-delete/{id}', 'destroyBookServicePDF')->name('pdf.delete');
         Route::post('send-pdfs-email', 'sendBookServicePDFEmail')->name('send-pdf-email');
-
-        
     });
 });
 

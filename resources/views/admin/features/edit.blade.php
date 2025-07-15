@@ -143,9 +143,6 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="table-responsive">
-                                                        <?php
-                                                        $book_services_arr = [];
-                                                        ?>
                                                         <table class="table table-striped table-bordered fields_datatable"
                                                             id="services_datatable">
                                                             <thead>
@@ -158,11 +155,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 @foreach ($book_services as $key => $field)
-                                                                    <?php
-                                                                    array_push($book_services_arr, $field->id);
-                                                                    ?>
                                                                     <tr>
-
                                                                         <td>{{ $key + 1 }}</td>
                                                                         <td>
                                                                             <a
@@ -174,14 +167,12 @@
                                                                         <td>{{ $field->user?->city ?? '-' }} /
                                                                             {{ $field->user?->address ?? '-' }}</td>
                                                                         <td>
-                                                                            @if ($role == 'Super Admin')
-                                                                                <div class="d-flex">
-                                                                                    <div class="mr-2">
-                                                                                        <a href="{{ route('users.edit', $field->user_id) }}"
-                                                                                            class="btn btn-outline-primary btn-sm">Edit</a>
-                                                                                    </div>
+                                                                            <div class="d-flex">
+                                                                                <div class="mr-2">
+                                                                                    <a href="{{ route('users.edit', $field->user_id) }}"
+                                                                                        class="btn btn-outline-primary btn-sm">Edit</a>
                                                                                 </div>
-                                                                            @endif
+                                                                            </div>
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
@@ -193,9 +184,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
                     </div>
@@ -207,7 +195,6 @@
         'feature' => $feature,
         'fields' => $fields,
         'selected_fields' => $selected_fields,
-        'book_services_arr' => $book_services_arr,
     ])
 @endsection
 @push('scripts')

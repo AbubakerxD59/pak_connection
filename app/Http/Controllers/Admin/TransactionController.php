@@ -140,17 +140,13 @@ class TransactionController extends Controller
 
     public function viewOrderPayments()
     {
-        // return view("admin.transactions.index");
         $transactions = Transaction::with(['user', 'order', 'promo', 'package'])->latest()->get();
-        // return $transactions;
         return view('admin.dashboard.payments_order', compact('transactions'));
     }
 
     public function viewBookServicePayments()
     {
-        // return view("admin.transactions.index");
         $transactions = Transaction::with(['user', 'order', 'promo', 'package'])->latest()->get();
-        // return $transactions;
         return view('admin.dashboard.payments_book_service', compact('transactions'));
     }
 

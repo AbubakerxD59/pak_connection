@@ -1,5 +1,4 @@
 <div class="d-flex">
-
     <div>
         <button type="button" class="btn btn-outline-success btn-sm view-pdf-btn" data-subject="{{ $service->subject }}"
             data-text="{{ $service->text }}" data-file="{{ asset($service->file) }}" data-toggle="modal" data-pdf_id="{{ $service->id }}"

@@ -430,23 +430,21 @@ function service_book_status($status)
 {
     $statuses = BookService::$status_array;
     $classes = [
-        "1" => "badge-info",
-        "2" => "badge-primary",
-        "3" => "badge-primary",
-        "4" => "badge-primary",
-        "5" => "badge-primary",
-        "6" => "badge-primary",
-        "7" => "badge-primary",
-        "8" => "badge-primary",
-        "9" => "badge-primary",
-        "10" => "badge-success",
+        "1" => "btn-info",
+        "2" => "btn-info",
+        "3" => "btn-info",
+        "4" => "btn-info",
+        "5" => "btn-info",
+        "6" => "btn-info",
+        "7" => "btn-info",
+        "8" => "btn-info",
+        "9" => "btn-info",
+        "10" => "btn-success",
     ];
-    // $div = "<span class='badge " . $classes[$status] . "'>" . $statuses[$status] . "</span>";
-    // return $div;
-    $class = $classes[$status] ?? 'badge-secondary'; // fallback class
+    $class = $classes[$status] ?? 'btn-secondary'; // fallback class
     $label = $statuses[$status] ?? 'Unknown';        // fallback label
 
-    return "<span class='badge {$class}'>{$label}</span>";
+    return "<span class='btn btn-sm {$class}'>{$label}</span>";
 }
 
 

@@ -79,21 +79,9 @@ class FeatureController extends Controller
      */
     public function edit(string $id)
     {
-        // $feature = $this->feature->find($id);
-
-        $feature = $this->feature->with('bookServices')->find($id);
-        // $book_services = $feature->bookServices;
-        $book_services = $feature->bookServices()->with('user')->get();
-
-        $role = auth()->user()?->roles->pluck('name')->first();
-
-        // return $role;
-
-
+        $feature = $this->feature->find($id);
         $fields = $this->field->orderBy('name', 'ASC')->get();
-
-        // return $book_services;
-        return view('admin.features.edit', compact('feature', 'fields', 'book_services','role'));
+        return view('admin.features.edit', compact('feature', 'fields'));
     }
 
     /**
@@ -138,10 +126,8 @@ class FeatureController extends Controller
     {
         $data = $request->all();
         $search = @$data['search']['value'];
-        // $order = end($data['order']);
-        // $orderby = $data['columns'][$order['column']]['data'];
         $iTotalRecords = $this->feature;
-        $features = new $this->feature;
+        $features = $this->feature;
 
         if (!empty($search)) {
             $features = $features->search($search);

@@ -105,19 +105,12 @@ class Order extends Model
             get: function () {
                 $status = self::$status_array[$this->status];
                 $div = "";
-                // if ($status == 'Payment Pending') {
-                //     $div = "<span class='badge badge-warning'>" . $status . "</span>";
-                // } else if ($status == "Paid") {
-                //     $div = "<span class='badge badge-success'>" . $status . "</span>";
-                // } elseif ($status == "unpaid") {
-                //     $div = "<span class='badge badge-danger'>" . $status . "</span>";
-                // }
                 if ($status == 'Payment Pending') {
-                    $div = "<span class='btn btn-sm btn-outline-warning'>" . $status . "</span>";
+                    $div = "<span class='btn btn-sm btn-warning'>" . $status . "</span>";
                 } elseif ($status == "Paid") {
-                    $div = "<span class='btn btn-sm btn-outline-success'>" . $status . "</span>";
+                    $div = "<span class='btn btn-sm btn-success'>" . $status . "</span>";
                 } elseif ($status == "unpaid") {
-                    $div = "<span class='btn btn-sm btn-outline-danger'>" . $status . "</span>";
+                    $div = "<span class='btn btn-sm btn-danger'>" . $status . "</span>";
                 }
 
                 return $div;

@@ -43,6 +43,7 @@
                                                 <label for="name" class="form-label">Name</label>
                                             </div>
                                             <div class="col-md-9">
+                                                <input type="hidden" id="package_id" value="{{ $package->id }}">
                                                 <input type="text" class="form-control" name="name" id="name"
                                                     value="{{ old('name', $package->name) }}" placeholder="Enter package name"
                                                     required>
@@ -84,7 +85,8 @@
                                                     <option value="day" {{ $package->date_type == 'day' ? 'selected' : '' }}>
                                                         Day(s)</option>
                                                     <option value="month"
-                                                        {{ $package->date_type == 'month' ? 'selected' : '' }}>Month(s)</option>
+                                                        {{ $package->date_type == 'month' ? 'selected' : '' }}>Month(s)
+                                                    </option>
                                                     <option value="year"
                                                         {{ $package->date_type == 'year' ? 'selected' : '' }}>Year(s)</option>
                                                 </select>

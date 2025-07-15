@@ -49,39 +49,39 @@
                                         </div>
 
                                         <div class="row mt-5">
-                                             <div class="col-md-4 mb-4">
+                                            <div class="col-md-4 mb-4">
                                                 <div class="card text-white bg-success shadow">
                                                     <div class="card-body p-3">
                                                         <div class="d-flex justify-content-between align-items-center w-100">
                                                             <span class="fw-semibold">Paid Orders</span>
-                                                            <span
-                                                                class="fw-bold fs-4">£ {{  number_format(sum_paid_order_payable_amount(),2) }}</span>
+                                                            <span class="fw-bold fs-4">£
+                                                                {{ number_format(sum_paid_order_payable_amount(), 2) }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
 
-                                             <div class="col-md-4 mb-4">
+                                            <div class="col-md-4 mb-4">
                                                 <div class="card text-white bg-danger shadow">
                                                     <div class="card-body p-3">
                                                         <div class="d-flex justify-content-between align-items-center w-100">
                                                             <span class="fw-semibold">Unpaid Orders</span>
-                                                            <span
-                                                                class="fw-bold fs-4">£ {{  number_format(sum_unpaid_order_payable_amount(),2) }}</span>
+                                                            <span class="fw-bold fs-4">£
+                                                                {{ number_format(sum_unpaid_order_payable_amount(), 2) }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
 
-                                             <div class="col-md-4 mb-4">
+                                            <div class="col-md-4 mb-4">
                                                 <div class="card text-white bg-dark shadow">
                                                     <div class="card-body p-3">
                                                         <div class="d-flex justify-content-between align-items-center w-100">
                                                             <span class="fw-semibold">Total Orders</span>
-                                                            <span
-                                                                class="fw-bold fs-4">£ {{  number_format(sum_paid_order_payable_amount() + sum_unpaid_order_payable_amount(),2) }}</span>
+                                                            <span class="fw-bold fs-4">£
+                                                                {{ number_format(sum_paid_order_payable_amount() + sum_unpaid_order_payable_amount(), 2) }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -90,8 +90,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>

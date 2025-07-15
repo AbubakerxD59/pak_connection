@@ -38,7 +38,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                        <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
                                         <div class="form-group row">
                                             <div class="col-md-3">
                                                 <label for="full_name" class="form-label">Full Name</label>
@@ -179,9 +179,9 @@
             </section>
         </div>
     @endcan
+    @include('admin.booked-services.generate_invoice_modal')
+    @include('admin.packages.view_booked_service')
 @endsection
-@include('admin.booked-services.generate_invoice_modal')
-@include('admin.packages.view_booked_service')
 @push('scripts')
     @include('admin.booked-services.js.script')
 @endpush

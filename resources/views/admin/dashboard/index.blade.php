@@ -25,6 +25,22 @@
                             </a>
                         </div>
                     </div>
+
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>{{ get_total_orders() }}</h3>
+                                <p>Orders</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-store"></i>
+                            </div>
+                            <a href="{{ route('orders.index') }}" class="small-box-footer">More info
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-success">
                             <div class="inner">
@@ -71,7 +87,7 @@
                         </div>
                     </div>
 
-                    
+
 
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-danger">
@@ -89,26 +105,11 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>{{ get_total_orders() }}</h3>
-                                <p>Orders</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-store"></i>
-                            </div>
-                            <a href="{{ route('orders.index') }}" class="small-box-footer">More info
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    </div>
-
 
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-secondary">
                             <div class="inner">
-                                <h3>{{  count_book_services() }}</h3>
+                                <h3>{{ count_book_services() }}</h3>
                                 <p>Booked Service</p>
                             </div>
                             <div class="icon">
@@ -165,8 +166,8 @@
                                     <div class="chart tab-pane" id="monthly-user-chart"
                                         style="position: relative; height: 300px;">
                                         <canvas id="monthly-user-chart-canvas" height="0"
-                                            style="height: 0px; display: block; width: 0px;" class="chartjs-render-monitor"
-                                            width="0"></canvas>
+                                            style="height: 0px; display: block; width: 0px;"
+                                            class="chartjs-render-monitor" width="0"></canvas>
                                     </div>
                                     <!-- Yearly Users Chart -->
                                     <div class="chart tab-pane" id="yearly-user-chart"

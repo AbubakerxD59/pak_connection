@@ -15,12 +15,12 @@
             "serverSide": true,
             ajax: {
                 url: "{{ route('booked-services.dataTable') }}",
+                data: function(data) {
+                    data.user_id = $('#user_id').val();
+                    data.package_id = $('#package_id').val();
+                },
             },
-            columns: [
-                // {
-                //     data: 'id'
-                // },
-                {
+            columns: [{
                     data: 'membership_id'
                 },
                 {
@@ -106,7 +106,8 @@
             if (clickedBtn) clickedBtn.prop('disabled', true).text('Processing...');
             submitBtn.prop('disabled', true).text('Generating...');
             // Show toast message
-            toastr.info("Submitting your invoice request. Please wait while we process your details...");
+            toastr.info(
+                "Submitting your invoice request. Please wait while we process your details...");
             const data = {
                 _token: form.find('input[name="_token"]').val(),
                 book_service_id: $('#modalBookedServiceId').val(),
@@ -150,7 +151,9 @@
             });
         });
         $(document).on('click', '.deposit-payment-btn', function() {
-            toastr.info( "Please wait while we generate your deposit invoice. This may take a few seconds...");
+            toastr.info(
+                "Please wait while we generate your deposit invoice. This may take a few seconds..."
+            );
             let $button = $(this);
             $button.prop('disabled', true); // Disable the button
             // Check if it is disabled
