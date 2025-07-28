@@ -22,7 +22,6 @@
                                                             <th>Member ID</th>
                                                             <th>Customer</th>
                                                             <th>Service</th>
-                                                            {{-- <th>Package</th> --}}
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </thead>

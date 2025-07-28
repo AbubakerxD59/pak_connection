@@ -5,8 +5,8 @@
             <h2>Welcome to the membership <span class="green-color">Portal</span></h2>
             <h3>Choose your <span class="green-color">Package</span></h1>
         </header>
-        {{-- <div class="packages"> --}}
-        <div class="packages {{ $package_class ? 'd-flex flex-wrap justify-content-center' : '' }}">
+        <div class="packages">
+        
             @foreach ($packages as $package)
                 <article class="package">
                     <div class="package-box">
@@ -54,18 +54,9 @@
                         </ul>
                     </div>
 
-                   
 
-                    @if (!empty($package->is_user_package) && !$package->is_expired)
-                        <p class="text-success">Ends on:
-                            {{ \Carbon\Carbon::parse($package->pkg_end_time)->format('F d, Y h:i A') }}</p>
-                    @else
-                        <a href="{{ route('frontend.buy_memebership', $package->id) }}" class="btn btn-primary w-100">Buy
-                            Now</a>
-                    @endif
-
-                    {{-- <a href="{{ route('frontend.buy_memebership', $package->id) }}" class="btn btn-primary w-100">Buy
-                        Now</a> --}}
+                    <a href="{{ route('frontend.buy_memebership', $package->id) }}" class="btn btn-primary w-100">Buy
+                        Now</a>
                 </article>
             @endforeach
         </div>

@@ -77,7 +77,8 @@
                     </div>
                     <div class="col-md-9">
                         <input type="text" class="form-control" name="package" id="package"
-                            value="{{ old('package', $user->getPackage() ? $user->getPackage()->name : '') }}" readonly disabled>
+                            value="{{ old('package', $user->getPackage() ? $user->getPackage()->name : '') }}" readonly
+                            disabled>
                         @error('package')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -122,6 +123,18 @@
                         @enderror
                     </div>
                 </div>
+
+                <div class="form-group row col-6">
+                    <div class="col-md-3">
+                        <label class="form-label">Membership</label>
+                    </div>
+                    <div class="col-md-9">
+                        <a href="{{ route('frontend.update.packages') }}" class="btn btn-outline-success w-100">
+                            Update Membership Package
+                        </a>
+                    </div>
+                </div>
+
 
                 <div class="form-group row justify-content-center col-12 mt-4">
                     <button type="submit"

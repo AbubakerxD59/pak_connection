@@ -43,11 +43,43 @@ class HomeController extends Controller
         $this->bookService = $bookService;
         $this->stripe = new StripeClient(env('STRIPE_SECRET'));
     }
+
+
     public function index()
     {
+        $user = auth()->user();
+        $package_class = false;
+
         $packages = $this->package->get();
-        return view('frontend.home', compact('packages'));
+
+        if ($user && $user->package_id) {
+            $package = $this->package->find($user->package_id);
+
+            if ($package) {
+                $pkgEndTime = Carbon::parse($user->pkg_end_time);
+                $isExpired = Carbon::now()->gt($pkgEndTime);
+
+                if (!$isExpired) {
+
+                    $package->is_user_package = true;
+                    $package->pkg_end_time = $pkgEndTime;
+                    $package->is_expired = false;
+
+                    $packages = collect([$package]);
+                    $package_class = true;
+                }
+            }
+        }
+
+        return view('frontend.home', compact('packages', 'package_class'));
     }
+
+    public function update_packages()
+    {
+        $packages = $this->package->get();
+        return view('frontend.member.update-package', compact('packages'));
+    }
+
 
     public function buyMembership($id = null)
     {
@@ -190,16 +222,19 @@ class HomeController extends Controller
     public function success(Request $request)
     {
 
+        // dd($request);
         $customer = null;
         try {
             $session = $this->stripe->checkout->sessions->retrieve($request->session_id);
             $user = $this->user->where('stripe_id', $session->id)->first();
 
             $transaction = $this->transaction->where('session_id', $request->session_id)->first();
-            $package = $this->package->find($transaction->package_id)->first();
+
+            $package = $this->package->find($transaction->package_id);
 
             $pkg_str_time = Carbon::now();
             $pkg_end_time = $this->assignPackage($pkg_str_time, $package);
+
 
             $user->update([
                 "package_id" => $package->id,
@@ -208,6 +243,7 @@ class HomeController extends Controller
                 "package_status" => 1,
             ]);
 
+            
         } catch (\Exception $e) {
             throw new NotFoundHttpException();
         }
