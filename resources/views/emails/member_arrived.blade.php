@@ -26,24 +26,11 @@
             convenience,
             outlining all your bookings, service timings, and contact points.
         </p>
-        {{-- 
-        <p style="font-size: 16px; color: #cc0000; font-weight: bold;">
-            Click here to see Itinerary & Schedule (PDF).
-        </p> --}}
 
-        {{-- @if ($bookedService->schedule_created)
-            <p style="font-size: 16px; color: #cc0000; font-weight: bold;">
-                <a href="{{ asset('storage/' . $bookedService->schedule_pdf) }}" target="_blank">
-                    Click here to see Itinerary & Schedule (PDF).
-                </a>
-            </p>
-        @endif --}}
 
         @if ($bookedService->schedule_created)
-            {{-- <a href="{{ asset('storage/' . $bookedService->schedule_pdf) }}" target="_blank" --}}
-                
-                <a href="{{ url(asset('uploads/').'/'.$bookedService->schedule_pdf) }}" target="_blank"
-
+            {{-- <a href="{{ url(asset('uploads/').'/'.$bookedService->schedule_pdf) }}" target="_blank" --}}
+            <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}" target="_blank"
                 style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-weight: bold;">
                 Click here to see Itinerary & Schedule (PDF).
             </a>
