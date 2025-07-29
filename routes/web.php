@@ -169,6 +169,7 @@ Route::middleware(['auth'])->group(function () {
 Route::name('frontend.')->group(function () {
     Route::middleware(["frontend"])->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::get('/update-package', [HomeController::class, 'update_packages'])->name('update.packages');
         Route::get('buy-membership/{id?}', [HomeController::class, 'buyMembership'])->name('buy_memebership');
         Route::post('checkout', [HomeController::class, 'checkout'])->name('checkout');
         Route::get('success', [HomeController::class, 'success'])->name('checkout_success');
