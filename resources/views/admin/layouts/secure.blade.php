@@ -196,7 +196,10 @@
             });
         });
 
-        
+        function showPreloader() {
+            $('.preloader').css("height", "100%");
+            $('.preloader>img').show();
+        }
     </script>
 
 </body>

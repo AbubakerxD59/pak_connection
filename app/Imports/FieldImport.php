@@ -41,7 +41,7 @@ class FieldImport implements ToModel, WithHeadingRow
         if ($data) {
             $field = $this->field->where("name", $data["name"])->first();
             if ($field) {
-                $field = $this->field->update(
+                $this->field->update(
                     [
                         "type" => $data["type"],
                         "options" => explode(",", $data["options"]),
@@ -57,7 +57,6 @@ class FieldImport implements ToModel, WithHeadingRow
                     ]
                 );
             }
-
             return $field;
         }
     }

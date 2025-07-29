@@ -7,6 +7,12 @@
                 @csrf
                 @method('PUT')
                 <div class="content-header clearfix">
+                    <h1 class="float-left"> Edit Service
+                        <small>
+                            <i class="fas fa-arrow-circle-left"></i>
+                            <a href="{{ url()->previous() }}">back </a>
+                        </small>
+                    </h1>
                     <div class="float-right">
                         <button type="submit" name="action" value="save" class="btn btn-primary">
                             <i class="far fa-save"></i>
@@ -113,138 +119,9 @@
                                             <div class="col-md-3">
                                                 <label for="status" class="form-label">Status</label>
                                             </div>
-
-                                            {{-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< --}}
-
-
-
-
-                                            {{--  when status is :1. --}}
-
-                                            @if ($bookedService->depositStatus())
-                                                <div>
-                                                    <span class="btn btn-outline-dark btn-sm deposit-payment-btn "
-                                                        data-id="{{ $bookedService->id }}">
-                                                        Request Deposit
-                                                    </span>
-                                                </div>
-                                            @endif
-
-                                            {{-- when status is : 2 --}}
-                                            @if ($bookedService->depositPaidStatus())
-                                                <div>
-                                                    <span class="btn btn-outline-dark btn-sm  update-next-status"
-                                                        data-id="{{ $bookedService->id }}"
-                                                        data-status="{{ $bookedService->nextStatus }}"
-                                                        data-status-text="{{ $bookedService->dataIdText }}">
-                                                        {{ $bookedService->statusText }}
-                                                    </span>
-                                                </div>
-                                            @endif
-
-                                            {{-- when status is : 3 --}}
-                                            @if ($bookedService->inprogressStatus())
-                                                <div>
-                                                    <button type="button"
-                                                        class="btn btn-outline-dark btn-sm update-next-status"
-                                                        data-id="{{ $bookedService->id }}"
-                                                        data-status="{{ $bookedService->nextStatus }}"
-                                                        data-status-text="{{ $bookedService->dataIdText }}">
-                                                        {{ $bookedService->statusText }}
-                                                    </button>
-                                                </div>
-                                            @endif
-
-                                            {{-- when status is  4 --}}
-                                            @if ($bookedService->invoiceStatus())
-                                                <div>
-                                                    <button type="button"
-                                                        class="btn btn-outline-dark btn-sm generate-invoice-btn"
-                                                        data-bs-toggle="modal" data-bs-target="#invoiceModal"
-                                                        data-id="{{ $bookedService->id }}">
-                                                        Create Invoice
-                                                    </button>
-                                                </div>
-                                            @endif
-
-
-
-                                            {{-- when status is : 5 --}}
-                                            @if ($bookedService->fullPaymentStatus())
-                                                <div>
-                                                    <span
-                                                        class="btn btn-outline-dark btn-sm confirm-full-payment-btn update-next-status"
-                                                        data-id="{{ $bookedService->id }}"
-                                                        data-status="{{ $bookedService->nextStatus }}"
-                                                        data-status-text="{{ $bookedService->dataIdText }}">
-                                                        {{ $bookedService->statusText }}
-                                                    </span>
-                                                </div>
-                                            @endif
-
-                                            {{-- when status is : 6 --}}
-                                            @if ($bookedService->scheduleStatus())
-                                                <div>
-
-
-                                                    <span class="btn btn-outline-dark btn-sm update-schedule-status"
-                                                        data-id="{{ $bookedService->id }}"
-                                                        data-status="{{ $bookedService->nextStatus }}"
-                                                        data-status-text="{{ $bookedService->dataIdText }}"
-                                                        data-bs-toggle="modal" data-bs-target="#statusUpdateModal">
-                                                        {{ $bookedService->statusText }}
-                                                    </span>
-
-                                                </div>
-                                            @endif
-
-                                            {{-- when status is : 7 --}}
-                                            @if ($bookedService->preArrivalStatus())
-                                                <div>
-                                                    <span class="btn btn-outline-dark btn-sm update-next-status"
-                                                        data-id="{{ $bookedService->id }}"
-                                                        data-status="{{ $bookedService->nextStatus }}"
-                                                        data-status-text="{{ $bookedService->dataIdText }}">
-                                                        {{ $bookedService->statusText }}
-                                                    </span>
-                                                </div>
-                                            @endif
-
-                                            {{-- when status is : 8 --}}
-                                            @if ($bookedService->arrivalStatus())
-                                                <div>
-                                                    <span class="btn btn-outline-dark btn-sm update-next-status"
-                                                        data-id="{{ $bookedService->id }}"
-                                                        data-status="{{ $bookedService->nextStatus }}"
-                                                        data-status-text="{{ $bookedService->dataIdText }}">
-                                                        {{ $bookedService->statusText }}
-                                                    </span>
-                                                </div>
-                                            @endif
-
-                                            {{-- when status is : 9 --}}
-                                            @if ($bookedService->completionStatus())
-                                                <div>
-                                                    <span class="btn btn-outline-dark btn-sm update-next-status"
-                                                        data-id="{{ $bookedService->id }}"
-                                                        data-status="{{ $bookedService->nextStatus }}"
-                                                        data-status-text="{{ $bookedService->dataIdText }}">
-                                                        {{ $bookedService->statusText }}
-                                                    </span>
-                                                </div>
-                                            @endif
-
-
-                                            {{-- when status is : 10 --}}
-                                            @if ($bookedService->status == 10)
-                                                <div>
-                                                    <button disabled class="btn btn-outline-dark btn-sm">
-                                                        Order Completed
-                                                    </button>
-                                                </div>
-                                            @endif
-                                            {{-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> --}}
-
+                                            <div class="col-md-9">
+                                                {!! service_book_status($bookedService->status) !!}
+                                            </div>
                                         </div>
 
                                         <div class="col-12 text-right">

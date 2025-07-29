@@ -6,9 +6,9 @@
             <h3>Choose your <span class="green-color">Package</span></h1>
         </header>
         {{-- <div class="packages"> --}}
-        <div class="packages {{ $package_class ? 'd-flex flex-wrap justify-content-center' : '' }}">
+        <div class="packages d-flex justify-content-center">
             @foreach ($packages as $package)
-                <article class="package">
+                <article class="package col-4">
                     <div class="package-box">
                         <header class="packages-header">
                             <h3>{{ $package->name }}</h3>
@@ -54,7 +54,7 @@
                         </ul>
                     </div>
 
-                   
+
 
                     @if (!empty($package->is_user_package) && !$package->is_expired)
                         <p class="text-success">Ends on:
@@ -71,7 +71,12 @@
         </div>
         <!-- {{-- <button class="customize-plan">Customize your Plan</button> --}} -->
         <div class="customize-button text-center pt-5">
-            <a class="btn btn-primary mt-md-3 w-100" href="{{ route('frontend.showLogin') }}">Already A Member</a>
+            <a class="btn btn-primary mt-md-3 w-25" href="{{ route('frontend.showLogin') }}">Already A Member</a>
+            <a class="btn btn-support mt-md-3 w-25" href="tel:+923205023407">
+                <span>
+                    <i class="fa fa-phone"></i>
+                </span>
+                Contact Support</a>
         </div>
     </section>
 @endsection

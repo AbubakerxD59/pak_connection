@@ -36,6 +36,11 @@ class Field extends Model
         $query->where('order', '>', $order["old_order"])->where('order', '<=', $order["new_order"]);
     }
 
+    public function scopeSearch($query, $search)
+    {
+        $query->where("name", "like", "%$search%");
+    }
+
     protected function type(): Attribute
     {
         return Attribute::make(

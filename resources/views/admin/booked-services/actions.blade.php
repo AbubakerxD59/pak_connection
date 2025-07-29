@@ -1,23 +1,4 @@
 <div class="d-flex">
-    {{-- @if ($service->depositStatus())
-        <div>
-            <span class="btn btn-outline-secondary btn-sm deposit-payment-btn" data-id="{{ $service->id }}">
-                Deposit Payment
-            </span>
-        </div>
-    @endif
-    @if ($service->invoiceStatus())
-        <div>
-            <button type="button" class="btn btn-outline-secondary btn-sm generate-invoice-btn" data-bs-toggle="modal"
-                data-bs-target="#invoiceModal" data-id="{{ $service->id }}">
-                Generate Invoice
-            </button>
-
-        </div>
-    @endif --}}
-
-
-
     @php
         use App\Models\BookService;
         $nextStatus = $service->status + 1;
@@ -137,7 +118,8 @@
     @endcan
     @can('delete_booked_services')
         <div>
-            <form action="{{ route('booked-services.destroy', $service->id) }}" method="POST" class="delete_form d-inline">
+            <form action="{{ route('booked-services.destroy', $service->id) }}" method="POST"
+                class="delete_form d-inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-outline-danger btn-sm delete-btn">Delete</button>

@@ -47,31 +47,13 @@ class HomeController extends Controller
 
     public function index()
     {
-        $user = auth()->user();
-        $package_class = false;
-
-        $packages = $this->package->get();
-
-        if ($user && $user->package_id) {
-            $package = $this->package->find($user->package_id);
-
-            if ($package) {
-                $pkgEndTime = Carbon::parse($user->pkg_end_time);
-                $isExpired = Carbon::now()->gt($pkgEndTime);
-
-                if (!$isExpired) {
-
-                    $package->is_user_package = true;
-                    $package->pkg_end_time = $pkgEndTime;
-                    $package->is_expired = false;
-
-                    $packages = collect([$package]);
-                    $package_class = true;
-                }
-            }
+        if(auth()->check()){
+            return view("frontend.auth_home");
         }
-
-        return view('frontend.home', compact('packages', 'package_class'));
+        else{
+            $packages = $this->package->get();
+            return view('frontend.home', compact('packages'));
+        }
     }
 
     public function update_packages()
@@ -242,8 +224,6 @@ class HomeController extends Controller
                 "pkg_end_time" => $pkg_end_time,
                 "package_status" => 1,
             ]);
-
-            
         } catch (\Exception $e) {
             throw new NotFoundHttpException();
         }

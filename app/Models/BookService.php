@@ -20,7 +20,7 @@ class BookService extends Model
     static public $status_array = [
         "1" => "Order Received",
         "2" => "Deposit Requested",
-        "3" => "Deposit Paid", 
+        "3" => "Deposit Paid",
         "4" => "Order in Progress",
         "5" => "Invoice Created",
         "6" => "Full Payment Received",

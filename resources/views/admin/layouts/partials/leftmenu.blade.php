@@ -278,9 +278,9 @@
                     @endphp
                     <li class="nav-item {{ $field ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ $field ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-list"></i>
+                            <i class="nav-icon fa fa-calendar"></i>
                             <p>
-                                Bookings
+                                BOOKINGS
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -290,7 +290,7 @@
                                     <a href="{{ route('booked-services.view.bookservice') }}"
                                         class="nav-link {{ in_array(request()->route()->getName(), ['booked-services.view.bookservice', 'booked-services.create', 'booked-services.edit', 'booked-services.index']) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-dot-circle"></i>
-                                        <p>Book Service</p>
+                                        <p>Services</p>
                                     </a>
                                 @endcan
                             </li>

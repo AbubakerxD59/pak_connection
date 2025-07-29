@@ -154,7 +154,7 @@
                                                                 <th>Action</th>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach ($book_services as $key => $field)
+                                                                @foreach ($feature->load('bookServices')->bookServices as $key => $field)
                                                                     <tr>
                                                                         <td>{{ $key + 1 }}</td>
                                                                         <td>

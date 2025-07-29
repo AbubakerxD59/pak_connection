@@ -454,3 +454,16 @@ td {
 .btn-sm {
     margin-inline: 5px !important;
 }
+
+.btn-support {
+    color: #000;
+    border-color: grey;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 10px;
+    padding-block: 8px;
+    letter-spacing: 1px;
+    font-size: 15px;
+    padding-block: 12px;
+    font-size: 20px;
+}
