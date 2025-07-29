@@ -297,7 +297,26 @@ class BookServiceController extends Controller
                 $bookedService->schedule_pdf = 'assets/pdfs/' . $fileName;
             }
             $bookedService->save();
-            $bookedService->transaction = $this->transaction->where('book_service_id', $bookedService->id)->first();
+            
+            if ($request->status == 3) {
+                $bookedService->transaction = $this->transaction
+                    ->where('invoice_url', $bookedService->deposit_url)
+                    ->first();
+            } elseif ($request->status == 6) {
+                $bookedService->transaction = $this->transaction
+                    ->where('invoice_url', $bookedService->invoice_url)
+                    ->first();
+            }else{
+                $bookedService->transaction = $this->transaction->where('book_service_id', $bookedService->id)->first();
+            }
+
+            if (in_array($request->status, [3, 6]) && $bookedService->transaction) {
+                $bookedService->transaction->update(['status' => 1]);
+            }
+
+
+
+            // dd($bookedService->transaction);
             event(new BookedServiceStatusUpdated($bookedService));
             return response()->json([
                 'success' => true,
