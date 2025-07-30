@@ -20,13 +20,17 @@
                 <span class="font-weight-bold h4">No package found</span>
             @endif
         </p>
-        <div class="row">
+        <div class="row px-5 mx-5">
             @foreach ($features as $feature)
                 <div class="col-md-4 p-3 text-center">
-                    <div class="pointer feature_fields" data-id="{{ $feature->id }}" data-name="{{ $feature->name }}">
-                        <img src="{{ $feature->icon }}" alt="" width="200px" class="rounded" data-toggle="modal"
+                    
+                    <div class="pointer feature_fields bg-inafo" data-id="{{ $feature->id }}"
+                        data-name="{{ $feature->name }}">
+                        <img src="{{ $feature->icon }}" alt=""
+                            style="width: 200px; height: 200px; object-fit: fill; border-radius: 5px;" data-toggle="modal"
                             data-target="#feature_fields">
                     </div>
+
                     <div class="my-3">
                         <span>
                             <strong class="feature_name">{{ strtoupper($feature->name) }}</strong>
