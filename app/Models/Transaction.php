@@ -26,7 +26,8 @@ class Transaction extends Model
         'transaction_type',
         'status',
         'book_service_id',
-        'customer_id'
+        'customer_id',
+        'invoice_url'
     ];
 
     // In a model or config

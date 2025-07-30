@@ -124,6 +124,20 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group row">
+                                            <div class="col-md-3">
+                                                <label for="status" class="form-label">Schedule PDF</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                {{-- <a href="{{ url(asset('uploads/') . '/' . $bookedService->schedule_pdf) }}" --}}
+                                                <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}"
+                                                    target="_blank"
+                                                    class="btn btn-sm btn-success">
+                                                    Click here to see Itinerary & Schedule (PDF).
+                                                </a>
+                                            </div>
+                                        </div>
+
                                         <div class="col-12 text-right">
                                             <button type="submit"
                                                 class="btn btn-outline-success">{{ __('users.btn_submit_text') }}</button>
