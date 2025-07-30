@@ -123,20 +123,20 @@
                                                 {!! service_book_status($bookedService->status) !!}
                                             </div>
                                         </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <label for="status" class="form-label">Schedule PDF</label>
+                                        @if ($bookedService->schedule_created)
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label for="status" class="form-label">Schedule PDF</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    {{-- <a href="{{ url(asset('uploads/') . '/' . $bookedService->schedule_pdf) }}" --}}
+                                                    <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}"
+                                                        target="_blank" class="btn btn-sm btn-success">
+                                                        Click here to see Itinerary & Schedule (PDF).
+                                                    </a>
+                                                </div>
                                             </div>
-                                            <div class="col-md-9">
-                                                {{-- <a href="{{ url(asset('uploads/') . '/' . $bookedService->schedule_pdf) }}" --}}
-                                                <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}"
-                                                    target="_blank"
-                                                    class="btn btn-sm btn-success">
-                                                    Click here to see Itinerary & Schedule (PDF).
-                                                </a>
-                                            </div>
-                                        </div>
+                                        @endif
 
                                         <div class="col-12 text-right">
                                             <button type="submit"
@@ -227,7 +227,7 @@
     @endcan
 
     {{-- Book Service PDF --}}
-    @can('edit_booked_service')
+    {{-- @can('edit_booked_service')
         <div class="page-content">
             <section class="content">
                 <div class="container-fluid">
@@ -278,7 +278,7 @@
                 </div>
             </section>
         </div>
-    @endcan
+    @endcan --}}
 
     @include('admin.booked-services.generate_invoice_modal')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
