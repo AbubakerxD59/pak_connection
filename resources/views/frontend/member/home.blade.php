@@ -24,7 +24,8 @@
             @foreach ($features as $feature)
                 <div class="col-md-4 p-3 text-center">
                     <div class="pointer feature_fields" data-id="{{ $feature->id }}" data-name="{{ $feature->name }}">
-                        <img src="{{ $feature->icon }}" alt="" width="200px" class="rounded" data-toggle="modal"
+                        <img src="{{ $feature->icon }}" alt="" width="100%" height="200"
+                            style="object-fit: contain; border-radius: 5px;" data-toggle="modal"
                             data-target="#feature_fields">
                     </div>
                     <div class="my-3">
