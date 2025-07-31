@@ -47,7 +47,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        if(auth()->check()){
+        if(auth()->check() && auth()->user()->getPackage()){
             return view("frontend.auth_home");
         }
         else{

@@ -7,7 +7,8 @@
             <div class="d-flex justify-content-center">
                 <div class="card col-6">
                     <div class="card-body">
-                        <h4>Current Membership : <span class="green-color">{{ auth()->user()->getPackage()->name }}</span>
+                        <h4>Current Membership : <span
+                                class="green-color">{{ auth()->user()->getPackage() ? auth()->user()->getPackage()->name : '-' }}</span>
                         </h4>
                         <h6>Expiry Date: <span class="text-danger">{{ auth()->user()->pkg_end_time }}</span></h6>
                     </div>
