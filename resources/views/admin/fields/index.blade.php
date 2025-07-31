@@ -5,7 +5,17 @@
         <div class="page-content">
             <div class="content-header clearfix">
                 <h1 class="float-left">Fields</h1>
-                <div class="float-right d-flex"></div>
+                <div class="float-right d-flex">
+                    <form action="{{ route('fields.import') }}" method="POST" enctype="multipart/form-data" id="importForm">
+                        @csrf
+                        <input type="file" name="import" id="import" class="form-control d-none"
+                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                        <label for="import" class="btn btn-primary my-0 mx-2">
+                            <i class="fa fa-download"></i>
+                            Import
+                        </label>
+                    </form>
+                </div>
             </div>
             <section class="content">
                 <div class="container-fluid">
@@ -73,6 +83,11 @@
     </script>
     <script>
         $(document).ready(function() {
+            // import fields
+            $(document).on('change', '#import', function() {
+                showPreloader();
+                $('#importForm').submit();
+            });
             // sortable
             $('.table-sortable tbody').sortable({
                 handle: 'span'

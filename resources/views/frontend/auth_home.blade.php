@@ -10,7 +10,9 @@
                         <h4>Current Membership : <span
                                 class="green-color">{{ auth()->user()->getPackage() ? auth()->user()->getPackage()->name : '-' }}</span>
                         </h4>
-                        <h6>Expiry Date: <span class="text-danger">{{ auth()->user()->pkg_end_time }}</span></h6>
+                        <h6>Expiry Date: <span
+                                class="text-danger">{{ date('Y-m-d', strtotime(auth()->user()->pkg_end_time)) }}</span>
+                        </h6>
                     </div>
                 </div>
             </div>

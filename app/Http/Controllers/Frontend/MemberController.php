@@ -28,7 +28,6 @@ class MemberController extends Controller
     {
         $user = Auth::user()->load('bookServices');
         $package = $user->getPackage();
-
         // Check if user has package and expiry time
         if ($user->package_id && $user->pkg_end_time) {
             $currentTime = Carbon::now();
@@ -40,14 +39,10 @@ class MemberController extends Controller
                 ]);
             }
         }
-
         $features = [];
-
         if ($package) {
             $featuresQuery = $package->features()->orderBy("order", "ASC");
-
             if ($user->package_status == 2) {
-
                 $serviceIds = $user->bookServices
                     ->where('status', '!=', 10)
                     ->pluck('service_id');
@@ -56,16 +51,10 @@ class MemberController extends Controller
                     ->whereIn('features.id', $serviceIds)
                     ->get();
             } else {
-
                 $features = $featuresQuery->get();
             }
         }
-
         $isPackageExpired = $user->package_status == 2;
-
-
-
-
         return view('frontend.member.home', compact('package', 'features', 'isPackageExpired'));
     }
 

@@ -22,12 +22,12 @@
         </p>
         <div class="row px-5 mx-5">
             @foreach ($features as $feature)
-                <div class="col-md-4 p-3 text-center">
-                    
+                <div class="col-md-3 p-3 text-center">
+
                     <div class="pointer feature_fields bg-inafo" data-id="{{ $feature->id }}"
                         data-name="{{ $feature->name }}">
                         <img src="{{ $feature->icon }}" alt=""
-                            style="width: 200px; height: 200px; object-fit: fill; border-radius: 5px;" data-toggle="modal"
+                            style="width: 235px; height: 235px; object-fit: fill; border-radius: 5px;" data-toggle="modal"
                             data-target="#feature_fields">
                     </div>
 
