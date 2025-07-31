@@ -160,4 +160,16 @@ class MemberController extends Controller
         ]);
         return back()->with("success", "Profile updated Successfully!");
     }
+
+    public function tracking()
+    {
+        $user = auth()->user();
+        $package = $user->getPackage();
+        if ($package) {
+            $features = $user->bookServices()->get();
+            return view("frontend.member.tracking", compact("package", "features"));
+        } else {
+            return back()->with("Warning", "NO PACKAGE!");
+        }
+    }
 }

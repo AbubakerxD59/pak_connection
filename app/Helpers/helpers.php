@@ -447,6 +447,11 @@ function service_book_status($status)
     return "<span class='btn btn-sm {$class}'>{$label}</span>";
 }
 
+function getbookedServicestatus(){
+    $statuses = BookService::getStatuses();
+    return $statuses;
+}
+
 
 if (!function_exists('count_order_transactions')) {
     function count_order_transactions()

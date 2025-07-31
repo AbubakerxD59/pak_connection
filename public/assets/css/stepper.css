@@ -1,0 +1,214 @@
+<style>body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.stepper-container {
+    width: 100%;
+    /* Adjust max-width as needed */
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+.stepper-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 0 1rem;
+    /* Padding to ensure lines don't go off too far */
+}
+
+/* Line connecting steps */
+.stepper-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #e0e0e0;
+    z-index: 1;
+    transform: translateY(-50%);
+}
+
+.stepper-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    /* Distribute space evenly */
+    position: relative;
+    z-index: 2;
+    /* Ensure items are above the line */
+    text-align: center;
+    min-width: 0;
+    /* Allow items to shrink */
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    /* Prevent shrinking */
+}
+
+.step-text {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    /* Smaller font for 11 steps */
+    color: #6c757d;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Add ellipsis if text is too long */
+    max-width: 100%;
+    /* Ensure text doesn't overflow its container */
+}
+
+/* Active step styling */
+.stepper-item.active .step-circle {
+    background-color: #007bff;
+    /* Purple color */
+    transform: scale(1.1);
+}
+
+.stepper-item.active .step-text {
+    color: #495057;
+    font-weight: 500;
+}
+
+/* Completed step styling (optional, similar to active but can be distinct) */
+.stepper-item.completed .step-circle {
+    background-color: #038002;
+    /* Darker purple for completed */
+    box-shadow: 0 2px 8px rgba(111, 66, 193, 0.4);
+}
+
+.stepper-item.completed .step-text {
+    color: #343a40;
+    font-weight: 600;
+}
+
+/* Line segment styling for active/completed parts */
+.stepper-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    /* Line segment width */
+    height: 3px;
+    background-color: #e0e0e0;
+    transform: translateY(-50%) translateX(50%);
+    z-index: 0;
+}
+
+.stepper-item.active:not(:last-child)::after,
+.stepper-item.completed:not(:last-child)::after {
+    background-color: #007bff;
+    /* Active line color */
+}
+
+/* Adjust line position for the first item to align with the circle center */
+.stepper-item:first-child::before {
+    display: none;
+    /* No line before the first item */
+}
+
+/* Adjust line position for the last item */
+.stepper-item:last-child::after {
+    display: none;
+    /* No line after the last item */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .stepper-wrapper {
+        flex-wrap: wrap;
+        /* Allow wrapping on smaller screens */
+        justify-content: center;
+        padding: 1rem 0;
+    }
+
+    .stepper-wrapper::before {
+        display: none;
+        /* Hide horizontal line on wrap */
+    }
+
+    .stepper-item {
+        flex: none;
+        /* Disable flex growth */
+        width: 30%;
+        /* Adjust width for 3-4 items per row */
+        margin-bottom: 1.5rem;
+        position: relative;
+        /* Reset position for vertical line */
+    }
+
+    .stepper-item:not(:last-child)::after {
+        display: none;
+        /* Hide horizontal line segment */
+    }
+
+    /* Vertical line for wrapped items */
+    .stepper-item:not(:nth-last-child(-n + 3)):not(:last-child)::after {
+        /* Adjust nth-last-child based on items per row */
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        height: 30px;
+        /* Length of vertical line */
+        width: 3px;
+        background-color: #e0e0e0;
+        transform: translateX(-50%);
+        z-index: 0;
+    }
+
+    .stepper-item.active:not(:nth-last-child(-n + 3)):not(:last-child)::after,
+    .stepper-item.completed:not(:nth-last-child(-n + 3)):not(:last-child)::after {
+        background-color: #007bff;
+    }
+}
+
+@media (max-width: 576px) {
+    .stepper-item {
+        width: 45%;
+        /* Adjust width for 2 items per row */
+    }
+
+    .stepper-item:not(:nth-last-child(-n + 2)):not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        height: 30px;
+        /* Length of vertical line */
+        width: 3px;
+        background-color: #e0e0e0;
+        transform: translateX(-50%);
+        z-index: 0;
+    }
+}
+
+</style>

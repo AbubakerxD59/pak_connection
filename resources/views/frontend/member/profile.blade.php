@@ -1,4 +1,4 @@
--@extends('frontend.main')
+@extends('frontend.main')
 @section('body')
     <section class="membership-portal container">
         <form action="{{ route('frontend.member.profile_update') }}" method="POST">
@@ -124,7 +124,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row col-6">
+                {{-- <div class="form-group row col-6">
                     <div class="col-md-3">
                         <label class="form-label">Membership</label>
                     </div>
@@ -133,7 +133,7 @@
                             Update Membership Package
                         </a>
                     </div>
-                </div>
+                </div> --}}
 
 
                 <div class="form-group row justify-content-center col-12 mt-4">

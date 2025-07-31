@@ -16,6 +16,8 @@
             <span class="h4">Package:</span>
             @if (!empty($package))
                 <span class="font-weight-bold h4">{{ $package->name ?? '-' }}</span>
+                <br>
+                <a class="btn btn-primary btn-sm" href="{{ route('frontend.member.tracking') }}">Track Services</a>
             @else
                 <span class="font-weight-bold h4">No package found</span>
             @endif
@@ -27,7 +29,7 @@
                     <div class="pointer feature_fields bg-inafo" data-id="{{ $feature->id }}"
                         data-name="{{ $feature->name }}">
                         <img src="{{ $feature->icon }}" alt=""
-                            style="width: 235px; height: 235px; object-fit: fill; border-radius: 5px;" data-toggle="modal"
+                            style="width: 235px; height: 235px; object-fit: cver; border-radius: 5px;" data-toggle="modal"
                             data-target="#feature_fields">
                     </div>
 

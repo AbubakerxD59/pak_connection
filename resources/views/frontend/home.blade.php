@@ -71,7 +71,11 @@
         </div>
         <!-- {{-- <button class="customize-plan">Customize your Plan</button> --}} -->
         <div class="customize-button text-center pt-5">
-            <a class="btn btn-primary mt-md-3 w-25" href="{{ route('frontend.showLogin') }}">Already A Member</a>
+            @if (auth()->check())
+                <a class="btn btn-primary mt-md-3 w-25" href="{{ route('frontend.showLogin') }}">Order a Service</a>
+            @else
+                <a class="btn btn-primary mt-md-3 w-25" href="{{ route('frontend.showLogin') }}">Already A Member</a>
+            @endif
             <a class="btn btn-support mt-md-3 w-25" href="tel:+923205023407">
                 <span>
                     <i class="fa fa-phone"></i>

@@ -183,6 +183,7 @@ Route::name('frontend.')->group(function () {
         Route::post('book-service', "bookService")->name("bookService");
         Route::get('profile', 'profile')->name('profile');
         Route::post('profile-update', 'profileUpdate')->name('profile_update');
+        Route::get("tracking", "tracking")->name("tracking");
     });
 });
 
