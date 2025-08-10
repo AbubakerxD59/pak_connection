@@ -138,7 +138,7 @@
 
                 <div class="form-group row justify-content-center col-12 mt-4">
                     <button type="submit"
-                        class="btn btn-outline-success col-3">{{ __('users.btn_submit_text') }}</button>
+                        class="btn btn-primary col-3">{{ __('users.btn_submit_text') }}</button>
                 </div>
             </div>
         </form>

@@ -2,13 +2,13 @@
 @section('body')
     <section class="membership-portal container">
         <header class="membership-header">
-            <h2>Welcome to the membership <span class="green-color">Portal</span></h2>
-            <h3>Choose your <span class="green-color">Package</span></h1>
+            <h2>Welcome to the membershipc<br> <span class="green-color">Portal</span></h2>
+            <h3>Choose your <strong class="green-color">Package</strong></h1>
         </header>
         {{-- <div class="packages"> --}}
-        <div class="packages d-flex justify-content-center">
+        <div class="packages">
             @foreach ($packages as $package)
-                <article class="package col-4">
+                <article class="package">
                     <div class="package-box">
                         <header class="packages-header">
                             <h3>{{ $package->name }}</h3>
@@ -54,8 +54,6 @@
                         </ul>
                     </div>
 
-
-
                     @if (!empty($package->is_user_package) && !$package->is_expired)
                         <p class="text-success">Ends on:
                             {{ \Carbon\Carbon::parse($package->pkg_end_time)->format('F d, Y h:i A') }}</p>
@@ -70,17 +68,18 @@
             @endforeach
         </div>
         <!-- {{-- <button class="customize-plan">Customize your Plan</button> --}} -->
-        <div class="customize-button text-center pt-5">
+        <div class="customize-button text-center pt-4 pt-md-5">
             @if (auth()->check())
-                <a class="btn btn-primary mt-md-3 w-25" href="{{ route('frontend.showLogin') }}">Order a Service</a>
+                <a class="btn btn-primary mt-3" href="{{ route('frontend.showLogin') }}">Order a Service</a>
             @else
-                <a class="btn btn-primary mt-md-3 w-25" href="{{ route('frontend.showLogin') }}">Already A Member</a>
+                <a class="btn btn-primary mt-3" href="{{ route('frontend.showLogin') }}">Already A Member</a>
             @endif
-            <a class="btn btn-support mt-md-3 w-25" href="tel:+923205023407">
+            <a class="btn btn-support mt-3" href="tel:+923205023407">
                 <span>
-                    <i class="fa fa-phone"></i>
+                     <img src="/assets/img/headphone.png" alt="Head Phone">
                 </span>
-                Contact Support</a>
+                Contact Support
+            </a>
         </div>
     </section>
 @endsection

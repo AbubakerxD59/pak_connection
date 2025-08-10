@@ -3,9 +3,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/login-styles.css') }}">
 @endpush
 @section('body')
-    <div class="col-md-12 d-flex justify-content-center align-items-center">
-        <div class="col-md-3 card p-5">
-            <p class="login-box-msg">{{ __('passwords.password_page_title') }}</p>
+    <div class="col-md-12 d-flex justify-content-center align-items-center my-5">
+        <div class="col-md-3 card login-card-box p-5">
+            <p class="login-title">{{ __('passwords.password_page_title') }}</p>
             <form method="post" action="{{ route('password.send_link') }}">
                 @csrf
                 <div class="input-group mb-3">
@@ -14,13 +14,9 @@
                         <div class="input-group-text"><span class="fas fa-envelope"></span></div>
                     </div>
                 </div>
-
-
                 <div class="social-auth-links text-center mb-3">
                     <button type="submit" class="btn btn-primary btn-block">{{ __('passwords.send_link') }}</button>
-
                 </div>
-
                 {{-- @if (session('error'))
                     <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif

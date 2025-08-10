@@ -25,28 +25,36 @@
                 <div class="slogan-title">
                     <h1>Membership Portal</h1>
                 </div>
-                @if (auth()->check())
-                    <a href="{{ route('frontend.member.profile') }}">
-                        <div class="costomer-login">
-                            <div class="customer-avatar">
-                                <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
+                <div class="login-holder">
+                    @if (auth()->check())
+                        <div class="dropdown">
+                            <div class="dropdown-toggle" id="loginDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="costomer-login">
+                                    <div class="customer-avatar">
+                                        <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
+                                    </div>
+                                    <div class="txtbox">
+                                        <h3><a  href="{{ route('frontend.member.profile') }}">{{ auth()->user()->full_name }}</a></h3>
+                                        <p><a href="{{ route('frontend.member.profile') }}">{{ auth()->user()->email }}</a></p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="txtbox">
-                                <h3>{{ auth()->user()->full_name }}</h3>
-                                <p>{{ auth()->user()->email }}</p>
+                            <div class="dropdown-menu" aria-labelledby="loginDropdown">
+                                <a class="dropdown-item" href="#">View Profile</a>
+                                <a class="dropdown-item" href="#">Service Tracking</a>
                             </div>
                         </div>
-                    </a>
-                    <form action="{{ route('frontend.member.logout') }}" method="POST" id="signout_form">
-                        @csrf
-                        <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                    </form>
-                    <div>
-                        <i class="fas fa-sign-out-alt sign-out pointer  " style="font-size: 20px;"></i>
-                    </div>
-                @else
-                    <a class="btn btn-primary" href="{{ route('frontend.showLogin') }}">Already A Member</a>
-                @endif
+                        <form action="{{ route('frontend.member.logout') }}" method="POST" id="signout_form">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                        </form>
+                        <div>
+                            <i class="fas fa-sign-out-alt sign-out pointer  " style="font-size: 20px;"></i>
+                        </div>
+                    @else
+                        <a class="btn btn-primary" href="{{ route('frontend.showLogin') }}">Already A Member</a>
+                    @endif
+                </div>
             </div>
         </header>
         @yield('body')

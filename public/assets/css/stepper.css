@@ -20,23 +20,24 @@
 .stepper-wrapper {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     position: relative;
-    padding: 0 1rem;
-    /* Padding to ensure lines don't go off too far */
+    padding: 0;
+    gap:7px;
+    overflow-x: auto;
+    padding-bottom: 10px;
 }
 
 /* Line connecting steps */
 .stepper-wrapper::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
+    top: 20px;
+    left: 70px;
+    right: 70px;
     height: 3px;
     background-color: #e0e0e0;
     z-index: 1;
-    transform: translateY(-50%);
 }
 
 .stepper-item {
@@ -49,7 +50,7 @@
     z-index: 2;
     /* Ensure items are above the line */
     text-align: center;
-    min-width: 0;
+    min-width: 90px;
     /* Allow items to shrink */
 }
 
@@ -57,16 +58,16 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #e0e0e0;
-    color: #ffffff;
+    background-color: #EAEAEA;
+    color: #7C7C7C;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: 600;
     font-size: 1rem;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
+    border: 1px solid transparent;
     /* Prevent shrinking */
 }
 
@@ -74,38 +75,36 @@
     margin-top: 0.5rem;
     font-size: 0.85rem;
     /* Smaller font for 11 steps */
-    color: #6c757d;
+    color: #000;
     transition: color 0.3s ease;
-    white-space: nowrap;
-    /* Prevent text wrapping */
+    /* white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    /* Add ellipsis if text is too long */
+    text-overflow: ellipsis; */
     max-width: 100%;
-    /* Ensure text doesn't overflow its container */
 }
 
 /* Active step styling */
 .stepper-item.active .step-circle {
-    background-color: #007bff;
+    background-color: #F1FFEF;
     /* Purple color */
     transform: scale(1.1);
+    border-color: #EBEBEB;
+    color: #000;
 }
 
 .stepper-item.active .step-text {
-    color: #495057;
-    font-weight: 500;
+    color: #FCBE01;
+    font-weight: 600;
 }
 
 /* Completed step styling (optional, similar to active but can be distinct) */
 .stepper-item.completed .step-circle {
-    background-color: #038002;
-    /* Darker purple for completed */
-    box-shadow: 0 2px 8px rgba(111, 66, 193, 0.4);
+    background: linear-gradient(90deg, #49B762 0%, #058D23 100%);
+    color: #fff;;
 }
 
 .stepper-item.completed .step-text {
-    color: #343a40;
+    color: #3EB732;
     font-weight: 600;
 }
 
@@ -113,19 +112,19 @@
 .stepper-item:not(:last-child)::after {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 20px;
+    left: 0;
     width: 100%;
     /* Line segment width */
     height: 3px;
     background-color: #e0e0e0;
-    transform: translateY(-50%) translateX(50%);
-    z-index: 0;
+    transform: translateX(50%);
+    z-index: -1;
 }
 
 .stepper-item.active:not(:last-child)::after,
 .stepper-item.completed:not(:last-child)::after {
-    background-color: #007bff;
+    background: linear-gradient(90deg, #49B762 0%, #058D23 100%);
     /* Active line color */
 }
 
@@ -209,6 +208,7 @@
         transform: translateX(-50%);
         z-index: 0;
     }
+    .stepper-container {
+        padding-inline:0;
+    }
 }
-
-</style>

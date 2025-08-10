@@ -12,35 +12,34 @@
             </div>
         @endif
 
-        <p class="text-center">
-            <span class="h4">Package:</span>
+        <div class="membership-header package-header">
+            <h2 class="welcome-title">Package:</h2>
             @if (!empty($package))
-                <span class="font-weight-bold h4">{{ $package->name ?? '-' }}</span>
-                <br>
+                 <h3 class="member-name">{{ $package->name ?? '-' }}</h3>
                 <a class="btn btn-primary btn-sm" href="{{ route('frontend.member.tracking') }}">Track Services</a>
             @else
                 <span class="font-weight-bold h4">No package found</span>
             @endif
-        </p>
-        <div class="row px-5 mx-5">
+        </div>
+        <div class="row">
             @foreach ($features as $feature)
-                <div class="col-md-3 p-3 text-center">
-
-                    <div class="pointer feature_fields bg-inafo" data-id="{{ $feature->id }}"
-                        data-name="{{ $feature->name }}">
-                        <img src="{{ $feature->icon }}" alt=""
-                            style="width: 235px; height: 235px; object-fit: cver; border-radius: 5px;" data-toggle="modal"
-                            data-target="#feature_fields">
-                    </div>
-
-                    <div class="my-3">
-                        <span>
-                            <strong class="feature_name">{{ strtoupper($feature->name) }}</strong>
-                            <br>
-                            @if ($feature->book)
-                                {!! service_book_status($feature->book) !!}
-                            @endif
-                        </span>
+                <div class="col-sm-6 col-md-4 col-lg-3 p-3 p-lg-3 text-center">
+                    <div class="services-cols">
+                        <div class="pointer feature_fields bg-inafo imgbox" data-id="{{ $feature->id }}"
+                            data-name="{{ $feature->name }}">
+                            <img src="{{ $feature->icon }}" alt=""
+                                data-toggle="modal"
+                                data-target="#feature_fields">
+                        </div>
+                        <div class="my-3">
+                            <span>
+                                <strong class="feature_name">{{ strtoupper($feature->name) }}</strong>
+                                
+                                @if ($feature->book)
+                                    {!! service_book_status($feature->book) !!}
+                                @endif
+                            </span>
+                        </div>
                     </div>
                 </div>
             @endforeach

@@ -2,25 +2,25 @@
 @section('body')
     <section class="membership-portal container">
         <header class="membership-header">
-            <h2>Welcome to the <span class="green-color">PAK CONNECTIONS</span></h2>
-            <h3><span class="green-color">{{ auth()->user()->full_name }}</span></h3>
+            <h2 class="welcome-title">Welcome to the<br> <strong class="green-color">PAK CONNECTIONS</strong></h2>
+            <h3 class="member-name"><span class="green-color">{{ auth()->user()->full_name }}</span></h3>
             <div class="d-flex justify-content-center">
-                <div class="card col-6">
+                <div class="card membership-card col-md-6 col-lg-5">
                     <div class="card-body">
-                        <h4>Current Membership : <span
-                                class="green-color">{{ auth()->user()->getPackage() ? auth()->user()->getPackage()->name : '-' }}</span>
+                        <h4 class="membershit-title">Current Membership : <br><strong
+                                class="green-color">{{ auth()->user()->getPackage() ? auth()->user()->getPackage()->name : '-' }}</strong>
                         </h4>
                         <h6>Expiry Date: <span
-                                class="text-danger">{{ date('Y-m-d', strtotime(auth()->user()->pkg_end_time)) }}</span>
+                                class="green-color font-bold">{{ date('Y-m-d', strtotime(auth()->user()->pkg_end_time)) }}</span>
                         </h6>
                     </div>
                 </div>
             </div>
         </header>
-        <div class="customize-button text-center pt-5">
-            <a class="btn btn-primary mt-md-3 w-25" href="{{ route('frontend.showLogin') }}">Order a Service</a>
-            <a class="btn btn-support mt-md-3 w-25" href="tel:+923205023407">
-                <span><i class="fa fa-phone"></i></span>
+        <div class="customize-button text-center pt-4">
+            <a class="btn btn-primary mt-3" href="{{ route('frontend.showLogin') }}">Order a Service</a>
+            <a class="btn btn-support mt-3" href="tel:+923205023407">
+                <span><img src="/assets/img/headphone.png" alt="Head Phone"></span>
                 Contact Support
             </a>
         </div>

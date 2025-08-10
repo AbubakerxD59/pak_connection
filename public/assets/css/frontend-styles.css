@@ -9,7 +9,7 @@
 .packages {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 20px;
     max-width: 1150px;
     margin-inline: auto;
     width: 100%;
@@ -18,22 +18,19 @@
     background-color: #fff;
     border-radius: 10px;
     padding: 30px;
-    box-shadow: 0px 8px 16px rgba(51, 51, 51, 0.2);
-    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(51, 51, 51, 0.1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
 }
 .package:hover{
-    color: #fff;
-    background: #008000;
-    box-shadow: 0px 106.667px 106.667px -71.1111px rgba(76, 86, 115, 0.08);
+    background: #F1FFEF;
 }
 .package .package-box{margin-bottom: 1.2rem;}
-.customize-button .btn-primary,
+/* .customize-button .btn-primary,
 .package .btn-primary {
-    font-family: 'PoppinsBold';
-    font-size: 16px;
     border-radius: 7px;
     background: #008000;
     border: 0.888889px solid #475467;
@@ -63,7 +60,7 @@
     background: #0b4423;
     border-color: #0b4423;
     box-shadow: 0px 10.6667px 21.3333px rgba(119, 50, 255, 0.2), 0px 0.888889px 1.77778px rgba(16, 24, 40, 0.05), inset -1.77778px -1.77778px 3.55556px rgba(88, 42, 187, 0.49), inset 1.77778px 1.77778px 2.66667px rgba(198, 180, 238, 0.5);
-}
+} */
 .packages-header{
     margin-bottom: 2rem;
 }
@@ -171,10 +168,10 @@
 .bg-primary {
     background-color: #008100 !important;
 }
-.package:hover .circle-icon {
+/* .package:hover .circle-icon {
     color: #008100;
     background-color: #fff !important;
-}
+} */
 
 
 .cart-details,
@@ -224,6 +221,38 @@ img{max-width: 100%;}
 }
 
 .customer-dropown .dropdown-toggle::after{display: none;}
+.login-holder {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.login-holder .dropdown-toggle::after{display: none;}
+.login-holder .dropdown-menu{
+    width: 230px;
+    border-radius: 10px;
+    margin-top: -2px !important;
+    padding: 0;
+    overflow: hidden;
+}
+.login-holder .dropdown .dropdown-toggle{
+    padding-block-end: 15px;
+    margin-block-start: 15px;
+}
+.login-holder .dropdown:hover .dropdown-menu{
+    display: block;
+}
+.login-holder .dropdown-menu .dropdown-item{
+    padding: .65rem 1.2rem;
+    letter-spacing: 1px;
+    font-size: 15px;
+}
+.login-holder .dropdown-item:hover,
+.login-holder .dropdown-item:focus,
+.login-holder .dropdown-item.active,
+.login-holder .dropdown-item:active {
+    color: #fff;
+    background: linear-gradient(101.79deg, #69CC5F 0.09%, #328E28 100%);
+}
 .costomer-login{
     display: grid;
     grid-template-columns: 40px 1fr;
@@ -231,6 +260,7 @@ img{max-width: 100%;}
     align-items: center;
     color: #79828D;
     font-size: 12px;
+    cursor: pointer;
 }
 .customer-avatar img{
     min-width: 40px;
@@ -255,9 +285,11 @@ img{max-width: 100%;}
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.costomer-login p a,
+.costomer-login h3 a{color: inherit;}
 .membership-portal {
     position: relative;
-    padding-block: 3rem 7rem;
+    padding-block: 4rem 5rem;
     z-index: 1;
 }
 .membership-portal::after,
@@ -300,12 +332,24 @@ img{max-width: 100%;}
 }
 .membership-header h3,
 .membership-header h2{
-    font-size: 40px;
-    line-height: 1.2;
+    font-size: 32px;
+    line-height: 1.3;
     margin-bottom: 2rem;
     font-family: 'PoppinsMedium';
 }
+.membership-header.membership-header h2{margin-bottom: 0;}
+.membership-header.membership-header{margin-bottom: 2rem;}
+.membership-header.membership-header h3{margin-bottom: 1rem;}
+.package-header h2{margin-bottom: 0;}
 .green-color{color: #008000;}
+.membership-card{
+    border-radius: 20px;
+}
+.membershit-title{
+    font-size: 28px;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
 .membership-header h3{
     font-size: 36px;
     font-family: 'PoppinsBold';
@@ -473,8 +517,11 @@ img{max-width: 100%;}
 }
 @media (max-width:991.98px){
     .membership-header h2 {
-        font-size: 32px;
+        font-size: 28px;
         margin-bottom: 1.5rem;
+    }
+    .membership-header h2 strong{
+        font-size: 34px;
     }
     .membership-header h3 {
         font-size: 30px;
@@ -513,12 +560,16 @@ img{max-width: 100%;}
     }
 }
 @media (max-width:767.98px){
+    
     .membership-heading {
         font-size: 32px;
         margin-bottom: 1.2rem;
     }
     .membership-form h2 {
         font-size: 22px;
+    }
+    .membership-header h2 strong {
+        font-size: 30px;
     }
     .membership-portal {
         padding-block: 2rem 4rem;
@@ -559,7 +610,7 @@ img{max-width: 100%;}
     .package {
         padding-inline: 30px;
     }
-    .package + .package{margin-top: 2rem;}
+    .package + .package{margin-top: 0.5rem;}
     .packages-header h3 {
         font-size: 24px;
     }
@@ -589,5 +640,9 @@ img{max-width: 100%;}
     }
     .success-page-content {
         padding-block: 2rem 3rem;
+    }
+    .membershit-title {font-size: 24px;}
+    .membership-header.membership-header {
+        margin-bottom: 1.5rem;
     }
 }

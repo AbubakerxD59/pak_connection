@@ -3,9 +3,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/login-styles.css') }}">
 @endpush
 @section('body')
-    <div class="col-md-12 d-flex justify-content-center align-items-center">
-        <div class="col-md-3 card p-5">
-            <p class="login-box-msg">{{ __('auth.login_page_title') }}</p>
+    <div class="col-md-12 d-flex justify-content-center align-items-center my-5">
+        <div class="col-md-3 card p-5 login-card-box">
+            <p class="login-title">{{ __('auth.login_page_title') }}</p>
             <form method="post" action="{{ route('frontend.login') }}">
                 @csrf
                 <div class="input-group mb-3">
@@ -21,7 +21,7 @@
                         <div class="input-group-text"><span class="fas fa-lock"></span></div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row py-2">
                     <div class="col-12">
                         <input type="hidden" name="remember_me" value="0">
                         <div class="icheck-primary">
@@ -32,12 +32,11 @@
                 </div>
                 <div class="social-auth-links text-center mb-3">
                     <button type="submit" class="btn btn-primary btn-block">{{ __('auth.btn_sign_in') }}</button>
-                    
                 </div>
                  <div class="row">
                     <div class="col-12">
                         <div class="icheck-primary text-center">
-                            <a href="{{ route('password.request') }}" class="my-3">Forgot Your Password?</a>
+                            <a href="{{ route('password.request') }}" class="btn btn-support w-100">Forgot Your Password?</a>
                         </div>
                     </div>
                 </div>
