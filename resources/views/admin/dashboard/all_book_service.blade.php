@@ -23,6 +23,7 @@
                                                             <th>Customer</th>
                                                             <th>Service</th>
                                                             <th>Status</th>
+                                                            <th>Date</th>
                                                             <th>Action</th>
                                                         </thead>
                                                     </table>

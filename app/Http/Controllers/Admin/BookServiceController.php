@@ -89,7 +89,7 @@ class BookServiceController extends Controller
             $data = $request->all();
             $search = @$data['search']['value'];
             $iTotalRecords = $this->bookService;
-            $services = $this->bookService;
+            $services = $this->bookService->latest();
 
             if (!empty($search)) {
                 $services = $services->datatableSearch($search);
@@ -113,6 +113,7 @@ class BookServiceController extends Controller
                 $services[$k]['membership_id'] = $val->user ? $val->user->membership_id : '-/-';
                 $services[$k]['service'] = $val->getService();
                 $services[$k]['status_view'] = service_book_status($val->status);
+                $services[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
                 $services[$k]['action'] = view('admin.booked-services.actions')->with('service', $val)->render();
                 $services[$k] = $val;
             }

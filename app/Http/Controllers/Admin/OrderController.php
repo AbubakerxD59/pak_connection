@@ -105,7 +105,7 @@ class OrderController extends Controller
         $data = $request->all();
         $search = @$data['search']['value'];
         $iTotalRecords = $this->order;
-        $orders = $this->order->with('user', 'package', 'promo');
+        $orders = $this->order->with('user', 'package', 'promo')->latest();
 
         if (!empty($search)) {
             $orders = $orders->search($search);

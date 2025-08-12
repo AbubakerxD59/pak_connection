@@ -107,11 +107,9 @@
                     processData: false,
                     data: formData,
                     success: function(response) {
-
                         if (response.success) {
                             modal.modal('toggle');
                             modal.find('.card-body').empty();
-
                             // ✅ Show success alert
                             Swal.fire({
                                 title: "Success!",
@@ -120,9 +118,11 @@
                                 showConfirmButton: false,
                                 timer: 1500
                             });
-
                             // 🔵 NEW: Show success toast with response message
                             toastr.success(response.message);
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                         } else {
                             Swal.fire({
                                 title: "Error!",

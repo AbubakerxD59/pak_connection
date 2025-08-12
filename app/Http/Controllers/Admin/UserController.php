@@ -167,7 +167,7 @@ class UserController extends Controller
     {
         $user = $this->user->find($id);
         if ($user) {
-            $user->order()->delete();
+            $user->orders()->delete();
             $user->bookServices()->delete();
             $user->bookFields()->delete();
             $user->transactions()->delete();

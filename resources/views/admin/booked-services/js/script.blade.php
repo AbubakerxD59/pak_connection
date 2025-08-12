@@ -33,6 +33,9 @@
                     data: 'status_view'
                 },
                 {
+                    data: 'date'
+                },
+                {
                     data: 'action'
                 }
             ],

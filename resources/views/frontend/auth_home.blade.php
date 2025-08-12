@@ -2,7 +2,7 @@
 @section('body')
     <section class="membership-portal container">
         <header class="membership-header">
-            <h2 class="welcome-title">Welcome to the<br> <strong class="green-color">PAK CONNECTIONS</strong></h2>
+            <h2 class="welcome-title">Welcome to the <strong class="green-color">PAK CONNECTIONS</strong></h2>
             <h3 class="member-name"><span class="green-color">{{ auth()->user()->full_name }}</span></h3>
             <div class="d-flex justify-content-center">
                 <div class="card membership-card col-md-6 col-lg-5">
