@@ -58,13 +58,13 @@ class AuthController extends Controller
                 // return $user;
                 $response = [
                     'success' => false,
-                    'message' => 'Invalid Credentials! 1',
+                    'message' => 'Invalid Credentials!',
                 ];
             }
         } else {
             $response = [
                 'success' => false,
-                'message' => 'Invalid Credentials! 2',
+                'message' => 'Invalid Credentials!',
             ];
         }
 

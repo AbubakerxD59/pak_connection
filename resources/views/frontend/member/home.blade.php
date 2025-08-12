@@ -15,7 +15,7 @@
         <div class="membership-header package-header">
             <h2 class="welcome-title">Package:</h2>
             @if (!empty($package))
-                 <h3 class="member-name">{{ $package->name ?? '-' }}</h3>
+                <h3 class="member-name">{{ $package->name ?? '-' }}</h3>
                 <a class="btn btn-primary btn-sm" href="{{ route('frontend.member.tracking') }}">Track Services</a>
             @else
                 <span class="font-weight-bold h4">No package found</span>
@@ -27,16 +27,16 @@
                     <div class="services-cols">
                         <div class="pointer feature_fields bg-inafo imgbox" data-id="{{ $feature->id }}"
                             data-name="{{ $feature->name }}">
-                            <img src="{{ $feature->icon }}" alt=""
-                                data-toggle="modal"
+                            <img src="{{ $feature->icon }}" alt="" data-toggle="modal"
                                 data-target="#feature_fields">
                         </div>
                         <div class="my-3">
                             <span>
                                 <strong class="feature_name">{{ strtoupper($feature->name) }}</strong>
-                                
+
                                 @if ($feature->book)
-                                    {!! service_book_status($feature->book) !!}
+                                    <span class="btn btn-sm btn-info bg-primary">In Progress</span>
+                                    {{-- {!! service_book_status($feature->book) !!} --}}
                                 @endif
                             </span>
                         </div>

@@ -28,20 +28,26 @@
                 <div class="login-holder">
                     @if (auth()->check())
                         <div class="dropdown">
-                            <div class="dropdown-toggle" id="loginDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="dropdown-toggle" id="loginDropdown" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                                 <div class="costomer-login">
                                     <div class="customer-avatar">
                                         <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
                                     </div>
                                     <div class="txtbox">
-                                        <h3><a  href="{{ route('frontend.member.profile') }}">{{ auth()->user()->full_name }}</a></h3>
-                                        <p><a href="{{ route('frontend.member.profile') }}">{{ auth()->user()->email }}</a></p>
+                                        <h3><a
+                                                href="{{ route('frontend.member.profile') }}">{{ auth()->user()->full_name }}</a>
+                                        </h3>
+                                        <p><a
+                                                href="{{ route('frontend.member.profile') }}">{{ auth()->user()->email }}</a>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="dropdown-menu" aria-labelledby="loginDropdown">
-                                <a class="dropdown-item" href="#">View Profile</a>
-                                <a class="dropdown-item" href="#">Service Tracking</a>
+                                <a class="dropdown-item" href="{{ route('frontend.member.profile') }}">View Profile</a>
+                                <a class="dropdown-item" href="{{ route('frontend.member.tracking') }}">Service
+                                    Tracking</a>
                             </div>
                         </div>
                         <form action="{{ route('frontend.member.logout') }}" method="POST" id="signout_form">

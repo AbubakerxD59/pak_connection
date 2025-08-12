@@ -138,7 +138,7 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                $status = self::$status_array[$this->status];
+                $status = empty($this->status) ? self::$status_array[0] : self::$status_array[1];
                 $div = "";
                 if ($status == "Active") {
                     $div = "<span class='btn btn-sm btn-success'>" . $status . "</span>";
