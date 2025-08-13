@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BookService extends Model
 {
@@ -16,7 +17,6 @@ class BookService extends Model
         "status",
     ];
 
-    
     static public $status_array = [
         "1" => "Order Received",
         "2" => "Deposit Requested",
@@ -29,6 +29,8 @@ class BookService extends Model
         "9" => "Member Arrived",
         "10" => "Order Completed",
     ];
+
+    protected $appends = ["status_text"];
 
     public function user()
     {
@@ -66,6 +68,11 @@ class BookService extends Model
             ->orWhereHas("service", function ($q) use ($search) {
                 $q->where("name", "like", "%$search%");
             });
+    }
+
+    public function scopeNotCompleted($query)
+    {
+        $query->where("status", "<", "10");
     }
 
     public function getUser()
@@ -116,9 +123,6 @@ class BookService extends Model
         return false;
     }
 
-    // new status added
-
-
     public function depositPaidStatus()
     {
         return $this->status == 2 && $this->deposit_status == 1;
@@ -159,5 +163,16 @@ class BookService extends Model
     {
         $transactions = $this->transactions()->get();
         return $transactions;
+    }
+
+    public function statusText(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $statuses = self::getStatuses();
+                $status = $this->status;
+                return isset($statuses[$status]) ? $statuses[$status] : '';
+            }
+        );
     }
 }

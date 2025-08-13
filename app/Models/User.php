@@ -34,13 +34,14 @@ class User extends Authenticatable
         "customer_id",
         "emergency_full_name",
         "emergency_phone_number",
+        "phone_verification",
         "package_id",
         "pkg_start_time",
         "pkg_end_time",
         "package_status",
     ];
 
-     static public $status_array = [
+    static public $status_array = [
         "0" => "Inactive",
         "1" => "Active",
     ];
@@ -134,7 +135,7 @@ class User extends Authenticatable
         return $latestOrder ? $package : [];
     }
 
-        protected function statusView(): Attribute
+    protected function statusView(): Attribute
     {
         return Attribute::make(
             get: function () {
@@ -149,5 +150,10 @@ class User extends Authenticatable
                 return $div;
             }
         );
+    }
+
+    public function verified(){
+        $phone_verification = $this->phone_verification;
+        return $phone_verification ? true : false;
     }
 }
