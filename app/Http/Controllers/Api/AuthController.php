@@ -61,11 +61,11 @@ class AuthController extends Controller
             if ($user->verified()) {
                 $token = $user->createToken('auth-token')->plainTextToken;
                 $user->setRememberToken($token);
-                $response = ["user" => $user, "token" => $token];
-                return $this->successResponse($response, "Login Successful!");
             } else {
-                return $this->successResponse([], "Phone Number verification pending!");
+                $token = null;
             }
+            $response = ["user" => $user, "token" => $token];
+            return $this->successResponse($response, "Login Successful!");
         }
     }
 
