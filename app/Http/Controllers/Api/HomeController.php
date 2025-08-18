@@ -29,4 +29,19 @@ class HomeController extends Controller
         ];
         return $this->successResponse($response);
     }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        return $this->successResponse($user);
+    }
+
+    public function updateProfile(Request $request) {
+        $user = Auth::user();
+        $data = $request->all();
+        if(count($data) > 0){
+            $user->update($data);
+        }
+        return $this->successResponse("Profile updated Successfully!", $user);
+    }
 }
