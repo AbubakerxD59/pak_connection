@@ -298,7 +298,7 @@ class BookServiceController extends Controller
                 $bookedService->schedule_pdf = 'assets/pdfs/' . $fileName;
             }
             $bookedService->save();
-            
+
             if ($request->status == 3) {
                 $bookedService->transaction = $this->transaction
                     ->where('invoice_url', $bookedService->deposit_url)
@@ -307,7 +307,7 @@ class BookServiceController extends Controller
                 $bookedService->transaction = $this->transaction
                     ->where('invoice_url', $bookedService->invoice_url)
                     ->first();
-            }else{
+            } else {
                 $bookedService->transaction = $this->transaction->where('book_service_id', $bookedService->id)->first();
             }
 
@@ -438,26 +438,12 @@ class BookServiceController extends Controller
                 'user_id' => 'required|exists:users,id',
             ]);
 
-
-
             $bookedServicePdf = $this->bookedservicepdf->findOrFail($request->pdf_id);
-
             $user = $this->user->findOrFail($request->user_id); // Adjust if you're using a different User model
-
             $pdfPath = public_path($bookedServicePdf->file);
-
             $bookedServicePdf->user = $user;
-
-            // if (!file_exists($pdfPath)) {
-            //     return response()->json(['message' => 'PDF file not found.'], 404);
-            // }
-
-            // dd($bookedServicePdf);
-
             // Send email
             event(new BookServicePdfUploaded($bookedServicePdf));
-
-            // return response()->json(['success' => true, 'message' => 'PDF email sent successfully.']);
             return response()->json([
                 'success' => true,
                 'message' => 'PDF email sent successfully.',

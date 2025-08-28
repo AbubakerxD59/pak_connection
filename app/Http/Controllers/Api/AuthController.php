@@ -7,8 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\PhoneVerification;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -34,6 +34,10 @@ class AuthController extends Controller
             ]);
             if ($user) {
                 $user = User::where("email", $request->email)->first();
+                $role = Role::where('name', 'Customer')->first();
+                if (!empty($role)) {
+                    $user->assignRole($role->name);
+                }
                 return $this->successResponse($user, "Registration Completed!");
             } else {
                 return $this->errorResponse('Something went Wrong!', 403);

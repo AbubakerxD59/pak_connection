@@ -3,6 +3,7 @@
 use App\Events\BookedServiceStatusUpdated;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BookServiceController;
+use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Admin\OrderController;
@@ -17,9 +18,6 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\MemberController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\Admin\TransactionController;
-use App\Models\BookService;
-use App\Models\Order;
-use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,25 +30,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-// Route::get('/', [AuthController::class, 'index']);
-// Route::get('/email-template', function () {
-//     return view('emails.deposit_requested');
-// });
-
-Route::get('/email-preview', function () {
-    $bookedService = BookService::with(['user', 'service'])->first();
-    // return view('emails.deposit_requested', [
-    return view('emails.deposit_requested', [
-        'bookedService' => $bookedService,
-        'paymentLink' => 'https://pakconnections.co.uk/pay-deposit/abc123'
-    ]);
-});
-
-
-
-
-
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
@@ -162,6 +141,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('bookservice-pdf-datatable', 'bookServicePDFDatatable')->name('pdf.dataTable');
         Route::delete('bookservice-pdf-delete/{id}', 'destroyBookServicePDF')->name('pdf.delete');
         Route::post('send-pdfs-email', 'sendBookServicePDFEmail')->name('send-pdf-email');
+    });
+
+    Route::resource('chats', ChatController::class)->except("show");
+    Route::controller(ChatController::class)->prefix('chats/')->name('chats.')->group(function () {
+        Route::get('dataTable', 'dataTable')->name('dataTable');
     });
 });
 

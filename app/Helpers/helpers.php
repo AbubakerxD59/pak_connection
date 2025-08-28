@@ -447,7 +447,8 @@ function service_book_status($status)
     return "<span class='btn btn-sm {$class}'>{$label}</span>";
 }
 
-function getbookedServicestatus(){
+function getbookedServicestatus()
+{
     $statuses = BookService::getStatuses();
     return $statuses;
 }
@@ -540,5 +541,23 @@ if (!function_exists('count_book_services')) {
     function count_book_services()
     {
         return BookService::count();
+    }
+}
+
+if (!function_exists('getPackageEndTime')) {
+    function getPackageEndTime($currentTime, Package $package)
+    {
+
+        $pkg_end_time = match ($package->date_type) {
+            'year'  => $currentTime->copy()->addYears($package->duration),
+            'month' => $currentTime->copy()->addMonths($package->duration),
+            'day'   => $currentTime->copy()->addDays($package->duration),
+            'hour'  => $currentTime->copy()->addHours($package->duration),
+            default => $currentTime,
+        };
+
+        $pkg_end_time->setTime($pkg_end_time->hour, 0, 0);
+
+        return $pkg_end_time;
     }
 }

@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 {{-- Manage Users --}}
-                @if (check_permission('view_user') || check_permission('view_role') || check_permission('view_permission'))
+                @if (check_permission('view_user') || check_permission('view_role'))
                     @php
                         $user = in_array(request()->route()->getName(), [
                             'users.index',
@@ -41,7 +41,6 @@
                             'roles.index',
                             'roles.create',
                             'roles.edit',
-                            'permissions.index',
                         ])
                             ? true
                             : false;
@@ -68,13 +67,6 @@
                                         class="nav-link {{ in_array(request()->route()->getName(), ['roles.index', 'roles.create', 'roles.edit']) ? 'active' : '' }}">
                                         <i class="nav-icon far fa-dot-circle"></i>
                                         <p>Roles</p>
-                                    </a>
-                                @endcan
-                                @can('view_permission')
-                                    <a href="{{ route('permissions.index') }}"
-                                        class="nav-link {{ in_array(request()->route()->getName(), ['permissions.index']) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-dot-circle"></i>
-                                        <p>Permissions</p>
                                     </a>
                                 @endcan
                             </li>
@@ -297,6 +289,13 @@
                         </ul>
                     </li>
                 @endcan
+                <li class="nav-item">
+                    <a href="{{ route('chats.index') }}"
+                        class="nav-link {{ request()->route()->getName() == 'chats' ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-comment"></i>
+                        <p>Chats</p>
+                    </a>
+                </li>
 
                 {{-- Earnings --}}
                 {{-- <li class="nav-item">
