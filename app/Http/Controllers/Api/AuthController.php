@@ -38,7 +38,10 @@ class AuthController extends Controller
                 if (!empty($role)) {
                     $user->assignRole($role->name);
                 }
-                return $this->successResponse($user, "Registration Completed!");
+                $token = $user->createToken('auth-token')->plainTextToken;
+                $user->setRememberToken($token);
+                $response = ["user" => $user, "token" => $token];
+                return $this->successResponse($response, "Registration Completed!");
             } else {
                 return $this->errorResponse('Something went Wrong!', 403);
             }
@@ -62,12 +65,12 @@ class AuthController extends Controller
             if (!$user || !Auth::attempt(["email" => $user->email, "password" => $request->password], $request->remember)) {
                 return $this->errorResponse('Invalid Credentials!', 403);
             }
-            if ($user->verified()) {
+            // if ($user->verified()) {
                 $token = $user->createToken('auth-token')->plainTextToken;
                 $user->setRememberToken($token);
-            } else {
-                $token = null;
-            }
+            // } else {
+            //     $token = null;
+            // }
             $response = ["user" => $user, "token" => $token];
             return $this->successResponse($response, "Login Successful!");
         }

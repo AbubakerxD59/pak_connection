@@ -132,7 +132,7 @@ class User extends Authenticatable
         if ($latestOrder) {
             $package = $latestOrder->package()->first();
         }
-        return $latestOrder ? $package : [];
+        return $latestOrder ? $package : null;
     }
 
     protected function statusView(): Attribute

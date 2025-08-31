@@ -30,7 +30,7 @@ class HomeController extends Controller
         $response = [
             "user" => [
                 "name" => $user->full_name,
-                "current_package" => count($user->getPackage()) > 0 ? $user->getPackage() : null,
+                "current_package" => $user->getPackage() > 0 ? $user->getPackage() : null,
                 "expiry_date" => !empty($user->pkg_end_time) ? date('Y-m-d', strtotime($user->pkg_end_time)) : null
             ],
             "last_booking" => $last_booking,
