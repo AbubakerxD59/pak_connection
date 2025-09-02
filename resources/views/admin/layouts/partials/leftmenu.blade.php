@@ -85,25 +85,11 @@
                             ? true
                             : false;
                     @endphp
-                    <li class="nav-item {{ $package ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ $package ? 'active' : '' }}">
+                    <li class="nav-item">
+                        <a href="{{ route('packages.index') }}" class="nav-link {{ $package ? 'active' : '' }}">
                             <i class="nav-icon fas fa-credit-card"></i>
-                            <p>
-                                PACKAGES
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>PACKAGES</p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                @can('view_package')
-                                    <a href="{{ route('packages.index') }}"
-                                        class="nav-link {{ in_array(request()->route()->getName(), ['packages.index', 'packages.create', 'packages.edit']) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-dot-circle"></i>
-                                        <p>Packages</p>
-                                    </a>
-                                @endcan
-                            </li>
-                        </ul>
                     </li>
                 @endif
 
@@ -118,25 +104,11 @@
                             ? true
                             : false;
                     @endphp
-                    <li class="nav-item {{ $promo ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ $promo ? 'active' : '' }}">
+                    <li class="nav-item">
+                        <a href="{{ route('promo-code.index') }}" class="nav-link {{ $promo ? 'active' : '' }}">
                             <i class="nav-icon fas fa-percentage"></i>
-                            <p>
-                                Promo Codes
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>PROMO CODES</p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                @can('view_promocode')
-                                    <a href="{{ route('promo-code.index') }}"
-                                        class="nav-link {{ in_array(request()->route()->getName(), ['promo-code.index', 'promo-code.create', 'promo-code.edit']) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-dot-circle"></i>
-                                        <p>Promo Codes</p>
-                                    </a>
-                                @endcan
-                            </li>
-                        </ul>
                     </li>
                 @endcan
 
@@ -151,25 +123,11 @@
                             ? true
                             : false;
                     @endphp
-                    <li class="nav-item {{ $service ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ $service ? 'active' : '' }}">
+                    <li class="nav-item">
+                        <a href="{{ route('features.index') }}" class="nav-link {{ $service ? 'active' : '' }}">
                             <i class="nav-icon fas fa-star"></i>
-                            <p>
-                                Services
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>SERVICES</p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                @can('view_feature')
-                                    <a href="{{ route('features.index') }}"
-                                        class="nav-link {{ in_array(request()->route()->getName(), ['features.index', 'features.create', 'features.edit']) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-dot-circle"></i>
-                                        <p>Services</p>
-                                    </a>
-                                @endcan
-                            </li>
-                        </ul>
                     </li>
                 @endcan
 
@@ -184,25 +142,11 @@
                             ? true
                             : false;
                     @endphp
-                    <li class="nav-item {{ $field ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ $field ? 'active' : '' }}">
+                    <li class="nav-item">
+                        <a href="{{ route('fields.index') }}" class="nav-link {{ $field ? 'active' : '' }}">
                             <i class="nav-icon fas fa-list"></i>
-                            <p>
-                                Fields
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>FIELDS</p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                @can('view_fields')
-                                    <a href="{{ route('fields.index') }}"
-                                        class="nav-link {{ in_array(request()->route()->getName(), ['fields.index', 'fields.create', 'fields.edit']) ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-dot-circle"></i>
-                                        <p>Feilds</p>
-                                    </a>
-                                @endcan
-                            </li>
-                        </ul>
                     </li>
                 @endcan
 

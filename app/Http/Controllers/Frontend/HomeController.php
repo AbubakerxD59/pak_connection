@@ -201,25 +201,24 @@ class HomeController extends Controller
         try {
             $session = $this->stripe->checkout->sessions->retrieve($request->session_id);
             $user = $this->user->where('stripe_id', $session->id)->first();
-
-            $transaction = $this->transaction->where('session_id', $request->session_id)->first();
-
-            $package = $this->package->find($transaction->package_id);
-
-            $pkg_str_time = Carbon::now();
-            $pkg_end_time = getPackageEndTime($pkg_str_time, $package);
-
-
-            $user->update([
-                "package_id" => $package->id,
-                "pkg_start_time" => $pkg_str_time,
-                "pkg_end_time" => $pkg_end_time,
-                "package_status" => 1,
-            ]);
+            if ($user) {
+                $transaction = $this->transaction->where('session_id', $request->session_id)->first();
+                $package = $this->package->find($transaction->package_id);
+                $pkg_str_time = Carbon::now();
+                $pkg_end_time = getPackageEndTime($pkg_str_time, $package);
+                $user->update([
+                    "customer_id" => $session->customer,
+                    "package_id" => $package->id,
+                    "pkg_start_time" => $pkg_str_time,
+                    "pkg_end_time" => $pkg_end_time,
+                    "package_status" => 1,
+                ]);
+                return view('frontend.success', compact('user'));
+            }
         } catch (\Exception $e) {
             throw new NotFoundHttpException();
         }
-        return view('frontend.success', compact('user'));
+        return redirect()->route("frontend .home")->with("error", "Something went Wrong!");
     }
 
     public function webhook(Request $request)
@@ -244,7 +243,6 @@ class HomeController extends Controller
         // Handle the event
         switch ($event->type) {
             case 'payment_intent.payment_failed':
-
                 // session is completed
             case 'checkout.session.completed':
                 $session = $event->data->object;
@@ -256,12 +254,8 @@ class HomeController extends Controller
                     "payload" => $session,
                     "exception" => "",
                 ]);
-
-                // <<<<<<<<<<<<<<<<<<<<<
-
                 $session_id = $session->id;
                 $paymentLink = $session->payment_link;
-
                 if ($paymentLink) {
                     // payment link apis (deposit and invoice)
                     $transaction = $this->transaction->paymentLink($paymentLink)->unpaid()->first();
@@ -269,10 +263,8 @@ class HomeController extends Controller
                     // checkout session (order)
                     $transaction = $this->transaction->session($session_id)->unpaid()->first();
                 }
-
                 if ($transaction) {
                     $type = $transaction->transaction_type;
-
                     if ($type === 'order') {
                         $order = $this->order->where('session_id', $session->id)->unpaid()->first();
                         if ($order) {
@@ -286,7 +278,6 @@ class HomeController extends Controller
                             ]);
                         }
                     }
-
                     if (in_array($type, ['deposit', 'invoice'])) {
                         $bookServiceId = $transaction->book_service_id ?? null;
                         if ($bookServiceId) {
@@ -295,11 +286,9 @@ class HomeController extends Controller
                                 if ($type == "deposit") {
                                     $status = 3;
                                 }
-
                                 if ($type == "invoice") {
                                     $status = 6;
                                 }
-
                                 $bookedService->status = $status;
                                 $bookedService->save();
                                 // Send email notification
@@ -307,15 +296,11 @@ class HomeController extends Controller
                             }
                         }
                     }
-
                     $transaction->update([
                         'customer_id' => $session->customer,
                         'status' => 1
                     ]);
                 }
-
-                // >>>>>>>>>>>>>>>>>>>>>
-
             default:
                 info("Received unknown event type" . $event->type);
         }

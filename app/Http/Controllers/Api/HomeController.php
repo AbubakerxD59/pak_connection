@@ -69,10 +69,12 @@ class HomeController extends Controller
                 $package = Package::findOrFail($request->package_id);
                 // --- 3. Prepare Session Parameters ---
                 $sessionParams = [];
-                $sessionParams['line_items'] = [[
-                    'price' => $package->stripe_price_id,
-                    'quantity' => 1,
-                ]];
+                $sessionParams['line_items'] = [
+                    [
+                        'price' => $package->stripe_price_id,
+                        'quantity' => 1,
+                    ]
+                ];
                 $sessionParams['shipping_address_collection'] = [
                     'allowed_countries' => ['GB', 'PK']
                 ];
@@ -109,8 +111,13 @@ class HomeController extends Controller
                     "transaction_type" => "order",
                     "status" => "0",
                 ]);
+
+                // --- 7. Update User ---
+                $user->update([
+                    "stripe_id" => $session->id
+                ]);
+
                 DB::commit();
-                // --- 5. Return Checkout URL to Mobile App ---
                 $response = [
                     'checkout_url' => $session->url,
                     'session_id' => $session->id,

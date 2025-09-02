@@ -26,7 +26,10 @@ class Chat extends Model
     public function getUserNameAttribute()
     {
         $user = $this->user()->first();
-        return $user ? $user->full_name : $user->email;
+        if ($user) {
+            $value = $user->full_name ? $user->full_name : $user->email;
+        }
+        return $user ? $value : "-";
     }
     public function getAgentNameAttribute()
     {
