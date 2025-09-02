@@ -20,8 +20,8 @@ class HomeController extends Controller
     public function home()
     {
         $user = Auth::user();
-        $last_booking = $user->bookServices()->latest()->first();
-        $upcoming_booking = $user->bookServices()->notCompleted();
+        $last_booking = $user->bookServices()->with("service")->latest()->first();
+        $upcoming_booking = $user->bookServices()->with("service")->notCompleted();
         if ($last_booking) {
             $upcoming_booking = $upcoming_booking->where("id", "!=", $last_booking->id);
         }
