@@ -146,6 +146,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('chats', ChatController::class)->except("show");
     Route::controller(ChatController::class)->prefix('chats/')->name('chats.')->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
+        Route::get('view/messages', 'viewMessages')->name('view.messages');
+        Route::post('new/messages', 'newMessages')->name('new.message');
     });
 });
 

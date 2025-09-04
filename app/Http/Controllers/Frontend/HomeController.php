@@ -136,9 +136,6 @@ class HomeController extends Controller
                     'emergency_full_name' => $request->has("emergency_full_name") && $request->emergency_full_name ? $request->emergency_full_name : null,
                     'emergency_phone_number' => $request->has("emergency_phone_number") && $request->emergency_phone_number ? $request->emergency_phone_number : null,
                 ];
-                if (empty($user->membership_id)) {
-                    $update["membership_id"] =  rand(100000, 999999);
-                }
                 $user->update($update);
             } else {
                 $user = $this->user->create([
@@ -206,13 +203,18 @@ class HomeController extends Controller
                 $package = $this->package->find($transaction->package_id);
                 $pkg_str_time = Carbon::now();
                 $pkg_end_time = getPackageEndTime($pkg_str_time, $package);
-                $user->update([
+                $userData = [
                     "customer_id" => $session->customer,
                     "package_id" => $package->id,
                     "pkg_start_time" => $pkg_str_time,
                     "pkg_end_time" => $pkg_end_time,
                     "package_status" => 1,
-                ]);
+
+                ];
+                if (empty($user->membership_id)) {
+                    $userData["membership_id"] =  rand(100000, 999999);
+                }
+                $user->update($userData);
                 return view('frontend.success', compact('user'));
             }
         } catch (\Exception $e) {

@@ -95,7 +95,7 @@ class MemberController extends Controller
     public function bookService(Request $request)
     {
         $user = Auth::user();
-        $package = $this->package->find($request->package_id);
+        $package = $this->package->find($request->package_id);  
         if ($package) {
             $service = $this->feature->find($request->service_id);
             if ($service) {

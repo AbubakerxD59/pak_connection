@@ -90,7 +90,7 @@ class ChatbotService
      */
     protected function sendWelcomeMessage(Chat $chat): Message
     {
-        $welcomeMessageContent = "Hello! 👋 Welcome to our support chat. I'm a chatbot here to help you get started. How can I assist you today?";
+        $welcomeMessageContent = "Hello! Welcome to our support chat. I'm a chatbot here to help you get started. How can I assist you today?";
         return Message::create([
             'chat_id' => $chat->id,
             'sender_type' => 'chatbot',
@@ -113,7 +113,7 @@ class ChatbotService
         $userMessageLower = strtolower($userMessage);
 
         if (Str::contains($userMessageLower, ['hello', 'hi', 'hey'])) {
-            $responseContent = "Hi there! How can I help you today? You can ask about our services, pricing, or type 'agent' if you need human assistance.";
+            $responseContent = "How can I help you today? You can ask about our services, pricing, or type 'agent' if you need human assistance.";
         } elseif (Str::contains($userMessageLower, ['pricing', 'cost', 'how much'])) {
             $responseContent = "You can find all our pricing details on our website's pricing page. Is there a specific product or service you're interested in?";
         } elseif (Str::contains($userMessageLower, ['agent', 'human', 'talk to someone'])) {

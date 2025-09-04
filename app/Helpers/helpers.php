@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\BookService;
+use App\Models\Chat;
 use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
@@ -559,5 +560,28 @@ if (!function_exists('getPackageEndTime')) {
         $pkg_end_time->setTime($pkg_end_time->hour, 0, 0);
 
         return $pkg_end_time;
+    }
+}
+
+if (!function_exists('get_options')) {
+    function get_options($type)
+    {
+        switch ($type) {
+            case 'chat_status':
+                $options = Chat::$statuses;
+                break;
+
+            default:
+                $options = [];
+                break;
+        }
+        return $options;
+    }
+}
+if (!function_exists('pendingChatsCount')) {
+    function pendingChatsCount()
+    {
+        $chats = Chat::pending()->count();
+        return $chats;
     }
 }

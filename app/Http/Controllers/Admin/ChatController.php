@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Models\Chat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
@@ -45,15 +48,23 @@ class ChatController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $chat = Chat::with("user", "agent", "messages")->findOrFail($id);
+        $messages = $chat->messages()->orderBy("id", "DESC")->get();
+        return view("admin.chats.edit", compact("chat", "messages"));
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            "status" => "required"
+        ]);
+        $chat = Chat::findOrFail($request->chat_id);
+        $chat->update([
+            "status" => $request->status
+        ]);
+        return back()->with("success", "Chat updated Successfully!");
     }
 
     /**
@@ -80,13 +91,7 @@ class ChatController extends Controller
         $chats = $chats->limit(intval($data['length']));
 
         $chats = $chats->latest()->get();
-        foreach ($chats as $k => $val) {
-            $chats[$k]['user_name'] = $val->user_name;
-            $chats[$k]['status_view'] = $val->status_view;
-            $chats[$k]['agent_name'] = $val->agent_name;
-            $chats[$k]['action'] = view('admin.chats.action')->with('user', $val)->with('chat', $val)->render();
-            $chats[$k] = $val;
-        }
+        $chats->append(["user_name", "agent_name", "status_view", "action"]);
 
         return response()->json([
             'draw' => intval($data['draw']),
@@ -94,5 +99,47 @@ class ChatController extends Controller
             'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
             'aaData' => $chats,
         ]);
+    }
+
+    public function viewMessages(Request $request)
+    {
+        $chat = Chat::with("messages.sender")->findOrFail($request->id);
+        $messages = $chat->messages()->with("sender")->get();
+        $view = view("admin.chats.ajax.view_messages", compact("messages", "chat"));
+        $response = [
+            "success" => true,
+            "data" => $view->render()
+        ];
+        return response()->json($response);
+    }
+
+    public function newMessages(Request $request)
+    {
+        $chat = Chat::with("messages")->findOrFail($request->id);
+        try {
+            DB::beginTransaction();
+            $chat->messages()->create([
+                "sender_type" => "agent",
+                "sender_id" => Auth::id(),
+                "content" => $request->message
+            ]);
+            if ($chat->status == "pending_agent") {
+                $chat->status = "agent_assigned";
+                $chat->agent_id = Auth::id();
+                $chat->save();
+            }
+            $response = [
+                "success" => true,
+                "message" => "New message sent Successfully!",
+            ];
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            $response = [
+                "success" => false,
+                "message" => $e->getMessage(),
+            ];
+        }
+        return response()->json($response);
     }
 }

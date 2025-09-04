@@ -39,6 +39,8 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'manage_booked_services', 'label' => 'Manage Booked Services', 'parent_id' => '', 'route_name' => 'booked_service'],
 
+            ['name' => 'manage_chats', 'label' => 'Manage Chats', 'parent_id' => '', 'route_name' => 'chats'],
+
             //Manage Roles
             ['name' => 'view_role', 'label' => 'View Role', 'parent_id' => 'manage_roles', 'route_name' => 'roles.index', 'role_id' => '1'],
 
@@ -121,13 +123,25 @@ class PermissionSeeder extends Seeder
             ['name' => 'edit_fields', 'label' => 'Edit Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.edit'],
 
             ['name' => 'delete_fields', 'label' => 'Delete Fields', 'parent_id' => 'manage_fields', 'route_name' => 'fields.destroy'],
-            
-            // Manage Fields
+
+            // Manage Booked Services
             ['name' => 'view_booked_services', 'label' => 'View Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => 'booked-services.index'],
 
             ['name' => 'edit_booked_services', 'label' => 'Edit Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => 'booked-services.edit'],
 
             ['name' => 'delete_booked_services', 'label' => 'Delete Booked Service', 'parent_id' => 'manage_booked_services', 'route_name' => 'booked-services.destroy'],
+
+            // Manage Chats
+            ['name' => 'view_chats', 'label' => 'View Chat', 'parent_id' => 'manage_chats', 'route_name' => 'chats.index'],
+
+            ['name' => 'add_chats', 'label' => 'Add Chat', 'parent_id' => 'manage_chats', 'route_name' => 'chats.create'],
+
+            ['name' => 'edit_chats', 'label' => 'Edit Chat', 'parent_id' => 'manage_chats', 'route_name' => 'chats.edit'],
+
+            ['name' => 'delete_chats', 'label' => 'Delete Chat', 'parent_id' => 'manage_chats', 'route_name' => 'chats.destroy'],
+
+            ['name' => 'response_chat', 'label' => 'Response Chat', 'parent_id' => 'manage_chats', 'route_name' => 'chats.response'],
+
 
 
         ];
@@ -135,7 +149,7 @@ class PermissionSeeder extends Seeder
             foreach ($permissions as $permission) {
                 if (!empty($permission['parent_id'])) {
                     $parent_id = Permission::where('name', $permission['parent_id'])->first();
-                    if(empty($parent_id)){
+                    if (empty($parent_id)) {
                         dd($permission);
                     }
                     $permission['parent_id'] = $parent_id->id;

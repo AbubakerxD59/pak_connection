@@ -235,9 +235,11 @@
                 @endcan
                 <li class="nav-item">
                     <a href="{{ route('chats.index') }}"
-                        class="nav-link {{ request()->route()->getName() == 'chats' ? 'active' : '' }}">
+                        class="nav-link {{ in_array(request()->route()->getName(), ['chats.index', 'chats.edit']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-comment"></i>
-                        <p>Chats</p>
+                        <p>Chats
+                            <span class="badge badge-info right">{{pendingChatsCount()}}</span>
+                        </p>
                     </a>
                 </li>
 

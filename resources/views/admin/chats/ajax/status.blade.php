@@ -1,6 +1,6 @@
 <div>
     @if ($chat->status == 'open')
-        <span class="btn btn-sm btn-primary">Open</span>
+        <span class="btn btn-sm btn-warning">Open</span>
     @elseif($chat->status == 'pending_agent')
         <span class="btn btn-sm btn-info">Pending Agent</span>
     @elseif($chat->status == 'agent_assigned')

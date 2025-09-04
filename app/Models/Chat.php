@@ -15,6 +15,12 @@ class Chat extends Model
         "is_automated",
         "agent_id",
     ];
+    public static $statuses = [
+        "open",
+        "pending_agent",
+        "agent_assigned",
+        "closed",
+    ];
     public function user()
     {
         return $this->belongsTo(User::class, "user_id", "id");
@@ -22,6 +28,10 @@ class Chat extends Model
     public function agent()
     {
         return $this->belongsTo(User::class, "agent_id", "id");
+    }
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'chat_id', 'id');
     }
     public function getUserNameAttribute()
     {
@@ -40,5 +50,14 @@ class Chat extends Model
     {
         $view = view("admin.chats.ajax.status")->with("chat", $this);
         return $view->render();
+    }
+    public function getActionAttribute()
+    {
+        $view = view("admin.chats.ajax.action")->with("chat", $this);
+        return $view->render();
+    }
+    public function scopePending($query)
+    {
+        $query->where("status", "pending_agent");
     }
 }

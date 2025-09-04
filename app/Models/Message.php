@@ -14,4 +14,13 @@ class Message extends Model
         "sender_id",
         "content",
     ];
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id', 'id');
+    }
+    public function getSenderNameAttribute()
+    {
+        $user = $this->sender()->first();
+        return $user ? $user->full_name : "BOT";
+    }
 }

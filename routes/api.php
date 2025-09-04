@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get("get-fields", "getFields");
     });
     Route::prefix("service/")->controller(ServiceController::class)->group(function () {
+        Route::post("book", "book");
         Route::get("tracking", "tracking");
     });
     Route::post("checkout", [HomeController::class, "checkout"]);
