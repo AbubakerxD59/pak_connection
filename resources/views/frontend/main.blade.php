@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom-styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/frontend-styles.css') }}">
+    @stack('styles')
 </head>
 
 <body>

@@ -66,29 +66,6 @@
 
                                         <div class="form-group row">
                                             <div class="col-md-3">
-                                                <label for="duration" class="form-label">Duration</label>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="number" class="form-control" name="duration" id="duration"
-                                                    value="{{ old('duration') }}" placeholder="Enter package duration" required>
-                                                @error('duration')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-5">
-                                                <select class="form-control" name="date_type" id="date_type">
-                                                    <option value="days">Day(s)</option>
-                                                    <option value="month">Month(s)</option>
-                                                    <option value="year">Year(s)</option>
-                                                </select>
-                                                @error('name')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
                                                 <label for="price" class="form-label">Price</label>
                                             </div>
                                             <div class="col-md-9">

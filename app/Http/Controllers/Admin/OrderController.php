@@ -105,7 +105,7 @@ class OrderController extends Controller
         $data = $request->all();
         $search = @$data['search']['value'];
         $iTotalRecords = $this->order;
-        $orders = $this->order->with('user', 'package', 'promo')->latest();
+        $orders = $this->order->with('user', 'package', 'price', 'promo')->latest();
 
         if (!empty($search)) {
             $orders = $orders->search($search);
@@ -124,7 +124,7 @@ class OrderController extends Controller
             $orders[$k]['customer_name'] = $val->user ? '<a href="' . route("users.edit", $val->user->id) . '">' . $val->user->full_name . ' (' . $val->user->email . ')</a>' : '-';
             $orders[$k]['package_name'] = $val->package ? '<a href="' . route("packages.edit", $val->package->id) . '">' . $val->package->name . '</a>' : '-';
             $orders[$k]['coupon_name'] = $val->promo ? '<a href="' . route("promo-code.edit", $val->promo->id) . '">' . $val->promo->name . '</a>' : '-';
-            $orders[$k]['package_amount'] = $val->package ? '£' . $val->package->price : '-';
+            $orders[$k]['package_amount'] = $val->price ? '£' . $val->price->price : '-';
             $orders[$k]['discount_amount'] = $val->getDiscount();
             $orders[$k]['total_amount'] = $val->getTotal();
             $orders[$k]['date'] = date("Y-m-d", strtotime($val->created_at));

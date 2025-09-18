@@ -1,4 +1,4 @@
-@if (!in_array($role->name, ['User']))
+@if (!in_array($role->name, ['Customer']))
     <div class="d-flex">
         @can('assign_role_permissions')
             <div>

@@ -17,6 +17,7 @@ class Order extends Model
         "customer_id",
         "session_id",
         "package_id",
+        "price_id",
         "promo_id",
         "total_amount",
         "order_num",
@@ -39,6 +40,11 @@ class Order extends Model
     public function package()
     {
         return $this->belongsTo(Package::class, 'package_id', 'id');
+    }
+
+    public function price()
+    {
+        return $this->belongsTo(Price::class, 'price_id', 'id');
     }
 
     public function promo()

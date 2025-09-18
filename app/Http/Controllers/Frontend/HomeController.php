@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\BookService;
+use App\Models\Price;
 use App\Models\Transaction;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Carbon\Carbon;
@@ -50,23 +51,16 @@ class HomeController extends Controller
         if (auth()->check() && auth()->user()->getPackage()) {
             return view("frontend.auth_home");
         } else {
-            $packages = $this->package->get();
-            return view('frontend.home', compact('packages'));
+            $prices = Price::with('package')->get();
+            return view('frontend.home', compact('prices'));
         }
     }
 
-    public function update_packages()
-    {
-        $packages = $this->package->get();
-        return view('frontend.member.update-package', compact('packages'));
-    }
-
-
     public function buyMembership($id = null)
     {
-        $package = $this->package->find($id);
-        if ($package) {
-            return view('frontend.become-a-member', compact('package'));
+        $price = Price::with("package")->find($id);
+        if ($price) {
+            return view('frontend.become-a-member', compact('price'));
         } else {
             return redirect()->back()->with('error', 'Package not Found!');
         }
@@ -88,7 +82,8 @@ class HomeController extends Controller
             $rules['password'] = 'required|confirmed|min:6';
         }
         $data = $request->validate($rules);
-        $package = $this->package->find($request->package_id);
+        $price = Price::with("package")->find($request->price_id);
+        $package = $price->package;
         if ($package) {
             $session = array();
             $promo = '';
@@ -108,7 +103,7 @@ class HomeController extends Controller
                 $user = auth()->user();
             }
             // Checkout session
-            $session["line_items"] = [["price" => $package->stripe_price_id, "quantity" => "1"]];
+            $session["line_items"] = [["price" => $price->stripe_id, "quantity" => "1"]];
             $session["shipping_address_collection"] = ["allowed_countries" => ["GB", "PK"]];
             if ($user && $user->customer_id) {
                 $session["customer"] = $user->customer_id;
@@ -163,10 +158,11 @@ class HomeController extends Controller
                 "user_id" => $user->id,
                 "session_id" => $session->id,
                 "package_id" => $package->id,
+                "price_id" => $price->id,
                 "promo_id" => $promo ? $promo->id : "",
-                "total_amount" => $package->price,
-                "discount_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
-                "payable_amount" => $promo ? $package->price -  calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "total_amount" => $price->price,
+                "discount_amount" => $promo ? calculate_discount_price($price->price, $promo->discount_amount, $promo->discount_type, 1) : $price->price,
+                "payable_amount" => $promo ? $price->price -  calculate_discount_price($price->price, $promo->discount_amount, $promo->discount_type, 1) : $price->price,
                 "order_num" => Order::generateAvailableOrderNum(),
                 "status" => "0",
             ]);
@@ -178,9 +174,9 @@ class HomeController extends Controller
                 "session_id" => $session->id,
                 "package_id" => $package->id,
                 "promo_id" => $promo ? $promo->id : "",
-                "total_amount" => $package->price,
-                "discount_amount" => $promo ? calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
-                "payable_amount" => $promo ? $package->price -  calculate_discount_price($package->price, $promo->discount_amount, $promo->discount_type, 1) : $package->price,
+                "total_amount" => $price->price,
+                "discount_amount" => $promo ? calculate_discount_price($price->price, $promo->discount_amount, $promo->discount_type, 1) : $price->price,
+                "payable_amount" => $promo ? $price->price -  calculate_discount_price($price->price, $promo->discount_amount, $promo->discount_type, 1) : $price->price,
                 "transaction_type" => "order",
                 "status" => "0",
             ]);
@@ -202,7 +198,7 @@ class HomeController extends Controller
                 $transaction = $this->transaction->where('session_id', $request->session_id)->first();
                 $package = $this->package->find($transaction->package_id);
                 $pkg_str_time = Carbon::now();
-                $pkg_end_time = getPackageEndTime($pkg_str_time, $package);
+                $pkg_end_time = getPackageEndTime($pkg_str_time, $price);
                 $userData = [
                     "customer_id" => $session->customer,
                     "package_id" => $package->id,

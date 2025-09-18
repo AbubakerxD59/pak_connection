@@ -14,21 +14,28 @@ class Package extends Model
     protected $fillable = [
         'name',
         'icon',
-        'duration',
-        'date_type',
-        'price',
+        'personal_assistance',
         'stripe_product_id',
-        'stripe_price_id',
     ];
 
-    protected $appends = ['date_duration'];
+    public static $prices = [
+        "1" =>  "1 Month",
+        "6" =>  "6 Months",
+        "12" =>  "12 Months",
+    ];
 
     public function features()
     {
         return $this->belongsToMany(Feature::class, 'feature_packages');
     }
 
-    public function bookServices(){
+    public function prices()
+    {
+        return $this->hasMany(Price::class, 'package_id', 'id');
+    }
+
+    public function bookServices()
+    {
         return $this->hasMany(BookService::class, 'package_id', 'id');
     }
 
@@ -37,22 +44,15 @@ class Package extends Model
         $query->where('name', 'like', "%{$search}%");
     }
 
-    public function time_duration()
+    public function scopePrice($query, $type)
     {
-        return $this->duration . ' ' . $this->date_type;
+        $query->where("type", $type);
     }
 
     protected function icon(): Attribute
     {
         return Attribute::make(
             get: fn($value) => ($value != '' && $value != null) ? url(getImage('', $value)) : '',
-        );
-    }
-
-    protected function dateDuration(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => $this->duration . ' ' . $this->date_type,
         );
     }
 
@@ -66,5 +66,26 @@ class Package extends Model
         $currentFeatures = $this->getFeatures();
         $features = check_features($currentFeatures, $this->id);
         return $features;
+    }
+    public function getIconViewAttribute()
+    {
+        $icon = "<img src='$this->icon' class='rounded-pill' width='75px'>";
+        return $icon;
+    }
+    public function getPricingAttribute()
+    {
+        $pricing = $this->prices()->get();
+        $view = view("admin.packages.dataTable.pricing")->with("pricing", $pricing);
+        return $view->render();
+    }
+    public function getPersonalAttribute()
+    {
+        $view = view("admin.packages.dataTable.personal_assistance")->with("package", $this);
+        return $view->render();
+    }
+    public function getActionAttribute()
+    {
+        $view = view("admin.packages.action")->with("package", $this);
+        return $view->render();
     }
 }

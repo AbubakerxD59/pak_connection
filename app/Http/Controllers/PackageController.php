@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\BookService;
 use App\Models\Feature;
 use App\Models\Package;
+use App\Models\Price;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Foreach_;
 use Stripe\Stripe;
 
 class PackageController extends Controller
@@ -52,9 +54,8 @@ class PackageController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'icon' => 'sometimes|file',
-            'duration' => 'required',
-            'date_type' => 'required',
-            'price' => 'required',
+            'price' => 'required|array',
+            'personal_assistance' => 'required',
         ]);
         // create stripe product
         $stripe_product = $this->stripe->products->create([
@@ -62,33 +63,34 @@ class PackageController extends Controller
             'active' => true,
         ]);
         if ($stripe_product->id) {
-            // create stripe price
-            $stripe_amount = $this->stripe->prices->create([
-                'currency' => 'gbp',
-                'active' => true,
-                'product' => $stripe_product->id,
-                'unit_amount_decimal' => $request->price * 100,
-                'recurring' => [
-                    'interval' => $request->date_type,
-                    'interval_count' => $request->duration
-                ]
+            $package = $this->package->create([
+                'name' => $request->name,
+                'icon' => $request->has('icon') ? saveImage($request->File('icon')) : '',
+                'personal_assistance' => $request->personal_assistance == "on" ? 1 : 0,
+                'stripe_product_id' => $stripe_product->id
             ]);
-            if ($stripe_product->id && $stripe_amount->id) {
-                $package = $this->package->create([
-                    'name' => $request->name,
-                    'icon' => $request->has('icon') ? saveImage($request->File('icon')) : '',
-                    'duration' => $request->duration,
-                    'date_type' => $request->date_type,
-                    'price' => $request->price,
-                    'stripe_product_id' => $stripe_product->id,
-                    'stripe_price_id' => $stripe_amount->id,
+            // pricing
+            $pricing = $request->price;
+            foreach ($pricing as $interval => $price) {
+                $stripe_amount = $this->stripe->prices->create([
+                    'currency' => 'gbp',
+                    'active' => true,
+                    'product' => $stripe_product->id,
+                    'unit_amount_decimal' => $price * 100,
+                    'recurring' => [
+                        'interval' => "month",
+                        'interval_count' => $interval
+                    ]
                 ]);
-                if ($package) {
-                    return redirect(route('packages.index'))->with('success', 'Package added Successfully!');
-                } else {
-                    return back()->with('error', 'Unable to add Package!');
+                if ($stripe_amount->id) {
+                    $package->prices()->create([
+                        "type" => $interval,
+                        "price" => $price,
+                        "stripe_id" => $stripe_amount->id,
+                    ]);
                 }
             }
+            return redirect(route('packages.index'))->with('success', 'Package added Successfully!');
         }
         return back()->with('error', 'Unable to add Package!');
     }
@@ -106,17 +108,10 @@ class PackageController extends Controller
      */
     public function edit(string $id)
     {
-        $package = $this->package->find($id);
+        $package = $this->package->with("prices", "features")->find($id);
+        $prices = Price::where("package_id", $package->id)->get();
         $features = $this->feature->get();
-
-        // $package = $this->package->with([
-        //     'bookServices.service',
-        //     'bookServices.transactions'
-        // ])->find($id);
-
-        // return $package;
-
-        return view('admin.packages.edit', compact('package', 'features'));
+        return view('admin.packages.edit', compact('package', 'prices', 'features'));
     }
 
     /**
@@ -127,9 +122,8 @@ class PackageController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'icon' => 'sometimes|file',
-            'duration' => 'required',
-            'date_type' => 'required',
-            'price' => 'required',
+            'price' => 'required|array',
+            'personal_assistance' => 'required',
         ]);
         $package = $this->package->find($id);
         if ($package) {
@@ -138,14 +132,61 @@ class PackageController extends Controller
             // update stripe price
             $data = [
                 'name' => $request->name,
-                'duration' => $request->duration,
-                'date_type' => $request->date_type,
-                'price' => $request->price,
+                'personal_assistance' => $request->personal_assistance == "on" ? 1 : 0,
             ];
             if ($request->has('icon')) {
                 $data['icon'] = saveImage($request->File('icon'));
             }
             $package->update($data);
+            // pricing
+            $pricing = $request->price;
+            foreach ($pricing as $type => $price) {
+                if (!empty($price) && $price > 0) {
+                    $packagePrice = Price::where("type", $type)->where("package_id", $id)->first();
+                    if ($packagePrice) {
+                        if ($packagePrice->price != $price) {
+                            $this->stripe->prices->update($packagePrice->stripe_id, [
+                                "active" => false
+                            ]);
+                            $stripe_amount = $this->stripe->prices->create([
+                                'currency' => 'gbp',
+                                'active' => true,
+                                'product' => $package->stripe_product_id,
+                                'unit_amount_decimal' => $price * 100,
+                                'recurring' => [
+                                    'interval' => "month",
+                                    'interval_count' => $packagePrice->type
+                                ]
+                            ]);
+                            if ($stripe_amount->id) {
+                                $packagePrice->update([
+                                    "price" => $price,
+                                    "stripe_id" => $stripe_amount->id,
+                                ]);
+                            }
+                        }
+                    } else {
+                        $stripe_amount = $this->stripe->prices->create([
+                            'currency' => 'gbp',
+                            'active' => true,
+                            'product' => $package->stripe_product_id,
+                            'unit_amount_decimal' => $price * 100,
+                            'recurring' => [
+                                'interval' => "month",
+                                'interval_count' => $type
+                            ]
+                        ]);
+                        if ($stripe_amount->id) {
+                            Price::create([
+                                "package_id" => $id,
+                                "type" => $type,
+                                "price" => $price,
+                                "stripe_id" => $stripe_amount->id,
+                            ]);
+                        }
+                    }
+                }
+            }
             return redirect(route('packages.index'))->with('success', 'Package update successfully!');
         } else {
             return back()->with('error', 'Unable to update Package!');
@@ -159,6 +200,7 @@ class PackageController extends Controller
     {
         $package = $this->package->find($id);
         if ($package) {
+            $package->prices()->delete();
             if ($package->delete()) {
                 return back()->with('success', 'Package deleted successfully!');
             } else {
@@ -187,14 +229,7 @@ class PackageController extends Controller
         $packages = $packages->limit(intval($data['length']));
 
         $packages = $packages->get();
-        foreach ($packages as $k => $val) {
-            $packages[$k]['icon_view'] = "<img src='{$val->icon}' class='rounded-pill' width='75px'>";
-            $packages[$k]['name'] = "<a href=" . route('packages.edit', $val->id) . ">{$val->name}</a>";
-            $packages[$k]['price'] = '£' . $val->price;
-            $packages[$k]['time_duration'] = $val->time_duration();
-            $packages[$k]['action'] = view('admin.packages.action')->with('package', $val)->render();
-            $packages[$k] = $val;
-        }
+        $packages->append(["icon_view", "pricing", "personal", "action"]);
 
         return response()->json([
             'draw' => intval($data['draw']),

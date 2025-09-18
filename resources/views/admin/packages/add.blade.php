@@ -52,10 +52,26 @@
 
                                         <div class="form-group row">
                                             <div class="col-md-3">
+                                                <label for="price" class="form-label">Pricing</label>
+                                            </div>
+                                            @foreach (get_options('package_prices') as $key => $price)
+                                                <div class="input-group col-md-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">{{ $price }}(£)</span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        name="price[{{ $key }}]">
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-3">
                                                 <label for="icon" class="form-label">Icon</label>
                                             </div>
                                             <div class="col-md-9">
-                                                <input type="file" name="icon" id="icon" class="form-control">
+                                                <input type="file" name="icon" id="icon" class="form-control"
+                                                    accept="image/*">
                                                 <img id="iconPreview" class="rounded mt-1" width="200px">
 
                                                 @error('icon')
@@ -66,35 +82,14 @@
 
                                         <div class="form-group row">
                                             <div class="col-md-3">
-                                                <label for="duration" class="form-label">Duration</label>
+                                                <label for="personal_assistance" class="form-label">Personal Assistance</label>
                                             </div>
-                                            <div class="col-md-4">
-                                                <input type="number" class="form-control" name="duration" id="duration"
-                                                    value="{{ old('duration') }}" placeholder="Enter package duration" required>
-                                                @error('duration')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-5">
-                                                <select class="form-control" name="date_type" id="date_type">
-                                                    <option value="day">Day(s)</option>
-                                                    <option value="month">Month(s)</option>
-                                                    <option value="year">Year(s)</option>
-                                                </select>
-                                                @error('name')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <label for="price" class="form-label">Price</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <input type="number" class="form-control" name="price" id="price"
-                                                    value="{{ old('price') }}" placeholder="Enter package price" required>
-                                                @error('price')
+                                            <div class="custom-control custom-switch col-md-09">
+                                                <input type="hidden" name="personal_assistance" value="off">
+                                                <input type="checkbox" class="custom-control-input" id="personal_assistance"
+                                                    name="personal_assistance">
+                                                <label class="custom-control-label" for="personal_assistance"></label>
+                                                @error('personal_assistance')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>

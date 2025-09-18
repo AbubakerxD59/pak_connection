@@ -58,7 +58,8 @@
                                                 <label for="icon" class="form-label">Icon</label>
                                             </div>
                                             <div class="col-md-9">
-                                                <input type="file" name="icon" id="icon" class="form-control">
+                                                <input type="file" name="icon" id="icon" class="form-control"
+                                                    accept="image/*">
                                                 <img id="iconPreview" class="rounded mt-1" width="150px"
                                                     src="{{ $package->icon }}">
 
@@ -70,140 +71,42 @@
 
                                         <div class="form-group row">
                                             <div class="col-md-3">
-                                                <label for="duration" class="form-label">Duration</label>
+                                                <label for="price" class="form-label">Pricing</label>
                                             </div>
-                                            <div class="col-md-4">
-                                                <input type="number" class="form-control" name="duration" id="duration"
-                                                    value="{{ old('duration', $package->duration) }}"
-                                                    placeholder="Enter package duration" required>
-                                                @error('duration')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-5">
-                                                <select class="form-control" name="date_type" id="date_type">
-                                                    <option value="day" {{ $package->date_type == 'day' ? 'selected' : '' }}>
-                                                        Day(s)</option>
-                                                    <option value="month"
-                                                        {{ $package->date_type == 'month' ? 'selected' : '' }}>Month(s)
-                                                    </option>
-                                                    <option value="year"
-                                                        {{ $package->date_type == 'year' ? 'selected' : '' }}>Year(s)</option>
-                                                </select>
-                                                @error('name')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <label for="price" class="form-label">Price</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <input type="number" class="form-control" name="price" id="price"
-                                                    value="{{ old('price', $package->price) }}"
-                                                    placeholder="Enter package price" required>
-                                                @error('price')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <label for="stripe_product_id" class="form-label">Stripe Product ID</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" name="stripe_product_id"
-                                                    id="stripe_product_id"
-                                                    value="{{ old('stripe_product_id', $package->stripe_product_id) }}"
-                                                    placeholder="Enter package product ID" disabled>
-                                                @error('stripe_product_id')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-md-3">
-                                                <label for="stripe_price_id" class="form-label">Stripe Price ID</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" name="stripe_price_id"
-                                                    id="stripe_price_id"
-                                                    value="{{ old('stripe_price_id', $package->stripe_price_id) }}"
-                                                    placeholder="Enter package product ID" disabled>
-                                                @error('stripe_price_id')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                {{-- Services --}}
-                                <div class="card">
-                                    <div class="card-header with-border clearfix">
-                                        <div class="card-title">
-                                            <i class="fas fa-star"></i>
-                                            Services
-                                        </div>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"
-                                                title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        @can('add_feature')
-                                            <div class="content-header clearfix">
-                                                <div class="float-right">
-                                                    <a class="btn btn-primary" data-toggle="modal"
-                                                        data-target="#add_features_modal">
-                                                        <i class="fas fa-plus-square"></i> Add Service</a>
-                                                </div>
-                                            </div>
-                                        @endcan
-                                        <div class="table-list">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="table-responsive">
-                                                        <?php
-                                                        $selected_features = [];
-                                                        ?>
-                                                        <table class="table table-striped table-bordered"
-                                                            id="features_dataTable">
-                                                            <thead>
-                                                                <th>ID</th>
-                                                                <th>Name</th>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($package->load('features')->features as $key => $feature)
-                                                                    <?php
-                                                                    array_push($selected_features, $feature->id);
-                                                                    ?>
-                                                                    <tr>
-                                                                        <td>{{ $key + 1 }}</td>
-                                                                        <td>{{ $feature->name }}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
+                                            @foreach (get_options('package_prices') as $key => $price)
+                                                @php $packagePrice = $prices->where("type", $key)->first(); @endphp
+                                                <div class="input-group col-md-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">{{ $price }}(£)</span>
                                                     </div>
+                                                    <input type="number" class="form-control" name="price[{{ $key }}]"
+                                                        value="{{ @$packagePrice->price }}">
                                                 </div>
+                                            @endforeach
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-3">
+                                                <label for="personal_assistance" class="form-label">Personal Assistance</label>
+                                            </div>
+                                            <div class="custom-control custom-switch col-md-09">
+                                                <input type="hidden" name="personal_assistance" value="off">
+                                                <input type="checkbox" class="custom-control-input" id="personal_assistance"
+                                                    name="personal_assistance"
+                                                    {{ $package->personal_assistance ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="personal_assistance"></label>
+                                                @error('personal_assistance')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                {{-- Booked Services --}}
-                                @can('view_booked_services')
+                                    {{-- Services --}}
                                     <div class="card">
                                         <div class="card-header with-border clearfix">
                                             <div class="card-title">
                                                 <i class="fas fa-star"></i>
-                                                Booked Services
+                                                Services
                                             </div>
                                             <div class="card-tools">
                                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"
@@ -213,20 +116,39 @@
                                             </div>
                                         </div>
                                         <div class="card-body">
+                                            @can('add_feature')
+                                                <div class="content-header clearfix">
+                                                    <div class="float-right">
+                                                        <a class="btn btn-primary" data-toggle="modal"
+                                                            data-target="#add_features_modal">
+                                                            <i class="fas fa-plus-square"></i> Add Service</a>
+                                                    </div>
+                                                </div>
+                                            @endcan
                                             <div class="table-list">
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="table-responsive">
+                                                            <?php
+                                                            $selected_features = [];
+                                                            ?>
                                                             <table class="table table-striped table-bordered"
-                                                                id="booked_services_dataTable">
+                                                                id="features_dataTable">
                                                                 <thead>
-                                                                    {{-- <th>ID</th> --}}
-                                                                    <th>Member ID</th>
-                                                                    <th>Customer</th>
-                                                                    <th>Service</th>
-                                                                    <th>Status</th>
-                                                                    <th>Action</th>
+                                                                    <th>ID</th>
+                                                                    <th>Name</th>
                                                                 </thead>
+                                                                <tbody>
+                                                                    @foreach ($package->load('features')->features as $key => $feature)
+                                                                        <?php
+                                                                        array_push($selected_features, $feature->id);
+                                                                        ?>
+                                                                        <tr>
+                                                                            <td>{{ $key + 1 }}</td>
+                                                                            <td>{{ $feature->name }}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
@@ -234,10 +156,47 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endcan
+                                    {{-- Booked Services --}}
+                                    @can('view_booked_services')
+                                        <div class="card">
+                                            <div class="card-header with-border clearfix">
+                                                <div class="card-title">
+                                                    <i class="fas fa-star"></i>
+                                                    Booked Services
+                                                </div>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                                        title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-list">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped table-bordered"
+                                                                    id="booked_services_dataTable">
+                                                                    <thead>
+                                                                        {{-- <th>ID</th> --}}
+                                                                        <th>Member ID</th>
+                                                                        <th>Customer</th>
+                                                                        <th>Service</th>
+                                                                        <th>Status</th>
+                                                                        <th>Action</th>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endcan
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </section>
             </form>
         </div>

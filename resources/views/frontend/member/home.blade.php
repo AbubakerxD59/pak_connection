@@ -14,9 +14,9 @@
 
         <div class="membership-header package-header">
             <h2 class="welcome-title">Package:</h2>
-            @if (!empty($package))
-                <h3 class="member-name">{{ $package->name ?? '-' }}</h3>
-                <a class="btn btn-primary btn-sm" href="{{ route('frontend.member.tracking') }}">Track Services</a>
+            @if ($package)
+                <h3 class="member-name">{{ $package->name }}</h3>
+                {{-- <a class="btn btn-primary btn-sm" href="{{ route('frontend.member.tracking') }}">Track Services</a> --}}
             @else
                 <span class="font-weight-bold h4">No package found</span>
             @endif
@@ -36,7 +36,6 @@
 
                                 @if ($feature->book)
                                     <span class="btn btn-sm btn-info bg-primary">In Progress</span>
-                                    {{-- {!! service_book_status($feature->book) !!} --}}
                                 @endif
                             </span>
                         </div>

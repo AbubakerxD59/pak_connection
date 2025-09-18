@@ -15,10 +15,10 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         try {
-            $user = User::firstOrCreate(['email' => 'admin123@gmail.com'], [
+            $user = User::firstOrCreate(['email' => 'pak_connection@admin.com'], [
                 'full_name' => 'Super Admin',
-                'email' => 'admin123@gmail.com',
-                'password' => 'admin123',
+                'email' => 'pak_connection@admin.com',
+                'password' => 'P@assW0rd',
                 'status' => '1'
             ]);
             if (! empty($user)) {

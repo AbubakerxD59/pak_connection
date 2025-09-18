@@ -5,10 +5,10 @@
         <span class="h5">Enter your details</span>
         <form action="{{ route('frontend.checkout') }}" method="POST" class="col-md-12 membership-form">
             @csrf
-            <input type="hidden" name="package_id" value="{{ $package->id }}">
+            <input type="hidden" name="price_id" value="{{ $price->id }}">
             <div class="row">
                 <div class="col-md-8 cart-details bg-light rounded p-4">
-                    <h2>{{ $package->name }}</h2>
+                    <h2>{{ $price->package->name }}</h2>
                     <hr>
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -130,13 +130,12 @@
                 <div class="col-md-4 cart-summary bg-white rounded p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <label for="period" class="form-label">Period</label>
-                        <select id="period" class="form-select w-auto">
-                            <option selected disabled>{{ $package->date_duration }}</option>
-                        </select>
+                        <input type="text" class="form-control col-3" value="{{ $price->type_text }}" disabled
+                            readonly>
                     </div>
                     <h4 class="mt-3">Features</h4>
                     <ul class="package-list">
-                        @foreach ($package->checkFeatures() as $key => $feature)
+                        @foreach ($price->package->checkFeatures() as $key => $feature)
                             @if ($key == 'include')
                                 @foreach ($feature as $include)
                                     <li>
@@ -167,7 +166,7 @@
                     </ul>
                     <h4>Subtotal</h4>
                     <h3 class="summary-price">
-                        {{ number_format((float) $package->price, 2) . ' £' }}
+                        {{ number_format((float) $price->price, 2) . ' £' }}
                         {{-- <span class="text-muted text-decoration-line-through">Rs.35,952.00</span> --}}
                     </h3>
                     {{-- <p class="text-success">Discount -72% <span class="text-danger">-Rs.69,120.00</span></p> --}}

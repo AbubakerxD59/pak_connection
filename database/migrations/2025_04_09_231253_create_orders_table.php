@@ -17,6 +17,7 @@ return new class extends Migration
             $table->longText('customer_id')->nullable();
             $table->longText('session_id')->nullable();
             $table->integer('package_id');
+            $table->integer('price_id');
             $table->integer('promo_id');
             $table->float('total_amount');
             $table->integer('status')->default(0);

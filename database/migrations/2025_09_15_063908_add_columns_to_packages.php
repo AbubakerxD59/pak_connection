@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('packages', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('icon');
-            $table->text('stripe_product_id')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::table('packages', function (Blueprint $table) {
+            $table->boolean("personal_assistance")->default(0)->after("icon");
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('packages');
+        Schema::table('packages', function (Blueprint $table) {
+            //
+        });
     }
 };

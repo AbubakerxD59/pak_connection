@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Feature;
+use App\Models\Field;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -37,12 +38,14 @@ class FeatureSeeder extends Seeder
             ['name' => "Full VIP Concierge Services"],
         ];
         foreach ($features as $feature) {
-            Feature::updateOrCreate(
+            $service = Feature::updateOrCreate(
                 ['name' => $feature['name']],
                 [
                     'name' => $feature['name']
                 ]
             );
+            $field_ids = Field::inRandomOrder()->limit(10)->pluck("id");
+            $service->fields()->sync($field_ids);
         }
     }
 }

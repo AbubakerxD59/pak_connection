@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('packages', function (Blueprint $table) {
+        Schema::create('prices', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('icon');
-            $table->text('stripe_product_id')->nullable();
-            $table->softDeletes();
+            $table->integer("package_id")->index()->nullable();
+            $table->string("type")->index()->nullable();
+            $table->decimal("price")->default(0);
+            $table->text("stripe_id")->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('packages');
+        Schema::dropIfExists('prices');
     }
 };

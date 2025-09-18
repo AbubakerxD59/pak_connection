@@ -24,8 +24,8 @@
                                                         <thead>
                                                             <th>Icon</th>
                                                             <th>Name</th>
-                                                            <th>Duration</th>
-                                                            <th>Price</th>
+                                                            <th>Pricing</th>
+                                                            <th>Personal Assistance</th>
                                                             <th>Action</th>
                                                         </thead>
                                                     </table>
@@ -66,10 +66,10 @@
                     data: 'name'
                 },
                 {
-                    data: 'time_duration'
+                    data: 'pricing'
                 },
                 {
-                    data: 'price'
+                    data: 'personal'
                 },
                 {
                     data: 'action'

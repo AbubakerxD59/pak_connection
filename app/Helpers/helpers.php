@@ -546,14 +546,14 @@ if (!function_exists('count_book_services')) {
 }
 
 if (!function_exists('getPackageEndTime')) {
-    function getPackageEndTime($currentTime, Package $package)
+    function getPackageEndTime($currentTime, Package $price)
     {
 
-        $pkg_end_time = match ($package->date_type) {
-            'year'  => $currentTime->copy()->addYears($package->duration),
-            'month' => $currentTime->copy()->addMonths($package->duration),
-            'day'   => $currentTime->copy()->addDays($package->duration),
-            'hour'  => $currentTime->copy()->addHours($package->duration),
+        $pkg_end_time = match ('month') {
+            'year'  => $currentTime->copy()->addYears($price->type),
+            'month' => $currentTime->copy()->addMonths($price->type),
+            'day'   => $currentTime->copy()->addDays($price->type),
+            'hour'  => $currentTime->copy()->addHours($price->type),
             default => $currentTime,
         };
 
@@ -569,6 +569,10 @@ if (!function_exists('get_options')) {
         switch ($type) {
             case 'chat_status':
                 $options = Chat::$statuses;
+                break;
+
+            case 'package_prices':
+                $options = Package::$prices;
                 break;
 
             default:

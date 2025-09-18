@@ -86,7 +86,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" id="package_amount"
-                                                    value="{{ '£' . $order->getPackageTotal() }}" readonly disabled>
+                                                    value="{{ '£' . $order->price?->price }}" readonly disabled>
                                                 <input type="hidden" name="total_amount" value="{{ $order->total_amount }}">
                                                 @error('coupon')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
