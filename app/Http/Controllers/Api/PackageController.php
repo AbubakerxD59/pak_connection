@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Feature;
 use App\Models\Package;
+use App\Models\Price;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
     public function get(Package $package)
     {
-        $packages = $package->with("features")->get();
+        $packages = $package->with("prices", "features")->get();
         return $this->successResponse($packages);
     }
 

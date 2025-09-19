@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Price;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -59,19 +60,20 @@ class HomeController extends Controller
     {
         $stripe = new StripeClient(env('STRIPE_SECRET'));
         $data = Validator::make($request->all(), [
-            "package_id" => "required|exists:packages,id",
+            "price_id" => "required",
         ]);
         if ($data->fails()) {
             return $this->errorResponse($data->errors()->first(), 400);
         } else {
             try {
                 DB::beginTransaction();
-                $package = Package::findOrFail($request->package_id);
+                $price = Price::findOrFail($request->price_id);
+                $package = $price->package()->first();
                 // --- 3. Prepare Session Parameters ---
                 $sessionParams = [];
                 $sessionParams['line_items'] = [
                     [
-                        'price' => $package->stripe_price_id,
+                        'price' => $price->stripe_id,
                         'quantity' => 1,
                     ]
                 ];
@@ -94,8 +96,9 @@ class HomeController extends Controller
                     "user_id" => $user->id,
                     "session_id" => $session->id,
                     "package_id" => $package->id,
-                    "total_amount" => $package->price,
-                    "payable_amount" =>  $package->price,
+                    "price_id" => $price->id,
+                    "total_amount" => $price->price,
+                    "payable_amount" =>  $price->price,
                     "order_num" => Order::generateAvailableOrderNum(),
                     "status" => "0",
                 ]);
@@ -106,8 +109,8 @@ class HomeController extends Controller
                     "order_id" => $order->id,
                     "session_id" => $session->id,
                     "package_id" => $package->id,
-                    "total_amount" => $package->price,
-                    "payable_amount" => $package->price,
+                    "total_amount" => $price->price,
+                    "payable_amount" => $price->price,
                     "transaction_type" => "order",
                     "status" => "0",
                 ]);

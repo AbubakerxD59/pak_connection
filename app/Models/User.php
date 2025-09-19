@@ -130,7 +130,9 @@ class User extends Authenticatable
     {
         $latestOrder = $this->orders()->paid()->latest()->first();
         if ($latestOrder) {
+            $price = $latestOrder->price()->first();
             $package = $latestOrder->package()->first();
+            $package->price = $price->price;
         }
         return $latestOrder ? $package : null;
     }
@@ -152,7 +154,8 @@ class User extends Authenticatable
         );
     }
 
-    public function verified(){
+    public function verified()
+    {
         $phone_verification = $this->phone_verification;
         return $phone_verification ? true : false;
     }

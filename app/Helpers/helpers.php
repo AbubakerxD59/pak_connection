@@ -546,7 +546,7 @@ if (!function_exists('count_book_services')) {
 }
 
 if (!function_exists('getPackageEndTime')) {
-    function getPackageEndTime($currentTime, Package $price)
+    function getPackageEndTime($currentTime, $price)
     {
 
         $pkg_end_time = match ('month') {

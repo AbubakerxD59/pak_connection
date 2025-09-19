@@ -195,7 +195,9 @@ class HomeController extends Controller
             $session = $this->stripe->checkout->sessions->retrieve($request->session_id);
             $user = $this->user->where('stripe_id', $session->id)->first();
             if ($user) {
+                $order = Order::where('session_id', $request->session_id)->firstOrFail();
                 $transaction = $this->transaction->where('session_id', $request->session_id)->first();
+                $price = $order->price()->first();
                 $package = $this->package->find($transaction->package_id);
                 $pkg_str_time = Carbon::now();
                 $pkg_end_time = getPackageEndTime($pkg_str_time, $price);
