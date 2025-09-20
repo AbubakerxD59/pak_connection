@@ -93,6 +93,7 @@ class OrderController extends Controller
     {
         $order = $this->order->find($id);
         if ($order) {
+            $order->transactions()->delete();
             $order->delete();
             return back()->with("success", "Order deleted Successfully!");
         } else {

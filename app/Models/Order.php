@@ -52,6 +52,11 @@ class Order extends Model
         return $this->belongsTo(PromoCode::class, 'promo_id', 'id');
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'order_id', 'id');
+    }
+
     public function scopeSearch($query, $search)
     {
         $query->whereHas("user", function ($q) use ($search) {

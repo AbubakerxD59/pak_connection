@@ -2,7 +2,7 @@
 @section('body')
     <section class="membership-portal container">
         <header class="membership-header">
-            <h2>Welcome to the membershipc<br> <span class="green-color">Portal</span></h2>
+            <h2>Welcome to the Membership<br> <span class="green-color">Portal</span></h2>
             <h3>Choose your <strong class="green-color">Package</strong></h1>
         </header>
         <div class="toggle-container">
