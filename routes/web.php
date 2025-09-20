@@ -173,4 +173,4 @@ Route::name('frontend.')->group(function () {
 });
 
 // Strip webhook route
-Route::get("webhook", [HomeController::class, 'webhook'])->name('stripe_webhook');
+Route::post("webhook", [HomeController::class, 'webhook'])->name('stripe_webhook');
