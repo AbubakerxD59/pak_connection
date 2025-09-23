@@ -49,17 +49,18 @@
             <tr>
                 <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Payable Amount</th>
                 <td style="padding: 10px; border-bottom: 1px solid #ccc;">
-                    <strong>£{{ number_format($bookedService->payable_amount, 2) }}</strong></td>
+                    <strong>£{{ number_format($bookedService->payable_amount, 2) }}</strong>
+                </td>
             </tr>
         </table>
 
 
         {{-- @if (!empty($bookedService->invoice_url)) --}}
-            <p style="font-size: 16px;">
-                <a href="{{ $bookedService->invoice_url ?? '#' }}" target="_blank"
-                    style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0;">
-                    Pay Invoice</a>
-            </p>
+        <p style="font-size: 16px;">
+            <a href="{{ $bookedService->invoice_url ?? '#' }}" target="_blank"
+                style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0;">
+                Pay Invoice</a>
+        </p>
         {{-- @endif --}}
 
 
@@ -67,8 +68,8 @@
             Once your payment is received:
         </p>
         <ul style="font-size: 16px; padding-left: 20px;">
-            <li>All bookings will be locked in and confirmed</li>
-            <li>You will receive an <strong>Itinerary & Schedule</strong> Confirmation with full details and contact
+            <li>Your booking will be locked in and confirmed</li>
+            <li>You will receive a <strong>Booking Confirmation</strong> with full details and contact
                 information</li>
             <li>Our local teams will be on standby for your arrival in Pakistan</li>
         </ul>
@@ -94,9 +95,7 @@
 
         <hr style="margin: 30px 0;">
 
-
         @include('emails.partials.footer')
-
     </div>
 </body>
 

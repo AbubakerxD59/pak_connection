@@ -14,7 +14,8 @@ class Price extends Model
         "price",
         "stripe_id",
     ];
-    public function package(){
+    public function package()
+    {
         return $this->belongsTo(Package::class, 'package_id', 'id');
     }
     public function getTypeTextAttribute()
@@ -26,5 +27,11 @@ class Price extends Model
             $value = $value . " Month";
         }
         return $value;
+    }
+    public function scopeActivePackage($query)
+    {
+        $query->whereHas("package", function ($q) {
+            $q->where("status", 1);
+        });
     }
 }

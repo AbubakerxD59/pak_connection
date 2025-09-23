@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\BookedServiceStatusUpdated;
-use App\Mail\ScheduleCreatedMail;
+use App\Mail\BookingConfirmedMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
@@ -26,7 +26,7 @@ class SendScheduleCreatedEmail
     {
         if ($event->bookedService->status == 7) {
             Mail::to($event->bookedService->user->email)
-                ->send(new ScheduleCreatedMail($event->bookedService));
+                ->send(new BookingConfirmedMail($event->bookedService));
         }
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Feature;
 use App\Models\Package;
-use App\Mail\WelcomeEmail;
+use App\Mail\BookServiceEmail;
 use App\Models\BookService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -106,7 +106,7 @@ class MemberController extends Controller
                 ], [
                     "package_id" => $package->id,
                     "service_id" => $service->id,
-                    "status" => 1
+                    "status" => 3
                 ]);
                 $data = $request->fields;
                 $fields = $service->fields()->orderBy("order", "ASC")->get();
@@ -121,7 +121,7 @@ class MemberController extends Controller
                     }
                 }
 
-                Mail::to($user->email)->send(new WelcomeEmail($user));
+                Mail::to($user->email)->send(new BookServiceEmail($user));
                 $response = [
                     "success" => true,
                     "message" => "Service initiated Successfully!"

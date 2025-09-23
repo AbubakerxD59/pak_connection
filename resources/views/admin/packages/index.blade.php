@@ -26,6 +26,7 @@
                                                             <th>Name</th>
                                                             <th>Pricing</th>
                                                             <th>Personal Assistance</th>
+                                                            <th>Status</th>
                                                             <th>Action</th>
                                                         </thead>
                                                     </table>
@@ -70,6 +71,9 @@
                 },
                 {
                     data: 'personal'
+                },
+                {
+                    data: 'status_view'
                 },
                 {
                     data: 'action'

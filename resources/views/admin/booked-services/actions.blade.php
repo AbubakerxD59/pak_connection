@@ -8,23 +8,23 @@
     @endphp
 
     {{--  when status is :1. --}}
-    @if ($service->depositStatus())
+    {{-- @if ($service->depositStatus())
         <div>
             <span class="btn btn-outline-dark btn-sm deposit-payment-btn " data-id="{{ $service->id }}">
                 Request Deposit
             </span>
         </div>
-    @endif
+    @endif --}}
 
     {{-- when status is : 2 --}}
-    @if ($service->depositPaidStatus())
+    {{-- @if ($service->depositPaidStatus())
         <div>
             <span class="btn btn-outline-dark btn-sm  update-next-status" data-id="{{ $service->id }}"
                 data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}">
                 {{ $statusText }}
             </span>
         </div>
-    @endif
+    @endif --}}
 
     {{-- when status is : 3 --}}
     @if ($service->inprogressStatus())
@@ -46,22 +46,11 @@
         </div>
     @endif
 
-    {{-- when status is : 4 --}}
-    {{-- @if ($service->inprogressStatus())
-        <div>
-            <button type="button" class="btn btn-outline-dark btn-sm generate-invoice-btn" data-bs-toggle="modal"
-                data-bs-target="#invoiceModal" data-id="{{ $service->id }}">
-                {{ $statusText }} - 5
-            </button>
-        </div>
-    @endif --}}
-
     {{-- when status is : 5 --}}
     @if ($service->fullPaymentStatus())
         <div>
             <span class="btn btn-outline-dark btn-sm confirm-full-payment-btn update-next-status"
-                data-id="{{ $service->id }}" data-status="{{ $nextStatus }}"
-                data-status-text="{{ $dataIdText }}">
+                data-id="{{ $service->id }}" data-status="{{ $nextStatus }}" data-status-text="{{ $dataIdText }}">
                 {{ $statusText }}
             </span>
         </div>

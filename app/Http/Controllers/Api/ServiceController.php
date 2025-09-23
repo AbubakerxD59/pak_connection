@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Exception;
 use App\Models\User;
 use App\Models\Feature;
-use App\Mail\WelcomeEmail;
+use App\Mail\BookServiceEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -36,7 +36,7 @@ class ServiceController extends Controller
                         "package_id" => $package->id,
                         "service_id" => $service->id,
                     ], [
-                        "status" => 1,
+                        "status" => 3,
                     ]);
                     // book fields
                     $fields = $request->fields;
@@ -57,7 +57,7 @@ class ServiceController extends Controller
                     }
                     DB::commit();
                     // send mail to user
-                    Mail::to($user->email)->send(new WelcomeEmail($user));
+                    Mail::to($user->email)->send(new BookServiceEmail($user));
                     return $this->successResponse("Service booked Successfully!");
                 } catch (Exception $e) {
                     DB::rollBack();

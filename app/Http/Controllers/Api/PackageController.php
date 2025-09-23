@@ -12,7 +12,7 @@ class PackageController extends Controller
 {
     public function get(Package $package)
     {
-        $packages = $package->with("prices", "features")->get();
+        $packages = $package->with("prices", "features")->active()->get();
         return $this->successResponse($packages);
     }
 
@@ -20,7 +20,7 @@ class PackageController extends Controller
     {
         $data = $request->only("id");
         if ($data) {
-            $services = $package->with("features")->where("id", $data["id"])->first();
+            $services = $package->with("features")->where("id", $data["id"])->active()->first();
             return $this->successResponse($services);
         } else {
             return $this->errorResponse("Not Found", 404);
@@ -31,7 +31,7 @@ class PackageController extends Controller
     {
         $data = $request->only("id");
         if ($data) {
-            $fields = $feature->with("fields")->where("id", $data["id"])->first();
+            $fields = $feature->with("fields")->where("id", $data["id"])->active()->first();
             return $this->successResponse($fields);
         } else {
             return $this->errorResponse("Not Found", 404);

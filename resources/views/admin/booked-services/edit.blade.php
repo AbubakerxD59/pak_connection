@@ -194,7 +194,7 @@
                                                         <tbody>
                                                             @foreach ($bookedService->getTransactions() as $transaction)
                                                                 <tr>
-                                                                    <td>{{ $bookedService->name }}</td>
+                                                                    <td>{{ $bookedService->service?->name }}</td>
                                                                     <td>£
                                                                         {{ number_format($transaction->total_amount, 2) }}
                                                                     </td>

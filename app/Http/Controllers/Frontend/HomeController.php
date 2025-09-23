@@ -12,7 +12,6 @@ use Stripe\StripeClient;
 use App\Models\PromoCode;
 use App\Models\WebhookCall;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\BookService;
 use App\Models\Price;
@@ -51,7 +50,7 @@ class HomeController extends Controller
         if (auth()->check() && auth()->user()->getPackage()) {
             return view("frontend.auth_home");
         } else {
-            $prices = Price::with('package')->get();
+            $prices = Price::with('package')->activePackage()->get();
             return view('frontend.home', compact('prices'));
         }
     }

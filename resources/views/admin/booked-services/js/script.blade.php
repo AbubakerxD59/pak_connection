@@ -159,8 +159,6 @@
             );
             let $button = $(this);
             $button.prop('disabled', true); // Disable the button
-            // Check if it is disabled
-            console.log('Button disabled:', $button.prop('disabled')); // should log `true`
             $button.text('Processing...');
             let bookedServiceId = $button.data('id');
             $.ajax({
@@ -175,8 +173,7 @@
                         booked_services_dataTable.ajax.reload();
                         toastr.success(response.message);
                     } else {
-                        toastr.error(response.message ||
-                            'Failed to create deposit invoice');
+                        toastr.error(response.message);
                     }
                 },
                 error: function(xhr) {

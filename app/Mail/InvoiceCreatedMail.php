@@ -30,7 +30,7 @@ class InvoiceCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Final Invoice – Complete Your Payment to Confirm Your Bookings',
+            subject: 'Final Invoice – Complete Your Payment to Confirm Your Booking',
         );
     }
 

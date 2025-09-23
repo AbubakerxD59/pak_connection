@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Your Confirmed Travel Itinerary and Schedule</title>
+    <title>Your Confirmed Booking</title>
 </head>
 
 <body style="font-family: Arial, sans-serif; background-color: #ffffff; margin: 0; padding: 0;">
@@ -17,28 +17,25 @@
         </p>
 
         <p style="font-size: 16px;">
-            We’re excited to share with you your <strong>Personal Itinerary Diary Schedule</strong>, thoughtfully
-            prepared and confirmed by our team to ensure a smooth, stress-free, and memorable journey through Pakistan.
+            We’re excited to share with you your <strong>booking</strong> details, and wish you a smooth, stress-free,
+            and memorable journey through Pakistan.
         </p>
 
         <p style="font-size: 16px;">
-            Your custom itinerary outlines all your bookings and scheduled services, including dates, times, contact
-            points, and relevant instructions. It’s designed to keep you informed, organised, and supported every step
-            of the way.
+            Your booking includes dates, times, contact points, and relevant instructions. It’s designed to keep you
+            informed, organised, and supported every step of the way.
         </p>
 
-
         @if ($bookedService->schedule_created)
-            {{-- <a href="{{ url(asset('uploads/').'/'.$bookedService->schedule_pdf) }}" target="_blank" --}}
             <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}" target="_blank"
                 style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-weight: bold;">
-                Click here to see Itinerary & Schedule (PDF).
+                Click here to see Booking Confirmation(PDF).
             </a>
         @endif
 
         <p style="font-size: 16px;">
-            Please take a moment to review your schedule carefully. If you require any changes, updates, or additional
-            services, our Member Services Team is available to assist you.
+            Please take a moment to review your <strong>booking</strong> carefully. If you require any changes, updates,
+            or additional services, our Member Services Team is available to assist you.
         </p>
 
         <p style="font-size: 16px;">

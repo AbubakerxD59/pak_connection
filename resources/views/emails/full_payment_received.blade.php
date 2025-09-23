@@ -12,16 +12,15 @@
         @include('emails.partials.header')
 
         <!-- Email Content -->
-      <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
-
-        <p style="font-size: 16px;">We’re pleased to confirm that we have received your final payment in full — thank
-            you!</p>
+        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
 
         <p style="font-size: 16px;">
-            Your entire booking is now fully confirmed, and our team has activated all services you requested. From this
-            point forward,
-            your journey is in the hands of our expert concierge teams who are fully briefed and ready to support you
-            every step of the way.
+            We’re pleased to confirm that we have received your <strong>payment</strong> in full — thank you!
+        </p>
+
+        <p style="font-size: 16px;">
+            Our team has activated your requested service. From this point forward, your journey is in the hands of our
+            expert concierge teams who are fully briefed and ready to support you every step of the way.
         </p>
 
         <!-- Invoice Link -->
@@ -29,7 +28,8 @@
         <table style="width: 100%; border-collapse: collapse; font-size: 16px; margin: 20px 0;">
             <tr>
                 <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Service Name</th>
-                <td style="padding: 10px; border-bottom: 1px solid #ccc;">{{ $bookedService->transaction?->service_name }}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #ccc;">
+                    {{ $bookedService->transaction?->service_name }}</td>
             </tr>
             <tr>
                 <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Total Amount</th>
@@ -44,12 +44,14 @@
             <tr>
                 <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Payable Amount</th>
                 <td style="padding: 10px; border-bottom: 1px solid #ccc;">
-                    <strong>£{{ number_format($bookedService->transaction?->payable_amount, 2) }}</strong></td>
+                    <strong>£{{ number_format($bookedService->transaction?->payable_amount, 2) }}</strong>
+                </td>
             </tr>
             <tr>
                 <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ccc;">Status</th>
                 <td style="padding: 10px; border-bottom: 1px solid #ccc; color:green">
-                    <strong>Paid</strong></td>
+                    <strong>Paid</strong>
+                </td>
             </tr>
         </table>
 
@@ -57,7 +59,7 @@
         <p style="font-size: 16px;"><strong>What Happens Next?</strong></p>
         <ol style="font-size: 16px; padding-left: 20px;">
             <li>
-                You will shortly receive your Itinerary & Schedule Confirmation, which includes:
+                You will shortly receive your <strong>Booking Confirmation</strong>, which includes:
                 <ul>
                     <li>A summary of all confirmed services</li>
                     <li>Contact details for your local concierge</li>
@@ -72,8 +74,7 @@
 
         <p style="font-size: 16px;">
             Thank you for trusting <strong>Pak Connections</strong>. Your journey is now our responsibility, and we look
-            forward to delivering
-            an unforgettable experience from the moment you land to the moment you leave.
+            forward to delivering an unforgettable experience from the moment you land to the moment you leave.
         </p>
 
         <p style="font-size: 16px; font-weight: bold;">Warm regards,</p>

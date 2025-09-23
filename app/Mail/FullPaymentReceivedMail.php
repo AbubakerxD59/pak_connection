@@ -28,7 +28,7 @@ class FullPaymentReceivedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Final Payment Received – Your Bookings Are Now Fully Confirmed ',
+            subject: 'Final Payment Received – Your Payment is Now Fully Confirmed',
         );
     }
 

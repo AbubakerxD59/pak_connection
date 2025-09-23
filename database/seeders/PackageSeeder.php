@@ -17,11 +17,12 @@ class PackageSeeder extends Seeder
     {
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
         $packages = [
-            ["name" => "TRAVEL ASSIST", "personal_assistance" => "1"],
-            ["name" => "PAK ASSIST", "personal_assistance" => "0"],
-            ["name" => "GOLD ASSIST", "personal_assistance" => "1"],
-            ["name" => "CORPORATE ASSIST", "personal_assistance" => "1"],
+            ["name" => "TRAVEL ASSIST", "personal_assistance" => "1", "status" => 1],
+            ["name" => "PAK ASSIST", "personal_assistance" => "0", "status" => 1],
+            ["name" => "GOLD ASSIST", "personal_assistance" => "1", "status" => 0],
+            ["name" => "CORPORATE ASSIST", "personal_assistance" => "1", "status" => 0],
         ];
+        // prices
         $prices = [
             "TRAVEL ASSIST" => ["1" => 395, "6" => 995, "12" => 1495],
             "PAK ASSIST" => ["1" => 195, "6" => 495, "12" => 795],
@@ -38,7 +39,8 @@ class PackageSeeder extends Seeder
                 $newPackage = Package::create([
                     "name" => $package["name"],
                     "personal_assistance" => $package["personal_assistance"],
-                    "stripe_product_id" => $stripe_product->id
+                    "stripe_product_id" => $stripe_product->id,
+                    "status" => $package["status"]
                 ]);
                 $pricing = $prices[$package["name"]];
                 foreach ($pricing as $duration => $price) {

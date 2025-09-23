@@ -16,6 +16,7 @@ class Package extends Model
         'icon',
         'personal_assistance',
         'stripe_product_id',
+        'status'
     ];
 
     public static $prices = [
@@ -67,9 +68,13 @@ class Package extends Model
         $features = check_features($currentFeatures, $this->id);
         return $features;
     }
+    public function scopeActive($query)
+    {
+        $query->where("status", 1);
+    }
     public function getIconViewAttribute()
     {
-        $icon = "<img src='$this->icon' class='rounded-pill' width='75px'>";
+        $icon = "<img src='$this->icon' class='rounded-pill' width='50px'>";
         return $icon;
     }
     public function getPricingAttribute()
@@ -86,6 +91,11 @@ class Package extends Model
     public function getActionAttribute()
     {
         $view = view("admin.packages.action")->with("package", $this);
+        return $view->render();
+    }
+    public function getStatusViewAttribute()
+    {
+        $view = view("admin.packages.dataTable.status_view")->with("package", $this);
         return $view->render();
     }
 }

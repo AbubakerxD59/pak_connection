@@ -154,11 +154,10 @@ class BookServiceController extends Controller
     public function createInvoice(Request $request)
     {
         try {
-            $data = $request->validate([
+            $request->validate([
                 'book_service_id' => 'required|exists:book_services,id',
                 'amount'            => 'required|numeric|min:0',
                 'final_price'       => 'required|numeric|min:0',
-                // 'promo_code_id'         => 'nullable|exists:promo_codes,id',
             ]);
             $bookedService = $this->bookService->with('service')->find($request->book_service_id);
             $serviceName = $bookedService->service->name ?? '-';
@@ -220,7 +219,7 @@ class BookServiceController extends Controller
     {
         try {
             $deposit_amount = 100; // fixed in pound
-            $data = $request->validate([
+            $request->validate([
                 'book_service_id' => 'required|exists:book_services,id',
             ]);
             // Load BookService with its Service
@@ -274,8 +273,7 @@ class BookServiceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to generate invoice.',
-                'error'   => $e->getMessage(),
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -315,9 +313,6 @@ class BookServiceController extends Controller
                 $bookedService->transaction->update(['status' => 1]);
             }
 
-
-
-            // dd($bookedService->transaction);
             event(new BookedServiceStatusUpdated($bookedService));
             return response()->json([
                 'success' => true,

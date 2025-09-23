@@ -87,6 +87,25 @@
 
                                         <div class="form-group row">
                                             <div class="col-md-3">
+                                                <label for="status" class="form-label">Status</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="1" {{ $package->status == 1 ? 'selected' : '' }}>
+                                                        Active
+                                                    </option>
+                                                    <option value="0" {{ $package->status == 0 ? 'selected' : '' }}>
+                                                        Inactive
+                                                    </option>
+                                                </select>
+                                                @error('status')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-3">
                                                 <label for="personal_assistance" class="form-label">Personal Assistance</label>
                                             </div>
                                             <div class="custom-control custom-switch col-md-09">

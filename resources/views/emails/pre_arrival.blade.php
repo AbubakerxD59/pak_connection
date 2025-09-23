@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Reminder: Your Upcoming Travel & Itinerary Schedule</title>
+    <title>Reminder: Your Upcoming Travel.</title>
 </head>
 
 <body style="font-family: Arial, sans-serif; background-color: #ffffff; margin: 0; padding: 0;">
@@ -18,20 +18,19 @@
 
         <p style="font-size: 16px;">
             This is a friendly reminder that your journey to Pakistan is just days away.
-            Your <strong>Personal Itinerary Diary Schedule</strong> has been carefully prepared and confirmed
+            Your <strong>Booking Schedule</strong> has been carefully prepared and confirmed
             to ensure a smooth, stress-free visit.
         </p>
 
         @if ($bookedService->schedule_created)
-            {{-- <a href="{{ url(asset('uploads/').'/'.$bookedService->schedule_pdf) }}" target="_blank" --}}
             <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}" target="_blank"
                 style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-weight: bold;">
-                Click here to see Itinerary & Schedule (PDF).
+                Click here to see Booking Confirmation (PDF).
             </a>
         @endif
 
         <p style="font-size: 16px;">
-            Kindly take a moment to review your schedule. For any updates, changes, or additional service requests,
+            Kindly take a moment to review your booking. For any updates, changes, or additional service requests,
             our Member Services Team is ready to assist you.
         </p>
 

@@ -29,10 +29,9 @@ class SendPreArrivalEmail
             Mail::to($event->bookedService->user->email)
                 ->send(new PreArrivalMail($event->bookedService));
 
-
-            // email : operations@pakconnections.co.uk
-            // Mail::to('')
-            //     ->send(new AdminPreArrivalMail($event->bookedService));
+            $email = env("POCC_TEAM");
+            Mail::to($email)
+                ->send(new AdminPreArrivalMail($event->bookedService));
         }
     }
 }

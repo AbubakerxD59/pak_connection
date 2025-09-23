@@ -28,10 +28,9 @@ class SendFullPaymentReceivedEmail
             Mail::to($event->bookedService->user->email)
                 ->send(new FullPaymentReceivedMail($event->bookedService));
 
-            
-            // email : operations@pakconnections.co.uk
-            // Mail::to('')
-            //     ->send(new AdminFullPaymentReceivedMail($event->bookedService));
+            $email = env("POCC_TEAM");
+            Mail::to($email)
+                ->send(new AdminFullPaymentReceivedMail($event->bookedService));
         }
     }
 }

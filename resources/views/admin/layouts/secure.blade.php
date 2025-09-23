@@ -119,10 +119,20 @@
     <script>
         $(document).ready(function() {
             $('.sign-out').on('click', function() {
-                if (confirm('Do you wish to Signout?')) {
-                    console.log('here');
-                    $('#signout_form').submit();
-                }
+                Swal.fire({
+                    title: 'Logout?',
+                    text: 'Do you wish to Signout?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes!',
+                    reverseButtons: true
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        $('#signout_form').submit()
+                    }
+                });
             });
             $('textarea').on('input', function() {
                 const textarea = $(this)[0];
@@ -175,10 +185,8 @@
 
 
         $(document).on('click', '.delete-btn', function(e) {
-            e.preventDefault(); // prevent the default form submission
-
+            e.preventDefault();
             let form = $(this).closest('form');
-
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'This action cannot be undone!',
@@ -191,7 +199,6 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();
-                    console.log('confirm clicked');
                 }
             });
         });

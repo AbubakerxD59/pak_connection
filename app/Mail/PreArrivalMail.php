@@ -30,7 +30,7 @@ class PreArrivalMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reminder: Your Upcoming Travel & Itinerary Schedule',
+            subject: 'Reminder: Your Upcoming Travel.',
         );
     }
 

@@ -24,8 +24,7 @@ class SendDepositPaidMail
     public function handle(BookedServiceStatusUpdated $event): void
     {
         if ($event->bookedService->status == 3) {
-            Mail::to($event->bookedService->user->email)
-                ->send(new DepositPaidMail($event->bookedService));
+            // Mail::to($event->bookedService->user->email)->send(new DepositPaidMail($event->bookedService));
         }
     }
 }

@@ -16,6 +16,7 @@
                         </div>
                     </div>
                     <div class="stepper-wrapper">
+                        @php $count = 1; @endphp
                         @foreach (getbookedServicestatus() as $key => $status)
                             <!-- Step 1 (Completed) -->
                             @php
@@ -28,9 +29,10 @@
                                 }
                             @endphp
                             <div class="stepper-item {{ $class }}" title="{{ $status }}">
-                                <div class="step-circle">{{ $key }}</div>
+                                <div class="step-circle">{{ $count }}</div>
                                 <div class="step-text">{{ $status }}</div>
                             </div>
+                            @php $count++; @endphp
                         @endforeach
                         {{-- <!-- Step 2 (Active) -->
                         <div class="stepper-item active">

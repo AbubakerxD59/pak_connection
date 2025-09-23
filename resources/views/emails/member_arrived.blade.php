@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to Pakistan – Your Itinerary & Support Details Reminder</title>
+    <title>Welcome to Pakistan – Your Booking Reminder</title>
 </head>
 
 <body style="font-family: Arial, sans-serif; background-color: #ffffff; margin: 0; padding: 0;">
@@ -22,25 +22,8 @@
         </p>
 
         <p style="font-size: 16px;">
-            Your <strong>Personal Itinerary & Schedule</strong> has been carefully prepared and is attached for your
-            convenience,
-            outlining all your bookings, service timings, and contact points.
-        </p>
-
-
-        @if ($bookedService->schedule_created)
-            {{-- <a href="{{ url(asset('uploads/').'/'.$bookedService->schedule_pdf) }}" target="_blank" --}}
-            <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}" target="_blank"
-                style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-weight: bold;">
-                Click here to see Itinerary & Schedule (PDF).
-            </a>
-        @endif
-
-
-
-        <p style="font-size: 16px;">
-            Should you need any changes, additional services, or assistance during your stay, our dedicated
-            Member Services Team is available around the clock.
+            Should you need any additional services, or assistance during your stay, our dedicated Member Services Team
+            is available around the clock.
         </p>
 
         <p style="font-size: 16px;">
