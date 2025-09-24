@@ -31,7 +31,7 @@ class PackageController extends Controller
     {
         $data = $request->only("id");
         if ($data) {
-            $fields = $feature->with("fields")->where("id", $data["id"])->active()->first();
+            $fields = $feature->with("fields")->where("id", $data["id"])->first();
             return $this->successResponse($fields);
         } else {
             return $this->errorResponse("Not Found", 404);
