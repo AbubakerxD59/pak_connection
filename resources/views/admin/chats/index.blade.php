@@ -277,5 +277,9 @@
                 });
             }
         });
+        // refresh dataTable
+        setInterval(function() {
+            chatDatatable.ajax.reload();
+        }, 5000);
     </script>
 @endpush

@@ -207,6 +207,16 @@
             $('.preloader').css("height", "100%");
             $('.preloader>img').show();
         }
+
+        setInterval(function() {
+            $.ajax({
+                url: "{{ route('chats.pending.count') }}",
+                type: "GET",
+                success: function(response) {
+                    $('.pending_chats_count').val(response.count);
+                }
+            });
+        }, 5000);
     </script>
 
 </body>

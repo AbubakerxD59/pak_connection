@@ -238,7 +238,7 @@
                         class="nav-link {{ in_array(request()->route()->getName(), ['chats.index', 'chats.edit']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-comment"></i>
                         <p>Chats
-                            <span class="badge badge-info right">{{pendingChatsCount()}}</span>
+                            <span class="badge badge-info right pending_chats_count">{{pendingChatsCount()}}</span>
                         </p>
                     </a>
                 </li>

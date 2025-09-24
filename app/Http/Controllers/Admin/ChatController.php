@@ -142,4 +142,9 @@ class ChatController extends Controller
         }
         return response()->json($response);
     }
+    public function pendingCount()
+    {
+        $chat_counts = pendingChatsCount();
+        return response()->json($chat_counts);
+    }
 }

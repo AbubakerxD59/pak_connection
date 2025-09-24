@@ -148,6 +148,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('dataTable', 'dataTable')->name('dataTable');
         Route::get('view/messages', 'viewMessages')->name('view.messages');
         Route::post('new/messages', 'newMessages')->name('new.message');
+        Route::get('pending/count', 'pendingCount')->name('pending.count');
     });
 });
 
