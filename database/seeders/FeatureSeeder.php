@@ -37,16 +37,19 @@ class FeatureSeeder extends Seeder
             ['name' => "Personal Assistant 24/7", "icon" => "features/support-pakconnection.jpg"],
             ['name' => "Full VIP Concierge Services", "icon" => "features/Luxury-Concierge-Services.jpg"],
         ];
+        $order = 1;
         foreach ($features as $feature) {
             $service = Feature::updateOrCreate(
                 ['name' => $feature['name']],
                 [
                     'name' => $feature['name'],
-                    'icon' => $feature['icon']
+                    'icon' => $feature['icon'],
+                    'order' => $order
                 ]
             );
             $field_ids = Field::inRandomOrder()->limit(10)->pluck("id");
             $service->fields()->sync($field_ids);
+            $order++;
         }
     }
 }
