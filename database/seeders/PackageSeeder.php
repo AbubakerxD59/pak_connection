@@ -31,38 +31,41 @@ class PackageSeeder extends Seeder
         ];
         // create packages
         foreach ($packages as $package) {
-            $stripe_product = $stripe->products->create([
-                'name' => $package["name"],
-                'active' => true,
-            ]);
-            if ($stripe_product->id) {
-                $newPackage = Package::create([
-                    "name" => $package["name"],
-                    "personal_assistance" => $package["personal_assistance"],
-                    "stripe_product_id" => $stripe_product->id,
-                    "status" => $package["status"]
+            $check = Package::where("name", $package["name"])->first();
+            if (!$check) {
+                $stripe_product = $stripe->products->create([
+                    'name' => $package["name"],
+                    'active' => true,
                 ]);
-                $pricing = $prices[$package["name"]];
-                foreach ($pricing as $duration => $price) {
-                    $stripe_amount = $stripe->prices->create([
-                        'currency' => 'gbp',
-                        'active' => true,
-                        'product' => $stripe_product->id,
-                        'unit_amount_decimal' => $price * 100,
-                        'recurring' => [
-                            'interval' => "month",
-                            'interval_count' => $duration
-                        ]
+                if ($stripe_product->id) {
+                    $newPackage = Package::create([
+                        "name" => $package["name"],
+                        "personal_assistance" => $package["personal_assistance"],
+                        "stripe_product_id" => $stripe_product->id,
+                        "status" => $package["status"]
                     ]);
-                    if ($stripe_amount->id) {
-                        Price::updateOrCreate(["package_id" => $newPackage->id, "type" => $duration], [
-                            "price" => $price,
-                            "stripe_id" => $stripe_amount->id,
+                    $pricing = $prices[$package["name"]];
+                    foreach ($pricing as $duration => $price) {
+                        $stripe_amount = $stripe->prices->create([
+                            'currency' => 'gbp',
+                            'active' => true,
+                            'product' => $stripe_product->id,
+                            'unit_amount_decimal' => $price * 100,
+                            'recurring' => [
+                                'interval' => "month",
+                                'interval_count' => $duration
+                            ]
                         ]);
+                        if ($stripe_amount->id) {
+                            Price::updateOrCreate(["package_id" => $newPackage->id, "type" => $duration], [
+                                "price" => $price,
+                                "stripe_id" => $stripe_amount->id,
+                            ]);
+                        }
                     }
+                    $feature_ids = Feature::inRandomOrder()->limit(rand(7, 12))->pluck("id");
+                    $newPackage->features()->sync($feature_ids);
                 }
-                $feature_ids = Feature::inRandomOrder()->limit(rand(7, 12))->pluck("id");
-                $newPackage->features()->sync($feature_ids);
             }
         }
     }
