@@ -91,7 +91,7 @@ class FeatureController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
-            'icon' => 'required|file',
+            'icon' => 'sometimes',
         ]);
         $feature = $this->feature->find($id);
         if ($feature) {
