@@ -11,7 +11,7 @@
 
         @include('emails.partials.header')
 
-        <p style="font-size: 16px;">Dear <strong>{{ $user->name ?? 'Member' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear <strong>{{ $user->full_name ?? 'Member' }}</strong>,</p>
 
         <p style="font-size: 16px;">
             We’re delighted to welcome you to <strong>Pak Connections</strong> — your very own <em><strong>Personal
