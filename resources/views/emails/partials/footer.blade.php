@@ -45,5 +45,5 @@
 
 <!-- Bottom Logo -->
 <div style="text-align: right; margin-top: 40px;">
-    <img src="{{ $message->embed(getCompanyLogoUrl()) }}" alt="Pak Connections Logo" style="max-width: 120px;">
+    <img src="{{ $message->embed(public_path(getCompanyLogoUrl())) }}" alt="Pak Connections Logo" style="max-width: 120px;">
 </div>
