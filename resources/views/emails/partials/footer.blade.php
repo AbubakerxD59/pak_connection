@@ -45,6 +45,5 @@
 
 <!-- Bottom Logo -->
 <div style="text-align: right; margin-top: 40px;">
-    <img src="https://adminpakconnection.netforcedemo.com/assets/img/site_logo.jpg" alt="Pak Connections Logo"
-        style="max-width: 120px;">
+    <img src="{{ $message->embed(getCompanyLogoUrl()) }}" alt="Pak Connections Logo" style="max-width: 120px;">
 </div>
