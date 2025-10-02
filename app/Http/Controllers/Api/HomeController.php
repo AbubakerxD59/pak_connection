@@ -83,6 +83,8 @@ class HomeController extends Controller
                 $user = Auth::user();
                 if ($user && $user->customer_id) {
                     $sessionParams['customer'] = $user->customer_id;
+                } else {
+                    $sessionParams['customer_email'] = $user->email;
                 }
                 $sessionParams['mode'] = 'subscription';
                 $sessionParams['success_url'] = route("frontend.checkout_success", [], true) . "?session_id={CHECKOUT_SESSION_ID}";
@@ -116,10 +118,13 @@ class HomeController extends Controller
                 ]);
 
                 // --- 7. Update User ---
-                $user->update([
-                    "stripe_id" => $session->id
-                ]);
+                $user_data = ["stripe_id" => $session->id];
+                if (empty($user->membership_id)) {
+                    $user_data["membership_id"] = rand(100000, 999999);
+                }
+                $user->update($user_data);
 
+                // Commit DB changes
                 DB::commit();
                 $response = [
                     'checkout_url' => $session->url,
