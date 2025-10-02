@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Events\BookedServiceStatusUpdated;
+use App\Events\SendWelcomeEmail;
 use Exception;
 use App\Models\Role;
 use App\Models\User;
@@ -193,6 +194,7 @@ class HomeController extends Controller
         try {
             $session = $this->stripe->checkout->sessions->retrieve($request->session_id);
             $user = $this->user->where('stripe_id', $session->id)->first();
+            $email_user = $user;
             if ($user) {
                 $order = Order::where('session_id', $request->session_id)->firstOrFail();
                 $transaction = $this->transaction->where('session_id', $request->session_id)->first();
@@ -212,6 +214,8 @@ class HomeController extends Controller
                     $userData["membership_id"] =  rand(100000, 999999);
                 }
                 $user->update($userData);
+                // send welcome email
+                event(new SendWelcomeEmail($email_user));
                 return view('frontend.success', compact('user'));
             }
         } catch (\Exception $e) {

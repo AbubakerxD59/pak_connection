@@ -1,24 +1,26 @@
 <?php
 
+use App\Models\User;
+use App\Events\SendWelcomeEmail;
+use Illuminate\Support\Facades\Route;
 use App\Events\BookedServiceStatusUpdated;
+use App\Http\Controllers\FeatureController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\BookServiceController;
 use App\Http\Controllers\Admin\ChatController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\RolesController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\FeatureController;
-use App\Http\Controllers\Frontend\AuthController as FrontendAuthController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Frontend\MemberController;
-use App\Http\Controllers\PackageController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\BookServiceController;
 use App\Http\Controllers\Admin\TransactionController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\AuthController as FrontendAuthController;
 
 /*
 |--------------------------------------------------------------------------

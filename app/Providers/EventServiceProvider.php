@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\BookedServiceStatusUpdated;
 use App\Events\BookServicePdfUploaded;
+use App\Events\SendWelcomeEmail;
 use App\Listeners\SendBookServicePdfEmail;
 use App\Listeners\SendDepositRequestedMail;
 use App\Listeners\SendFullPaymentReceivedEmail;
@@ -14,10 +15,10 @@ use App\Listeners\SendOrderInProgressMail;
 use App\Listeners\SendPreArrivalEmail;
 use App\Listeners\SendScheduleCreatedEmail;
 use App\Listeners\SendDepositPaidMail;
+use App\Listeners\WelcomeEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -36,13 +37,11 @@ class EventServiceProvider extends ServiceProvider
             SendDepositRequestedMail::class,
             SendOrderInProgressMail::class,
             SendInvoiceCreatedMail::class,
-
             SendFullPaymentReceivedEmail::class,
             SendScheduleCreatedEmail::class,
             SendPreArrivalEmail::class,
             SendMemberArrivedEmail::class,
             SendOrderCompletedEmail::class,
-
             SendDepositPaidMail::class,
 
         ],
@@ -50,6 +49,11 @@ class EventServiceProvider extends ServiceProvider
         BookServicePdfUploaded::class => [
             SendBookServicePdfEmail::class,
         ],
+
+        // Send Welcome Email to Member
+        SendWelcomeEmail::class => [
+            WelcomeEmail::class
+        ]
     ];
 
     /**
