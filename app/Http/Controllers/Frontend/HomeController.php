@@ -191,12 +191,12 @@ class HomeController extends Controller
     public function success(Request $request)
     {
         $customer = null;
-        try {
+        // try {
             $session = $this->stripe->checkout->sessions->retrieve($request->session_id);
             $user = $this->user->where('stripe_id', $session->id)->first();
             $email_user = $user;
             if ($user) {
-                $order = Order::where('session_id', $request->session_id)->firstOrFail();
+                $order = Order::where('session_id', $request->session_id)->first();
                 $transaction = $this->transaction->where('session_id', $request->session_id)->first();
                 $price = $order->price()->first();
                 $package = $this->package->find($transaction->package_id);
@@ -218,9 +218,9 @@ class HomeController extends Controller
                 event(new SendWelcomeEmail($email_user));
                 return view('frontend.success', compact('user'));
             }
-        } catch (\Exception $e) {
-            throw new NotFoundHttpException();
-        }
+        // } catch (\Exception $e) {
+        //     throw new NotFoundHttpException();
+        // }
         return redirect()->route("frontend .home")->with("error", "Something went Wrong!");
     }
 
