@@ -1,7 +1,7 @@
 <div>
-    <p>{{ @$user->full_name }}</p>
+    <span>{{ @$user->full_name }}</span>
     <br>
-    <p>{{ @$user->email }}</p>
+    <span>{{ @$user->email }}</span>
     <br>
-    <p>{{ @$user->membership_id }}</p>
+    <span>{{ @$user->membership_id }}</span>
 </div>
