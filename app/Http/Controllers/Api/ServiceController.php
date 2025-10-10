@@ -73,6 +73,7 @@ class ServiceController extends Controller
         $user = Auth::user();
         $services = $user->bookServices()->with("service")->get();
         foreach ($services as $key => $service) {
+            $tracking = [];
             foreach (getbookedServicestatus() as $innerKey => $status) {
                 $tracking_status = "Pending";
                 if ($service->status == $innerKey) {
