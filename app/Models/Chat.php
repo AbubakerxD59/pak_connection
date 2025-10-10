@@ -36,7 +36,7 @@ class Chat extends Model
     public function getUserNameAttribute()
     {
         $user = $this->user()->first();
-        $view = view("admin.chat.ajax.user_name")->with("user", $user);
+        $view = view("admin.chats.ajax.user_name")->with("user", $user);
         return $view->render();
     }
     public function getAgentNameAttribute()
