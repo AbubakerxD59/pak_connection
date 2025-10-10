@@ -64,7 +64,7 @@ class ChatbotService
         $chat = null;
 
         if ($user) {
-            $chat = Chat::where('user_id', $user->id)->whereIn('status', ['open', 'pending_agent'])->first();
+            $chat = Chat::where('user_id', $user->id)->whereIn('status', ['open', 'pending_agent', 'agent_assigned'])->first();
         } elseif ($guestIdentifier) {
             $chat = Chat::where('guest_identifier', $guestIdentifier)->whereIn('status', ['open', 'pending_agent'])->first();
         }
