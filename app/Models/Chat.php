@@ -36,10 +36,8 @@ class Chat extends Model
     public function getUserNameAttribute()
     {
         $user = $this->user()->first();
-        if ($user) {
-            $value = $user->full_name ? $user->full_name : $user->email;
-        }
-        return $user ? $value : "-";
+        $view = view("admin.chat.ajax.user_name")->with("user", $user);
+        return $view->render();
     }
     public function getAgentNameAttribute()
     {
