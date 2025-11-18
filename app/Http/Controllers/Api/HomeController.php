@@ -67,6 +67,7 @@ class HomeController extends Controller
         } else {
             try {
                 DB::beginTransaction();
+                $user_data = [];
                 $price = Price::findOrFail($request->price_id);
                 $package = $price->package()->first();
                 // --- 3. Prepare Session Parameters ---
@@ -80,7 +81,7 @@ class HomeController extends Controller
                 $sessionParams['shipping_address_collection'] = [
                     'allowed_countries' => ['GB', 'PK']
                 ];
-                $user = Auth::user();
+                $user = User::find(Auth::id());
                 if ($user && $user->customer_id) {
                     $sessionParams['customer'] = $user->customer_id;
                 } else {
@@ -118,12 +119,11 @@ class HomeController extends Controller
                 ]);
 
                 // --- 7. Update User ---
-                $user_data = ["stripe_id" => $session->id];
+                $user_data["stripe_id"] = $session->id;
                 if (empty($user->membership_id)) {
                     $user_data["membership_id"] = rand(100000, 999999);
                 }
                 $user->update($user_data);
-
                 // Commit DB changes
                 DB::commit();
                 $response = [

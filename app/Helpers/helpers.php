@@ -548,18 +548,18 @@ if (!function_exists('count_book_services')) {
 if (!function_exists('getPackageEndTime')) {
     function getPackageEndTime($currentTime, $price)
     {
+        $months = $price->type;
+        $pkg_end_time = $currentTime->copy()->addMonths($months);
+        // $pkg_end_time = match ('month') {
+        //     'year'  => $currentTime->copy()->addYears($price->type),
+        //     'month' => $currentTime->copy()->addMonths($price->type),
+        //     'day'   => $currentTime->copy()->addDays($price->type),
+        //     'hour'  => $currentTime->copy()->addHours($price->type),
+        //     default => $currentTime,
+        // };
+        // $pkg_end_time->setTime($pkg_end_time->hour, 0, 0);
 
-        $pkg_end_time = match ('month') {
-            'year'  => $currentTime->copy()->addYears($price->type),
-            'month' => $currentTime->copy()->addMonths($price->type),
-            'day'   => $currentTime->copy()->addDays($price->type),
-            'hour'  => $currentTime->copy()->addHours($price->type),
-            default => $currentTime,
-        };
-
-        $pkg_end_time->setTime($pkg_end_time->hour, 0, 0);
-
-        return $pkg_end_time;
+        return $pkg_end_time->toDateString();
     }
 }
 

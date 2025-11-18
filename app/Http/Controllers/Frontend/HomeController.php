@@ -81,7 +81,7 @@ class HomeController extends Controller
         if (!auth()->check()) {
             $rules['password'] = 'required|confirmed|min:6';
         }
-        $data = $request->validate($rules);
+        $request->validate($rules);
         $price = Price::with("package")->find($request->price_id);
         $package = $price->package;
         if ($package) {
@@ -148,10 +148,10 @@ class HomeController extends Controller
                     'emergency_full_name' => $request->has("emergency_full_name") && $request->emergency_full_name ? $request->emergency_full_name : null,
                     'emergency_phone_number' => $request->has("emergency_phone_number") && $request->emergency_phone_number ? $request->emergency_phone_number : null,
                 ]);
-            }
-            $role = $this->role->where('name', 'Customer')->first();
-            if (!empty($role)) {
-                $user->assignRole($role->name);
+                $role = $this->role->where('name', 'Customer')->first();
+                if ($role) {
+                    $user->assignRole($role->name);
+                }
             }
 
             $order = $this->order->create([
@@ -166,7 +166,6 @@ class HomeController extends Controller
                 "order_num" => Order::generateAvailableOrderNum(),
                 "status" => "0",
             ]);
-
 
             $this->transaction->create([
                 "user_id" => $user->id,
@@ -190,37 +189,31 @@ class HomeController extends Controller
 
     public function success(Request $request)
     {
-        $customer = null;
-        // try {
+        try {
             $session = $this->stripe->checkout->sessions->retrieve($request->session_id);
             $user = $this->user->where('stripe_id', $session->id)->first();
             $email_user = $user;
             if ($user) {
-                $order = Order::where('session_id', $request->session_id)->first();
+                $order = Order::with('price')->where('session_id', $request->session_id)->first();
                 $transaction = $this->transaction->where('session_id', $request->session_id)->first();
-                $price = $order->price()->first();
-                $package = $this->package->find($transaction->package_id);
-                $pkg_str_time = Carbon::now();
-                $pkg_end_time = getPackageEndTime($pkg_str_time, $price);
+                $package = $this->package->findOrFail($transaction->package_id);
+                $pkg_start_time = Carbon::now();
+                $pkg_end_time = getPackageEndTime($pkg_start_time, $order->price);
                 $userData = [
                     "customer_id" => $session->customer,
                     "package_id" => $package->id,
-                    "pkg_start_time" => $pkg_str_time,
+                    "pkg_start_time" => $pkg_start_time,
                     "pkg_end_time" => $pkg_end_time,
                     "package_status" => 1,
-
                 ];
-                if (empty($user->membership_id)) {
-                    $userData["membership_id"] =  rand(100000, 999999);
-                }
                 $user->update($userData);
                 // send welcome email
                 event(new SendWelcomeEmail($email_user));
                 return view('frontend.success', compact('user'));
             }
-        // } catch (\Exception $e) {
-        //     throw new NotFoundHttpException();
-        // }
+        } catch (Exception $e) {
+            throw new NotFoundHttpException();
+        }
         return redirect()->route("frontend .home")->with("error", "Something went Wrong!");
     }
 
