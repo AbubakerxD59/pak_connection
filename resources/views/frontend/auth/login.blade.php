@@ -10,7 +10,7 @@
                 @csrf
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="membership_id" placeholder="Membership ID/Email"
-                        required>
+                        value="{{ old('membership_id') }}" required>
                     <div class="input-group-append">
                         <div class="input-group-text"><span class="fas fa-envelope"></span></div>
                     </div>
@@ -33,10 +33,11 @@
                 <div class="social-auth-links text-center mb-3">
                     <button type="submit" class="btn btn-primary btn-block">{{ __('auth.btn_sign_in') }}</button>
                 </div>
-                 <div class="row">
+                <div class="row">
                     <div class="col-12">
                         <div class="icheck-primary text-center">
-                            <a href="{{ route('password.request') }}" class="btn btn-support w-100">Forgot Your Password?</a>
+                            <a href="{{ route('password.request') }}" class="btn btn-support w-100">Forgot Your
+                                Password?</a>
                         </div>
                     </div>
                 </div>

@@ -31,7 +31,7 @@ class MemberArrivedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome to Pakistan – Your Booking Reminder',
+            subject: 'Welcome to Pakistan – Your Booking  Reminder',
         );
     }
 

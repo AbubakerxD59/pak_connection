@@ -14,6 +14,13 @@ class BookService extends Model
         "package_id",
         "service_id",
         "status",
+        "schedule_created",
+        "schedule_pdf",
+        "deposit_status",
+        "deposit_url",
+        "invoice_status",
+        "invoice_url",
+        "invoice_pdf",
     ];
     static public $status_array = [
         "3" => "Order Received",
@@ -145,5 +152,23 @@ class BookService extends Model
                 return isset($statuses[$status]) ? $statuses[$status] : '';
             }
         );
+    }
+
+    public function getPdfsAttribute()
+    {
+        $pdfs = [];
+        if ($this->invoice_pdf) {
+            $pdfs[] = [
+                "type" => "Invoice PDF",
+                "url" => $this->invoice_pdf,
+            ];
+        }
+        if ($this->schedule_pdf) {
+            $pdfs[] = [
+                "type" => "Schedule PDF",
+                "url" => $this->schedule_pdf,
+            ];
+        }
+        return $pdfs;
     }
 }

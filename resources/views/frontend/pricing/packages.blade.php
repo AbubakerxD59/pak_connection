@@ -1,6 +1,7 @@
-<div class="packages" id="package_price-{{ $key }}" style="{{ $key != 1 ? 'display:none;' : '' }}">
+<div class="packages {{ $key == 1 ? 'd-flex justify-content-center' : '' }}" id="package_price-{{ $key }}"
+    style="{{ $key != 1 ? 'display:none;' : '' }}">
     @foreach ($prices->where('type', $key) as $price)
-        <article class="package">
+        <article class="package col-md-4">
             <div class="package-box">
                 <header class="packages-header">
                     <h3>{{ $price->package->name }}</h3>

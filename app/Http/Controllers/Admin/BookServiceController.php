@@ -157,6 +157,7 @@ class BookServiceController extends Controller
             $request->validate([
                 'book_service_id' => 'required|exists:book_services,id',
                 'amount'            => 'required|numeric|min:0',
+                'invoice_file'      => 'required|file|mimes:pdf',
                 'final_price'       => 'required|numeric|min:0',
             ]);
             $bookedService = $this->bookService->with('service')->find($request->book_service_id);
@@ -183,6 +184,13 @@ class BookServiceController extends Controller
             $bookedService->invoice_url = $paymentLink->url;
             $bookedService->invoice_status = 1;
             $bookedService->status = 5;
+            // invoice pdf
+            if ($request->hasFile('invoice_file')) {
+                $file = $request->file('invoice_file');
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('assets/pdfs'), $fileName);
+                $bookedService->invoice_pdf = 'assets/pdfs/' . $fileName;
+            }
             $bookedService->save();
             $bookedService->total_amount = $request->amount;
             $bookedService->discount_amount = $request->amount - $request->final_price;
@@ -199,6 +207,7 @@ class BookServiceController extends Controller
                 "payable_amount" => $request->final_price,
                 "transaction_type" => "invoice",
                 "invoice_url" => $paymentLink->url,
+                "invoice_pdf" => 'assets/pdfs/' . $fileName,
                 "status" => "0",
             ]);
             return response()->json([

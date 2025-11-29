@@ -14,25 +14,23 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Amount (£)</label>
-                        <input type="number" name="amount" id="amount" class="form-control" required>
+                        <input type="number" name="amount" id="amount" class="form-control"
+                            placeholder="Enter invoice total amount here." required>
                     </div>
-                    {{-- <div class="mb-3">
-                        <label for="promo_code_id" class="form-label">Select Promo Code</label>
-                        <select name="promo_code_id" id="promo_code_id" class="form-control">
-                            <option value="">Select Promo</option>
-                            @foreach ($promo_codes as $coupon)
-                                <option value="{{ $coupon->id }}" data-discount-type="{{ $coupon->discount_type }}"
-                                    data-discount-amount="{{ $coupon->discount_amount }}">
-                                    {{ $coupon->code }}
-                                    ({{ $coupon->discount_type == '%' ? $coupon->discount_amount . ' %' : '£ ' . $coupon->discount_amount }})
-                                </option>
-                            @endforeach
-                        </select>
-                    </div> --}}
+                    <div class="mb-3">
+                        <label for="invoice_file" class="form-label">Upload Invoice (PDF) File</label>
+                        <input type="file" name="invoice_file" id="invoice_file" class="form-control pdf_file"
+                            accept="application/pdf" required>
+                        <div class="text-center p-2">
+                            <iframe id="pdfPreview" style="display: none;" width="100%" height="500"
+                                style="border: 1px solid #ccc;">
+                            </iframe>
+                        </div>
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label">Final Amount (£)</label>
-                        <input type="text" id="final_price" class="form-control" readonly>
+                        <input type="text" id="final_price" name="final_price" class="form-control" readonly>
                     </div>
                 </div>
 
@@ -44,8 +42,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!-- Status Update Modal -->
 <div class="modal fade" id="statusUpdateModal" tabindex="-1" aria-labelledby="statusUpdateModalLabel"
@@ -69,7 +65,12 @@
                     <div class="mb-3">
                         <label for="pdf_file" class="form-label">Upload Itinerary & Schedule (PDF) File</label>
                         <input type="file" name="pdf_file" id="pdf_file" accept="application/pdf"
-                            class="form-control" required>
+                            class="form-control pdf_file" required>
+                        <div class="text-center p-2">
+                            <iframe id="pdfPreview" style="display: none;" width="100%" height="500"
+                                style="border: 1px solid #ccc;">
+                            </iframe>
+                        </div>
                     </div>
                 </div>
 

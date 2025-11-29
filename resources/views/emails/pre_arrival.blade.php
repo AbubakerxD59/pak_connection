@@ -23,10 +23,12 @@
         </p>
 
         @if ($bookedService->schedule_created)
-            <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}" target="_blank"
-                style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-weight: bold;">
-                Click here to see Booking Confirmation (PDF).
-            </a>
+            <div style="text-align: center;">
+                <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}" target="_blank"
+                    style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-weight: bold;">
+                    Click here to see Booking Confirmation (PDF).
+                </a>
+            </div>
         @endif
 
         <p style="font-size: 16px;">

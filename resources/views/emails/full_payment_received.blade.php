@@ -55,6 +55,13 @@
             </tr>
         </table>
 
+        <div style="text-align: center;">
+            <a href="{{ url(asset('/') . $bookedService->invoice_pdf) }}" target="_blank"
+                style="display: inline-block; padding: 12px 20px; background-color: green; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-size: 16px;">
+                View Invoice
+            </a>
+        </div>
+
 
         <p style="font-size: 16px;"><strong>What Happens Next?</strong></p>
         <ol style="font-size: 16px; padding-left: 20px;">

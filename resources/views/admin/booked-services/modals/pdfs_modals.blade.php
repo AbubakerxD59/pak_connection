@@ -29,7 +29,12 @@
                 </div>
                 <div class="mb-3">
                     <label for="file" class="form-label">Upload PDF</label>
-                    <input type="file" name="file" class="form-control" accept="application/pdf">
+                    <input type="file" name="file" class="form-control pdf_file" accept="application/pdf">
+                    <div class="text-center p-2">
+                        <iframe id="pdfPreview" style="display: none;" width="100%" height="500"
+                            style="border: 1px solid #ccc;">
+                        </iframe>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -69,7 +74,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="uploadPdfBtn" class="btn btn-primary">Upload</button>
-                    <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary btn-cancel"
+                        data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
         </div>

@@ -58,6 +58,16 @@
             font-weight: 500;
             padding: 0 15px;
         }
+
+        .active_pricing {
+            background: green;
+        }
+
+        .btn-primary:focus {
+            background: green;
+            border: none;
+            box-shadow: none;
+        }
     </style>
 @endpush
 
@@ -65,11 +75,11 @@
     <script>
         $(document).ready(function() {
             $('.btn-price').on("click", function() {
+                var href = $(this).attr("href");
+                $('.packages').removeClass("d-flex justify-content-center").hide();
+                $('#' + href).addClass("d-flex justify-content-center").show();
                 $('.btn-price').removeClass("active_pricing");
                 $(this).addClass("active_pricing");
-                var href = $(this).attr("href");
-                $('.packages').hide();
-                $('#' + href).show();
             });
         });
     </script>

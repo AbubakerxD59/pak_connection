@@ -73,7 +73,6 @@
             $('#amount').val('');
             $('#final_price').val('');
             $('#promo_code_id').prop('selectedIndex', 0);
-            // $("#invoiceModal").modal("show");
             $("#invoiceModal").modal("toggle");
 
         });
@@ -106,22 +105,22 @@
             const form = $(this);
             const submitBtn = form.find('button[type="submit"]');
             // Disable both buttons
-            if (clickedBtn) clickedBtn.prop('disabled', true).text('Processing...');
+            if (clickedBtn) {
+                clickedBtn.prop('disabled', true).text('Processing...');
+            }
             submitBtn.prop('disabled', true).text('Generating...');
             // Show toast message
             toastr.info(
                 "Submitting your invoice request. Please wait while we process your details...");
-            const data = {
-                _token: form.find('input[name="_token"]').val(),
-                book_service_id: $('#modalBookedServiceId').val(),
-                amount: $('#amount').val(),
-                final_price: $('#final_price').val(),
-                promo_code_id: $('#promo_code_id').val(),
-            };
+            let formData = new FormData(this);
+            // here
             $.ajax({
-                type: 'POST',
                 url: "{{ route('booked-services.createInvoice') }}",
-                data: data,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                data: formData,
                 success: function(response) {
                     if (response.success) {
                         booked_services_dataTable.ajax.reload();
@@ -135,19 +134,13 @@
                     toastr.error(errorMsg);
                 },
                 complete: function() {
-                    // $('#invoiceModal').modal('hide');
-
                     form[0].reset();
-
                     // Re-enable buttons
                     if (clickedBtn) {
                         clickedBtn.prop('disabled', false).text('Generate Invoice');
                         clickedBtn = null;
                     }
                     submitBtn.prop('disabled', false).text('Generate');
-                    // setTimeout(() => {
-                    //     location.reload();
-                    // }, 1000);
                     $("#invoiceModal").modal("toggle");
 
                 }
@@ -229,22 +222,13 @@
             $('#book_service_id').val(selectedButton.data('id'));
             $('#status').val(selectedButton.data('status'));
             $('#status_text').val(selectedButton.data('status-text'));
-
-            // console.log('before');
             $('#statusUpdateModal').modal('toggle');
-            // return true;
-            // console.log('after');
         });
         $('#statusUpdateForm').on('submit', function(e) {
             e.preventDefault();
             let formData = new FormData(this);
             let submitButton = $(this).find('button[type="submit"]');
             submitButton.prop('disabled', true).text('Uploading...');
-            // const formData = new FormData(this);
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}:`, value);
-            }
-            // return true;
             $.ajax({
                 url: "{{ route('booked-services.uploadSchedule') }}",
                 method: 'POST',
@@ -255,7 +239,6 @@
                     if (response.success) {
                         booked_services_dataTable.ajax.reload();
                         toastr.success(response.message);
-                        // $('#statusUpdateModal').modal('hide');
                         $('#statusUpdateModal').modal('toggle');
                     } else {
                         toastr.error(response.message || 'Something went wrong.');
@@ -267,7 +250,6 @@
                 },
                 complete: function() {
                     submitButton.prop('disabled', false).text('Submit');
-                    // setTimeout(() => location.reload(), 1000);
                 }
             });
         });

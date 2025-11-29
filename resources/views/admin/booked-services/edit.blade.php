@@ -123,21 +123,6 @@
                                                 {!! service_book_status($bookedService->status) !!}
                                             </div>
                                         </div>
-                                        @if ($bookedService->schedule_created)
-                                            <div class="form-group row">
-                                                <div class="col-md-3">
-                                                    <label for="status" class="form-label">Schedule PDF</label>
-                                                </div>
-                                                <div class="col-md-9">
-                                                    {{-- <a href="{{ url(asset('uploads/') . '/' . $bookedService->schedule_pdf) }}" --}}
-                                                    <a href="{{ url(asset('/') . $bookedService->schedule_pdf) }}"
-                                                        target="_blank" class="btn btn-sm btn-success">
-                                                        Click here to see Itinerary & Schedule (PDF).
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        @endif
-
                                         <div class="col-12 text-right">
                                             <button type="submit"
                                                 class="btn btn-outline-success">{{ __('users.btn_submit_text') }}</button>
@@ -154,7 +139,65 @@
         </div>
     @endcan
 
-
+    {{-- PDF --}}
+    @can('edit_booked_service')
+        <div class="page-content">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <i class="nav-icon fas fa-file-pdf"></i>
+                                        PDFs
+                                    </div>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                            title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-list">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-bordered" id="pdfs_dataTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Sr#</th>
+                                                                <th>Type</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($bookedService->pdfs as $pdf)
+                                                                <tr>
+                                                                    <td>{{ $loop->iteration }}</td>
+                                                                    <td>{{ ucfirst($pdf['type']) }}</td>
+                                                                    <td>
+                                                                        <a href="{{ url(asset('/') . $pdf['url']) }}"
+                                                                            target="_blank"
+                                                                            class="btn btn-sm btn-success">View</a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    @endcan
 
     {{-- Transactions --}}
     @can('edit_booked_service')
@@ -221,9 +264,6 @@
                 </div>
             </section>
         </div>
-
-
-
     @endcan
 
     {{-- Book Service PDF --}}

@@ -56,11 +56,17 @@
 
 
         {{-- @if (!empty($bookedService->invoice_url)) --}}
-        <p style="font-size: 16px;">
+        <div style="text-align: center;">
+            <a href="{{ url(asset('/') . $bookedService->invoice_pdf) }}" target="_blank"
+                style="display: inline-block; padding: 12px 20px; background-color: green; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-size: 16px;">
+                View Invoice
+            </a>
+
             <a href="{{ $bookedService->invoice_url ?? '#' }}" target="_blank"
-                style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0;">
-                Pay Invoice</a>
-        </p>
+                style="display: inline-block; padding: 12px 20px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 5px; margin: 15px 0; font-size: 16px;">
+                Pay Invoice
+            </a>
+        </div>
         {{-- @endif --}}
 
 
