@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             FieldsSeeder::class,
             FeatureSeeder::class,
             PackageSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }
