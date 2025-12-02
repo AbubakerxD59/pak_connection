@@ -51,7 +51,7 @@ class VerificationController extends Controller
         return response()->json([
             'draw' => intval($data['draw']),
             'iTotalRecords' => $iTotalRecords,
-            'iTotalDisplayRecords' => $totalRecordswithFilter,
+            'iTotalDisplayRecords' => $totalRecordswithFilter->count(),
             'aaData' => $documents,
         ]);
     }
