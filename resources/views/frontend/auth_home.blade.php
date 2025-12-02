@@ -167,6 +167,18 @@
                     }
                 });
             });
+
+            // Read More toggle functionality
+            $('#read-more-toggle').on('click', function() {
+                $('#additional-info').slideToggle(300);
+                $('#read-more-icon').toggleClass('fa-chevron-down fa-chevron-up');
+                const isVisible = $('#read-more-icon').hasClass('fa-chevron-up');
+                if (isVisible) {
+                    $('#read-more-text').text('Read Less');
+                } else {
+                    $('#read-more-text').text('Read More');
+                }
+            });
         });
     </script>
 @endpush

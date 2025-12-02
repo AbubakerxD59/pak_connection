@@ -123,6 +123,7 @@
             // Approve Document
             $(document).on('click', '.approve-document', function() {
                 var documentId = $(this).data('id');
+                var button = $(this);
 
                 Swal.fire({
                     title: 'Are you sure?',
@@ -131,25 +132,37 @@
                     showCancelButton: true,
                     confirmButtonColor: '#28a745',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, approve it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
+                    confirmButtonText: 'Yes, approve it!',
+                    showLoaderOnConfirm: true,
+                    allowOutsideClick: () => !Swal.isLoading(),
+                    preConfirm: () => {
+                        return $.ajax({
                             url: '/verification/approve/' + documentId,
                             type: 'POST',
                             data: {
                                 _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (response.success) {
-                                    toastr.success(response.message);
-                                    table.ajax.reload();
-                                }
-                            },
-                            error: function() {
-                                toastr.error('Failed to approve document');
                             }
+                        }).then(response => {
+                            if (!response.success) {
+                                throw new Error(response.message || 'Failed to approve');
+                            }
+                            return response;
+                        }).catch(error => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error.message || 'Failed to approve document'}`
+                            );
                         });
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed && result.value) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Approved!',
+                            text: result.value.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        table.ajax.reload();
                     }
                 });
             });
@@ -166,6 +179,12 @@
             $('#reject-form').on('submit', function(e) {
                 e.preventDefault();
 
+                var submitBtn = $(this).find('button[type="submit"]');
+                var originalText = submitBtn.html();
+
+                // Disable button and show loader
+                submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Rejecting...');
+
                 $.ajax({
                     url: '/verification/reject/' + currentRejectId,
                     type: 'POST',
@@ -178,6 +197,7 @@
                             toastr.success(response.message);
                             $('#rejectModal').modal('hide');
                             table.ajax.reload();
+                            $('#admin_notes').val(''); // Clear textarea
                         }
                     },
                     error: function(xhr) {
@@ -186,6 +206,10 @@
                         } else {
                             toastr.error('Failed to reject document');
                         }
+                    },
+                    complete: function() {
+                        // Re-enable button and restore text
+                        submitBtn.prop('disabled', false).html(originalText);
                     }
                 });
             });

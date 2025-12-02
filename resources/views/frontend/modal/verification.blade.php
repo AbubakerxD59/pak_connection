@@ -1,7 +1,7 @@
  <!-- Verification Modal -->
  <div class="modal fade" id="verificationModal" tabindex="-1" role="dialog" aria-labelledby="verificationModalLabel"
      aria-hidden="true">
-     <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="verificationModalLabel">Complete Verification</h5>
@@ -11,17 +11,39 @@
              </div>
              <div class="modal-body">
                  <div id="unverified-content">
-                     <p class="text-center mb-3">Please upload your passport image to complete
-                         <br>the verification process.
-                     </p>
+                     <div class="text-center mb-3">
+                         <p class="h5"><b>Why We Ask for Photo ID</b></p>
+                         <p class="mb-2">
+                             To ensure your safety and to comply with security
+                             requirements in Pakistan, Pak Connections requires all
+                             members to upload a valid Photo ID (Passport or NICOP/
+                             NADRA Card).
+                         </p>
+
+                         <div id="additional-info" style="display: none;">
+                             <p class="mb-0">
+                                 This helps us verify your identity in case of emergencies and
+                                 allows us to provide secure, reliable assistance.
+                                 Please note: Your document may be approved or rejected based
+                                 on clarity, validity, or compliance with our verification
+                                 standards.
+                             </p>
+                         </div>
+
+                         <a href="javascript:void(0)" id="read-more-toggle" class="text-primary"
+                             style="font-size: 14px; cursor: pointer;">
+                             <span id="read-more-text">Read More</span>
+                             <i class="fa fa-chevron-down" id="read-more-icon"></i>
+                         </a>
+                     </div>
                      <form id="verification-form" enctype="multipart/form-data">
                          @csrf
                          <div class="form-group">
-                             <label for="passport_image">Passport Image <span class="text-danger">*</span></label>
+                             <label for="passport_image">Photo ID / Document <span class="text-danger">*</span></label>
                              <input type="file" class="form-control" id="passport_image" name="passport_image"
                                  accept="image/*,application/pdf" required>
-                             <small class="form-text text-muted">Accepted formats: JPEG, PNG, JPG, PDF (Max:
-                                 5MB)</small>
+                             <small class="form-text text-muted">Upload Passport, NICOP, or NADRA Card (JPEG, PNG, JPG,
+                                 PDF - Max: 5MB)</small>
                          </div>
                          <div class="form-group" id="image-preview-container" style="display: none;">
                              <label>Preview:</label>
