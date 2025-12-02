@@ -34,6 +34,8 @@ class FieldsSeeder extends Seeder
 
             ["name" => "Mode Travel", "type" => "dropdown", "options" => "Arrival, Departure"],
 
+            ["name" => "Expected Arrival Time", "type" => "time"],
+
             ["name" => "Size & Make of Car", "type" => "dropdown", "options" => "Cruiser ( 7 passengers ; 4 suitcases ; 4 bags),Saloon ( 4 passengers ; 2 suitcases ; 2 bags ),Hatchback ( 4 passengers ; 2 suitcases ; 2 bags),Minibus ( 7 passengers ; 7 suitcases ; 7 bags )"],
 
             ["name" => "Number of People", "type" => "text"],

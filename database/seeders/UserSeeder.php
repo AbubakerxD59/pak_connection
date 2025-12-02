@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'password' => 'P@assW0rd',
                 'status' => '1'
             ]);
-            if (! empty($user)) {
+            if (!empty($user)) {
                 $role = DB::table('roles')->where('name', 'Super Admin')->first();
                 if (empty($role)) {
                     $current_date = Carbon::now()->format('Y-m-d H:i:s');
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
                 } else {
                     $role_id = isset($role->id) ? $role->id : '';
                 }
-                if (! empty($role_id)) {
+                if (!empty($role_id)) {
                     $user->assignRole('Super Admin');
                 }
             }

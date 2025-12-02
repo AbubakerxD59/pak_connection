@@ -14,6 +14,18 @@
                     </span>
                 </header>
                 <ul class="package-list">
+                    <li>
+                        <span class="circle-icon bg-primary">
+                            <i class="fa fa-check"></i>
+                        </span>
+                        24/7 Emergency Assistance
+                    </li>
+                    <li>
+                        <span class="circle-icon bg-primary">
+                            <i class="fa fa-check"></i>
+                        </span>
+                        24/7 Personal Request Line
+                    </li>
                     @foreach ($price->package->checkFeatures() as $key => $feature)
                         @if ($key == 'include')
                             <span><strong>Includes:</strong></span>
