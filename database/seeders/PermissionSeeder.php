@@ -41,6 +41,10 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'manage_chats', 'label' => 'Manage Chats', 'parent_id' => '', 'route_name' => 'chats'],
 
+            ['name' => 'manage_settings', 'label' => 'Manage Settings', 'parent_id' => '', 'route_name' => 'settings'],
+
+            ['name' => 'manage_verification', 'label' => 'Manage Verification', 'parent_id' => '', 'route_name' => 'verification'],
+
             //Manage Roles
             ['name' => 'view_role', 'label' => 'View Role', 'parent_id' => 'manage_roles', 'route_name' => 'roles.index', 'role_id' => '1'],
 
@@ -142,6 +146,17 @@ class PermissionSeeder extends Seeder
 
             ['name' => 'response_chat', 'label' => 'Response Chat', 'parent_id' => 'manage_chats', 'route_name' => 'chats.response'],
 
+            // Manage Settings
+            ['name' => 'view_settings', 'label' => 'View Settings', 'parent_id' => 'manage_settings', 'route_name' => 'settings.index'],
+            ['name' => 'add_settings', 'label' => 'Add Settings', 'parent_id' => 'manage_settings', 'route_name' => 'settings.create'],
+            ['name' => 'edit_settings', 'label' => 'Edit Settings', 'parent_id' => 'manage_settings', 'route_name' => 'settings.edit'],
+            ['name' => 'delete_settings', 'label' => 'Delete Settings', 'parent_id' => 'manage_settings', 'route_name' => 'settings.destroy'],
+
+            // Manage Verification
+            ['name' => 'view_verification', 'label' => 'View Verification', 'parent_id' => 'manage_verification', 'route_name' => 'verification.index'],
+            ['name' => 'edit_verification', 'label' => 'Edit Verification', 'parent_id' => 'manage_verification', 'route_name' => 'verification.edit'],
+            ['name' => 'approve_verification', 'label' => 'Approve Verification', 'parent_id' => 'manage_verification', 'route_name' => 'verification.approve'],
+            ['name' => 'reject_verification', 'label' => 'Reject Verification', 'parent_id' => 'manage_verification', 'route_name' => 'verification.reject'],
 
 
         ];

@@ -243,6 +243,24 @@
                     </a>
                 </li>
 
+                {{-- Member Verification --}}
+                <li class="nav-item">
+                    <a href="{{ route('verification.index') }}"
+                        class="nav-link {{ in_array(request()->route()->getName(), ['verification.index', 'verification.user.documents']) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-id-card"></i>
+                        <p>Member Verification</p>
+                    </a>
+                </li>
+
+                {{-- Settings --}}
+                <li class="nav-item">
+                    <a href="{{ route('settings.index') }}"
+                        class="nav-link {{ in_array(request()->route()->getName(), ['settings.index', 'settings.create', 'settings.edit']) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>Settings</p>
+                    </a>
+                </li>
+
                 {{-- Earnings --}}
                 {{-- <li class="nav-item">
                     <a href="#" class="nav-link">

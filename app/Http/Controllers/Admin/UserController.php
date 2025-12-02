@@ -185,7 +185,7 @@ class UserController extends Controller
         $search = @$data['search']['value'];
         // $order = end($data['order']);
         // $orderby = $data['columns'][$order['column']]['data'];
-        $iTotalRecords = new User;
+        $iTotalRecords = User::with("latestVerificationDocument");
         $users = new User;
 
         if (!empty($search)) {

@@ -45,13 +45,8 @@
         </div>
 
         <div class="customize-button text-center pt-4">
-            <a class="btn btn-primary mt-3" href="tel:+923205023407">24/7 Emergency Assistance</a>
-            <a class="btn btn-support mt-3" href="tel:+923205023407">
-                <span>
-                    <img src="/assets/img/headphone.png" alt="Head Phone">
-                </span>
-                24/7 Personal Request Line
-            </a>
+            <a href="tel:{{ setting('support_phone') }}" class="btn btn-primary mt-3">24/7 Emergency Assistance</a>
+            <a href="tel:{{ setting('support_phone') }}" class="btn btn-support mt-3">24/7 Personal Request Line</a>
         </div>
     </section>
 

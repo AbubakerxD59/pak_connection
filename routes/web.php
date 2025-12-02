@@ -20,7 +20,9 @@ use App\Http\Controllers\Frontend\MemberController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\BookServiceController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\VerificationController as AdminVerificationController;
 use App\Http\Controllers\Frontend\AuthController as FrontendAuthController;
+use App\Http\Controllers\Frontend\VerificationController as FrontendVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,6 +154,21 @@ Route::middleware(['auth'])->group(function () {
         Route::post('new/messages', 'newMessages')->name('new.message');
         Route::get('pending/count', 'pendingCount')->name('pending.count');
     });
+
+    // Verification
+    Route::controller(AdminVerificationController::class)->prefix('verification/')->name('verification.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('dataTable', 'dataTable')->name('dataTable');
+        Route::get('user/{userId}/documents', 'viewUserDocuments')->name('user.documents');
+        Route::post('approve/{id}', 'approve')->name('approve');
+        Route::post('reject/{id}', 'reject')->name('reject');
+    });
+
+    // Settings
+    Route::resource('settings', \App\Http\Controllers\Admin\SettingController::class)->except('show');
+    Route::controller(\App\Http\Controllers\Admin\SettingController::class)->prefix('settings/')->name('settings.')->group(function () {
+        Route::get('dataTable', 'dataTable')->name('dataTable');
+    });
 });
 
 // Strip routes
@@ -166,12 +183,24 @@ Route::name('frontend.')->group(function () {
     });
     Route::middleware(['is_member'])->controller(MemberController::class)->name('member.')->prefix('member/')->group(function () {
         Route::post('logout', [FrontendAuthController::class, 'logout'])->name("logout");
-        Route::get('home', 'home')->name('home');
-        Route::get('get-fields', 'getFields')->name('getFields');
-        Route::post('book-service', "bookService")->name("bookService");
+        
+        // Routes that require verification
+        Route::middleware(['verified_member'])->group(function () {
+            Route::get('home', 'home')->name('home');
+            Route::get('get-fields', 'getFields')->name('getFields');
+            Route::post('book-service', "bookService")->name("bookService");
+        });
+        
+        // Routes accessible without verification
         Route::get('profile', 'profile')->name('profile');
         Route::post('profile-update', 'profileUpdate')->name('profile_update');
         Route::get("tracking", "tracking")->name("tracking");
+    });
+
+    // Verification routes for members
+    Route::middleware(['is_member'])->controller(FrontendVerificationController::class)->name('member.verification.')->prefix('member/verification/')->group(function () {
+        Route::get('status', 'checkStatus')->name('status');
+        Route::post('upload', 'upload')->name('upload');
     });
 });
 

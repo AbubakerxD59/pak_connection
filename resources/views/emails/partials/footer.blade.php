@@ -4,7 +4,7 @@
     <tr>
         <td><strong>Personal Members Services</strong></td>
         <td style="padding-left: 20px;">
-            UK Callers: +44 203 375 3337<br>
+            UK Callers: {{ setting('support_phone') }}<br>
             International Callers: WhatsApp 0044 203 375 3337<br>
             Email: MembersSupport@pakconnections.co.uk
         </td>
@@ -15,7 +15,7 @@
     <tr>
         <td><strong>Corporate & Business Members Services</strong></td>
         <td style="padding-left: 20px;">
-            UK Callers: +44 203 375 3337<br>
+            UK Callers: {{ setting('support_phone') }}<br>
             International Callers: WhatsApp 0044 203 375 3337<br>
             Email: CorporateSupport@pakconnections.co.uk
         </td>
@@ -45,5 +45,6 @@
 
 <!-- Bottom Logo -->
 <div style="text-align: right; margin-top: 40px;">
-    <img src="{{ $message->embed(public_path(getCompanyLogoUrl())) }}" alt="Pak Connections Logo" style="max-width: 120px;">
+    <img src="{{ $message->embed(public_path(getCompanyLogoUrl())) }}" alt="Pak Connections Logo"
+        style="max-width: 120px;">
 </div>

@@ -39,6 +39,7 @@ class User extends Authenticatable
         "pkg_start_time",
         "pkg_end_time",
         "package_status",
+        "verification_status",
     ];
 
     static public $status_array = [
@@ -158,5 +159,30 @@ class User extends Authenticatable
     {
         $phone_verification = $this->phone_verification;
         return $phone_verification ? true : false;
+    }
+
+    public function verificationDocuments()
+    {
+        return $this->hasMany(VerificationDocument::class);
+    }
+
+    public function latestVerificationDocument()
+    {
+        return $this->hasOne(VerificationDocument::class)->latestOfMany();
+    }
+
+    public function isVerified()
+    {
+        return $this->verification_status === 'verified';
+    }
+
+    public function isVerificationPending()
+    {
+        return $this->verification_status === 'pending';
+    }
+
+    public function isUnverified()
+    {
+        return $this->verification_status === 'unverified';
     }
 }

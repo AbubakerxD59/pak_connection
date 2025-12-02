@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'is_member' => \App\Http\Middleware\IsMember::class,
         'frontend' => \App\Http\Middleware\Frontend::class,
         'auth.sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        'verified_member' => \App\Http\Middleware\EnsureUserIsVerified::class,
     ];
 }
