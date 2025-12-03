@@ -38,20 +38,31 @@
                      </div>
                      <form id="verification-form" enctype="multipart/form-data">
                          @csrf
-                         <div class="form-group">
-                             <label for="passport_image">Photo ID / Document <span class="text-danger">*</span></label>
-                             <input type="file" class="form-control" id="passport_image" name="passport_image"
-                                 accept="image/*,application/pdf" required>
-                             <small class="form-text text-muted">Upload Passport, NICOP, or NADRA Card (JPEG, PNG, JPG,
-                                 PDF - Max: 5MB)</small>
-                         </div>
-                         <div class="form-group" id="image-preview-container" style="display: none;">
-                             <label>Preview:</label>
-                             <div class="text-center">
-                                 <img id="image-preview" src="" alt="Preview"
-                                     style="max-width: 100%; max-height: 300px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
-                             </div>
-                         </div>
+                        <div class="form-group">
+                            <label for="passport_image">Photo ID / Document <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control pdf_file" id="passport_image"
+                                name="passport_image" accept="image/*,application/pdf" required>
+                            <small class="form-text text-muted">Upload Passport, NICOP, or NADRA Card (JPEG, PNG, JPG,
+                                PDF - Max: 5MB)</small>
+                        </div>
+                        
+                        <!-- Preview Container for Images -->
+                        <div class="form-group" id="image-preview-container" style="display: none;">
+                            <label>Preview:</label>
+                            <div class="text-center">
+                                <img id="image-preview" src="" alt="Preview"
+                                    style="max-width: 100%; max-height: 400px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                            </div>
+                        </div>
+                        
+                        <!-- Preview Container for PDFs -->
+                        <div class="form-group" id="pdf-preview-container" style="display: none;">
+                            <label>Preview:</label>
+                            <div class="text-center">
+                                <iframe id="pdf-preview" width="100%" height="500" style="border: 1px solid #ccc; border-radius: 5px;">
+                                </iframe>
+                            </div>
+                        </div>
                          <div class="text-center">
                              <button type="submit" class="btn btn-primary" id="submit-verification-btn">
                                  <i class="fa fa-upload"></i> Submit Verification

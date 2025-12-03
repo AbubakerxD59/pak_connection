@@ -47,7 +47,8 @@
             opacity: 1;
         }
 
-        #image-preview-container {
+        #image-preview-container,
+        #pdf-preview-container {
             margin-top: 15px;
         }
     </style>
@@ -62,6 +63,8 @@
             const passportInput = $('#passport_image');
             const imagePreview = $('#image-preview');
             const imagePreviewContainer = $('#image-preview-container');
+            const pdfPreview = $('#pdf-preview');
+            const pdfPreviewContainer = $('#pdf-preview-container');
             const unverifiedContent = $('#unverified-content');
             const pendingContent = $('#pending-content');
             const submitBtn = $('#submit-verification-btn');
@@ -95,7 +98,7 @@
                 });
             });
 
-            // Image preview
+            // Document preview (Image or PDF)
             passportInput.on('change', function() {
                 const file = this.files[0];
                 if (file) {
@@ -104,28 +107,36 @@
                         toastr.error('File size must not exceed 5MB');
                         $(this).val('');
                         imagePreviewContainer.hide();
+                        pdfPreviewContainer.hide();
                         return;
                     }
 
                     // Check file type
                     const fileType = file.type;
                     if (fileType === 'application/pdf') {
-                        imagePreview.attr('src', '{{ asset('assets/img/pdf-icon.png') }}');
-                        imagePreviewContainer.show();
+                        // Show PDF preview
+                        const fileURL = URL.createObjectURL(file);
+                        pdfPreview.attr('src', fileURL);
+                        pdfPreviewContainer.show();
+                        imagePreviewContainer.hide();
                     } else if (fileType.startsWith('image/')) {
+                        // Show image preview
                         const reader = new FileReader();
                         reader.onload = function(e) {
                             imagePreview.attr('src', e.target.result);
                             imagePreviewContainer.show();
+                            pdfPreviewContainer.hide();
                         };
                         reader.readAsDataURL(file);
                     } else {
                         toastr.error('Invalid file type. Please upload an image or PDF file.');
                         $(this).val('');
                         imagePreviewContainer.hide();
+                        pdfPreviewContainer.hide();
                     }
                 } else {
                     imagePreviewContainer.hide();
+                    pdfPreviewContainer.hide();
                 }
             });
 
@@ -148,6 +159,7 @@
                             toastr.success(response.message);
                             verificationForm[0].reset();
                             imagePreviewContainer.hide();
+                            pdfPreviewContainer.hide();
 
                             // Show pending message
                             unverifiedContent.hide();

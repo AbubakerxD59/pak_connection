@@ -25,7 +25,7 @@ class VerificationController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'passport_image' => 'required|image|mimes:jpeg,png,jpg,pdf|max:5120', // 5MB max
+            'passport_image' => 'required|max:5120', // 5MB max
         ]);
 
         $user = User::find(auth()->user()->id);

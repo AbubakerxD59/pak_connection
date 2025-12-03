@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'is_member' => \App\Http\Middleware\IsMember::class,
+        'is_admin' => \App\Http\Middleware\IsAdmin::class,
         'frontend' => \App\Http\Middleware\Frontend::class,
         'auth.sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         'verified_member' => \App\Http\Middleware\EnsureUserIsVerified::class,
