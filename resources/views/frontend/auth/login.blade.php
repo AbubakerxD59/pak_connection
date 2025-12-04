@@ -4,7 +4,7 @@
 @endpush
 @section('body')
     <div class="col-md-12 d-flex justify-content-center align-items-center my-5">
-        <div class="col-md-3 card p-5 login-card-box">
+        <div class="col-md-6 col-lg-4 card p-5 login-card-box">
             <p class="login-title">{{ __('auth.login_page_title') }}</p>
             <form method="post" action="{{ route('frontend.login') }}">
                 @csrf

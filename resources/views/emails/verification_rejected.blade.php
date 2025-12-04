@@ -50,7 +50,8 @@
 
         <p style="font-size: 16px;">
             If you have any questions or need clarification about the rejection reason, please don't hesitate to contact
-            our support team at <a href="tel:+923205023407" style="color: #28a745; text-decoration: none;">
+            our support team at <a href="tel:{{ setting('support_phone') }}"
+                style="color: #28a745; text-decoration: none;">
                 {{ setting('support_phone') }}</a> or reply to this email.
         </p>
 

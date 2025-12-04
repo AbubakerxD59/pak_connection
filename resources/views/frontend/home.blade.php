@@ -24,7 +24,7 @@
             @else
                 <a class="btn btn-primary mt-3" href="{{ route('frontend.showLogin') }}">Already A Member</a>
             @endif
-            <a class="btn btn-support mt-3" href="tel:+923205023407">
+            <a class="btn btn-support mt-3" href="tel:{{ setting('support_phone') }}">
                 <span>
                     <img src="/assets/img/headphone.png" alt="Head Phone">
                 </span>

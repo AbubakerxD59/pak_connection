@@ -60,7 +60,7 @@
             <p style="margin: 0; font-size: 16px; color: #495057;">
                 <strong>Need Help?</strong><br>
                 If you have any questions or need assistance, our support team is here for you:<br>
-                📞 <a href="tel:+442033753337"
+                📞 <a href="tel:{{ setting('support_phone') }}"
                     style="color: #28a745; text-decoration: none;">{{ setting('support_phone') }}</a><br>
                 ✉️ Reply to this email anytime
             </p>

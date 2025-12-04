@@ -80,10 +80,20 @@
                         <div class="holder">
                             <h3>Company</h3>
                             <ul class="footer-nav">
-                                <li><a href=""><i class="fa fa-chevron-right"></i> Services</a></li>
-                                <li><a href=""><i class="fa fa-chevron-right"></i> About Us</a></li>
-                                <li><a href=""><i class="fa fa-chevron-right"></i> Membership</a></li>
-                                <li><a href=""><i class="fa fa-chevron-right"></i> Contact Us</a></li>
+                                {{-- <li><a href=""><i class="fa fa-chevron-right"></i> Services</a></li> --}}
+                                <li>
+                                    <a href="{{ setting('about_us_link') }}" target="_blank">
+                                        <i class="fa fa-chevron-right"></i>
+                                        About Us
+                                    </a>
+                                </li>
+                                {{-- <li><a href=""><i class="fa fa-chevron-right"></i> Membership</a></li> --}}
+                                <li>
+                                    <a href="{{ setting('contact_us_link') }}" target="_blank">
+                                        <i class="fa fa-chevron-right"></i>
+                                        Contact Us
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -91,8 +101,11 @@
                         <div class="holder">
                             <h3>Services</h3>
                             <ul class="footer-nav">
-                                <li><a href=""><i class="fa fa-chevron-right"></i> Privacy Policy & GDPR</a></li>
-                                <li><a href=""><i class="fa fa-chevron-right"></i> Terms & Conditions</a></li>
+                                <li><a href="{{ setting('privacy_policy_link') }}" target="_blank"><i
+                                            class="fa fa-chevron-right"></i>
+                                        Privacy Policy</a></li>
+                                <li><a href="{{ setting('terms_and_conditions_link') }}" target="_blank"><i
+                                            class="fa fa-chevron-right"></i> Terms & Conditions</a></li>
                             </ul>
                         </div>
                     </div>
@@ -100,16 +113,25 @@
                         <div class="holder">
                             <h3>Get in Touch</h3>
                             <ul class="footer-nav contact">
-                                <li><a href="tel:+9252000111"><i class="fa fa-phone"></i> +92-52-000111</a></li>
-                                <li class="email"><a href="mailto:info@pakconnection.com"><i
-                                            class="fa fa-envelope"></i> info@pakconnection.com</a></li>
+                                <li>
+                                    <a href="tel:{{ setting('get_in_touch_phone') }}" target="_blank">
+                                        <i class="fa fa-phone"></i>
+                                        {{ setting('get_in_touch_phone') }}
+                                    </a>
+                                </li>
+                                <li class="email">
+                                    <a href="mailto:{{ setting('get_in_touch_email') }}" target="_blank">
+                                        <i class="fa fa-envelope"></i>
+                                        {{ setting('get_in_touch_email') }}
+                                    </a>
+                                </li>
                             </ul>
-                            <ul class="social-networks">
+                            {{-- <ul class="social-networks">
                                 <li><a href="#"><i class="bi bi-facebook"></i></a></li>
                                 <li><a href="#"><i class="bi bi-twitter"></i></a></li>
                                 <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
                                 <li><a href="#"><i class="bi bi-youtube"></i></a></li>
-                            </ul>
+                            </ul> --}}
                         </div>
                     </div>
                 </div>
@@ -126,8 +148,10 @@
                         </div>
                         <div class="col-xl-6">
                             <ul class="footer-botton-nav privacy">
-                                <li><a href="">Privacy Policy & GDPR</a></li>
-                                <li><a href="">Terms & Conditions</a></li>
+                                <li><a href="{{ setting('privacy_policy_link') }}" target="_blank">Privacy Policy &
+                                        GDPR</a></li>
+                                <li><a href="{{ setting('terms_and_conditions_link') }}" target="_blank">Terms &
+                                        Conditions</a></li>
                             </ul>
                         </div>
                     </div>

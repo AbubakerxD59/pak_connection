@@ -20,7 +20,7 @@
         <div class="customize-button text-center pt-4">
             <a class="btn btn-primary mt-3" id="order-service-btn" href="{{ route('frontend.member.home') }}">Order a
                 Service</a>
-            <a class="btn btn-support mt-3" href="tel:+923205023407">
+            <a class="btn btn-support mt-3" href="tel:{{ setting('support_phone') }}">
                 <span><img src="/assets/img/headphone.png" alt="Head Phone"></span>
                 Contact Support
             </a>

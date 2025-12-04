@@ -45,8 +45,12 @@
         </div>
 
         <div class="customize-button text-center pt-4">
-            <a href="tel:{{ setting('support_phone') }}" class="btn btn-primary mt-3">24/7 Emergency Assistance</a>
-            <a href="tel:{{ setting('support_phone') }}" class="btn btn-support mt-3">24/7 Personal Request Line</a>
+            <a href="tel:{{ setting('24_7_emergency_assistance_phone') }}" class="btn btn-primary mt-3">
+                24/7 Emergency Assistance
+            </a>
+            <a href="tel:{{ setting('24_7_personal_request_line_phone') }}" class="btn btn-support mt-3">
+                24/7 Personal Request Line
+            </a>
         </div>
     </section>
 
