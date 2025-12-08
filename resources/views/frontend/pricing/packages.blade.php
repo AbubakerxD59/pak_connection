@@ -61,7 +61,7 @@
 
             @if (!empty($price->package->is_user_package) && !$price->package->is_expired)
                 <p class="text-success">Ends on:
-                    {{ \Carbon\Carbon::parse($price->package->pkg_end_time)->format('F d, Y h:i A') }}</p>
+                    {{ \Carbon\Carbon::parse($price->package->pkg_end_time)->format(setting('date_time_format', 'F d, Y h:i A')) }}</p>
             @else
                 <a href="{{ route('frontend.buy_memebership', $price->id) }}" class="btn btn-primary w-100">Buy
                     Now</a>

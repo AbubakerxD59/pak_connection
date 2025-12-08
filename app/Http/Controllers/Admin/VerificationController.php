@@ -76,20 +76,42 @@ class VerificationController extends Controller
             'admin_notes' => $request->admin_notes,
         ]);
 
-        // Update user verification status
-        $user->update(['verification_status' => 'verified']);
+        // Check if both passport and proof of address are approved
+        $passportApproved = $user->verificationDocuments()
+            ->where('document_type', 'passport')
+            ->where('status', 'approved')
+            ->exists();
 
-        // Send approval email to member
-        try {
-            Mail::to($user->email)->send(new VerificationApprovedMail($user, $document));
-        } catch (\Exception $e) {
-            // Log error but don't fail the approval process
-            Log::error('Failed to send verification approval email: ' . $e->getMessage());
+        $proofOfAddressApproved = $user->verificationDocuments()
+            ->where('document_type', 'proof_of_address')
+            ->where('status', 'approved')
+            ->exists();
+
+        // Update user verification status only if both documents are approved
+        $bothVerified = false;
+        if ($passportApproved && $proofOfAddressApproved) {
+            $user->update(['verification_status' => 'verified']);
+            $bothVerified = true;
+
+            // Send approval email to member only when both documents are verified
+            try {
+                Mail::to($user->email)->send(new VerificationApprovedMail($user, $document));
+            } catch (\Exception $e) {
+                // Log error but don't fail the approval process
+                Log::error('Failed to send verification approval email: ' . $e->getMessage());
+            }
+        }
+
+        $message = 'Document approved successfully';
+        if ($bothVerified) {
+            $message .= '. Both documents are now approved and the member is verified. Notification email sent to member.';
+        } else {
+            $message .= '. Please approve the remaining document to complete verification.';
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Document approved successfully and notification email sent to member.',
+            'message' => $message,
         ]);
     }
 

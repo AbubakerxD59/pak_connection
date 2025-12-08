@@ -48,12 +48,21 @@ class HomeController extends Controller
 
     public function index()
     {
-        if (auth()->check() && auth()->user()->getPackage()) {
-            return view("frontend.auth_home");
-        } else {
-            $prices = Price::with('package')->activePackage()->get();
-            return view('frontend.home', compact('prices'));
+        $user = auth()->user();
+        if ($user) {
+            $userPackage = $user->getPackage();
+            if ($userPackage) {
+                return view("frontend.auth_home");
+            }
         }
+        
+        $prices = Price::with('package')->activePackage()->get();
+        // Get the first active package (TRAVEL CONCIERGE/TRAVEL ASSIST)
+        $package = Package::active()->first();
+        if ($package) {
+            $package->load('features', 'prices');
+        }
+        return view('frontend.home', compact('prices', 'package'));
     }
 
     public function buyMembership($id = null)

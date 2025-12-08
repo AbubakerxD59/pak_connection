@@ -39,6 +39,7 @@ class BookServiceEmail extends Mailable
             view: 'emails.service_request_form',
             with: [
                 'name' => $this->user->full_name,
+                'membership_id' => $this->user->membership_id ?? null,
             ],
         );
     }

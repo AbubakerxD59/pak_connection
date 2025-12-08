@@ -158,7 +158,7 @@ class RolesController extends Controller
 
         $roles = $roles->get();
         foreach ($roles as $k => $val) {
-            $roles[$k]['created'] = date('Y-m-d', strtotime($val->created_at));
+            $roles[$k]['created'] = \Carbon\Carbon::parse($val->created_at)->format(setting('date_format', 'Y-m-d'));
             $roles[$k]['action'] = view('admin.roles.action')->with('role', $val)->with('permission_head', $this->permission->where('parent_id', 0)->get())->render();
             $roles[$k] = $val;
         }

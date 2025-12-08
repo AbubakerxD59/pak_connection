@@ -1,6 +1,16 @@
 @extends('frontend.main')
 @section('body')
     <section class="membership-portal container">
+        @if($user->verification_status === 'verified')
+            <div class="alert alert-success mb-3" role="alert">
+                <h5 class="mb-0">
+                    <i class="fa fa-check-circle"></i> 
+                    <strong>Verified Member</strong>
+                    <span class="badge badge-success ml-2">Verified</span>
+                </h5>
+                <p class="mb-0 mt-2">Your account has been verified and approved.</p>
+            </div>
+        @endif
         <form action="{{ route('frontend.member.profile_update') }}" method="POST">
             @csrf
             <div class="col-12 row">

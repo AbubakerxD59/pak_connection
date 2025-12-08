@@ -55,7 +55,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" id="created_at"
-                                                    value="{{ date('Y-m-d', strtotime($chat->created_at)) }}" readonly disabled>
+                                                    value="{{ \Carbon\Carbon::parse($chat->created_at)->format(setting('date_format', 'Y-m-d')) }}" readonly disabled>
                                             </div>
                                         </div>
 
@@ -126,7 +126,7 @@
                                                                         <td>{{ $message->sender_name }}</td>
                                                                         <td>{{ ucfirst($message->sender_type) }}</td>
                                                                         <td>{!! $message->content !!}</td>
-                                                                        <td>{{ date('Y-m-d h:i:s', strtotime($message->created_at)) }}
+                                                                        <td>{{ \Carbon\Carbon::parse($message->created_at)->format(setting('date_time_format', 'Y-m-d h:i:s')) }}
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach

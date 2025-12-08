@@ -96,7 +96,7 @@ class PermissionController extends Controller
 
         $permissions = $permissions->get();
         foreach ($permissions as $k => $val) {
-            $permissions[$k]['created'] = date('Y-m-d', strtotime($val->created_at));
+            $permissions[$k]['created'] = \Carbon\Carbon::parse($val->created_at)->format(setting('date_format', 'Y-m-d'));
             $permissions[$k] = $val;
         }
 

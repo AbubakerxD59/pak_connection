@@ -1,5 +1,5 @@
 @extends('admin.layouts.secure')
-@section('page_title', 'Edit Order')
+@section('page_title', 'View Order')
 @section('page_content')
     @can('edit_orders')
         <div class="page-content">
@@ -7,7 +7,7 @@
                 @csrf
                 @method('PUT')
                 <div class="content-header clearfix">
-                    <h1 class="float-left"> Edit Order
+                    <h1 class="float-left"> View Order
                         <small>
                             <i class="fas fa-arrow-circle-left"></i>
                             <a href="{{ route('orders.index') }}">back to Orders list</a>

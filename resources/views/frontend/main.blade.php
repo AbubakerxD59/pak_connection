@@ -36,8 +36,13 @@
                                         <img src="{{ asset('assets/img/avatar2.png') }}" alt="Avatar">
                                     </div>
                                     <div class="txtbox">
-                                        <h3><a
-                                                href="{{ route('frontend.member.profile') }}">{{ auth()->user()->full_name }}</a>
+                                        <h3>
+                                            <a href="{{ route('frontend.member.profile') }}">{{ auth()->user()->full_name }}</a>
+                                            @if(auth()->user()->verification_status === 'verified')
+                                                <span class="badge badge-success ml-2" title="Verified Member">
+                                                    <i class="fa fa-check-circle"></i> Verified
+                                                </span>
+                                            @endif
                                         </h3>
                                         <p><a
                                                 href="{{ route('frontend.member.profile') }}">{{ auth()->user()->email }}</a>

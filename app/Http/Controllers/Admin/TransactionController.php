@@ -116,7 +116,7 @@ class TransactionController extends Controller
                 $transactions[$k]['payable'] = '£' . $val->payable_amount;
                 $transactions[$k]['total_amount'] = $val->getTotal();
                 $transactions[$k]['transaction_type'] = ucfirst($val->transaction_type);
-                $transactions[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
+                $transactions[$k]['date'] = \Carbon\Carbon::parse($val->created_at)->format(setting('date_format', 'Y-m-d'));
                 $transactions[$k]['trans_status_view'] = get_status_view($val->status);
                 $transactions[$k]['action'] = view('admin.transactions.action')->with('transaction', $val)->render();
                 // $transactions[$k]['total_amount'] = str_replace('£', '', $val->total_amount);
@@ -197,7 +197,7 @@ class TransactionController extends Controller
                 $transactions[$k]['package_amount'] = $val->package ? '£' . $val->package->price : '-';
                 $transactions[$k]['discount_amount'] = $val->getDiscount();
                 $transactions[$k]['total_amount'] = $val->getTotal();
-                $transactions[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
+                $transactions[$k]['date'] = \Carbon\Carbon::parse($val->created_at)->format(setting('date_format', 'Y-m-d'));
                 $transactions[$k]['trans_status_view'] = get_status_view($val->status);
                 $transactions[$k]['action'] = view('admin.transactions.action')->with('transaction', $val)->render();
                 $transactions[$k] = $val;
@@ -281,7 +281,7 @@ class TransactionController extends Controller
                 $transactions[$k]['package_amount'] = $val->package ? '£' . $val->package->price : '-';
                 $transactions[$k]['discount_amount'] = $val->getDiscount();
                 $transactions[$k]['total_amount'] = $val->getTotal();
-                $transactions[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
+                $transactions[$k]['date'] = \Carbon\Carbon::parse($val->created_at)->format(setting('date_format', 'Y-m-d'));
                 $transactions[$k]['trans_status_view'] = get_status_view($val->status);
                 $transactions[$k]['action'] = view('admin.transactions.action')->with('transaction', $val)->render();
                 $transactions[$k] = $val;

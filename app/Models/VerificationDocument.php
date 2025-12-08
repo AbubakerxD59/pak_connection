@@ -73,11 +73,11 @@ class VerificationDocument extends Model
 
     public function getCreatedDateAttribute()
     {
-        return $this->created_at->format('Y-m-d H:i:s');
+        return $this->created_at->format(setting('date_time_format', 'Y-m-d H:i:s'));
     }
 
     public function getDocumentAttribute()
     {
-        return ucwords($this->document_type);
+        return ucwords(str_replace('_', ' ', $this->document_type));
     }
 }

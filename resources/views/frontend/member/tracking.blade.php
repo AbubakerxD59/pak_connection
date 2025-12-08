@@ -12,7 +12,7 @@
                         </div>
                         <div class="row">
                             <span>Date: </span>
-                            <p class="font-weight-bold ml-1">{{ date('Y-m-d', strtotime($feature->created_at)) }}</p>
+                            <p class="font-weight-bold ml-1">{{ \Carbon\Carbon::parse($feature->created_at)->format(setting('date_format', 'Y-m-d')) }}</p>
                         </div>
                     </div>
                     <div class="stepper-wrapper">

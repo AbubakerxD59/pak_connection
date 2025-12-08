@@ -12,7 +12,7 @@
         @include('emails.partials.header')
 
         {{-- Email Content --}}
-        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}{{ !empty($bookedService->user?->membership_id) ? ' (' . $bookedService->user->membership_id . ')' : '' }}</strong>,</p>
 
         <p style="font-size: 16px;">
             We’re excited to let you know that all your requested services have now been prepared, and your itinerary is
@@ -21,8 +21,7 @@
 
         <p style="font-size: 16px;">
             Please find your <strong>Final Invoice</strong> attached below, reflecting the full cost of your selected
-            services. This invoice includes all arrangements discussed with your Concierge Manager, and the <strong>£100
-                deposit</strong> you’ve already paid has been deducted from the total.
+            services. This invoice includes all arrangements discussed with your Concierge Manager.
         </p>
 
         <p style="font-size: 16px; font-weight: bold;">Action Required: Complete Your Final Payment</p>

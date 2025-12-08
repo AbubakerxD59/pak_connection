@@ -1,7 +1,7 @@
 <div class="d-flex">
     @can('edit_orders')
         <div>
-            <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-outline-primary btn-sm">Edit</a>
+            <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-outline-primary btn-sm">View</a>
         </div>
     @endcan
     @can('delete_orders')

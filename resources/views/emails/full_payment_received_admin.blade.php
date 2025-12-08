@@ -16,7 +16,7 @@
         <p style="font-size: 16px;">Payment has been received.</p>
         <p style="font-size: 16px;">
             Please begin confirming the bookings for
-            <strong>{{ ucfirst($bookedService->user?->full_name) . '(' . $bookedService->user->membership_id . ')' ?? 'the Member' }},</strong>
+            <strong>{{ $bookedService->user?->full_name ?? 'the Member' }}{{ !empty($bookedService->user?->membership_id) ? ' (' . $bookedService->user->membership_id . ')' : '' }},</strong>
             as quickly and accurately as
             possible.
         </p>

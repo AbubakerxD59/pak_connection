@@ -80,7 +80,7 @@
                                                                 <span class="badge bg-danger">Rejected</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{ $document->created_at->format('Y-m-d H:i') }}</td>
+                                                        <td>{{ $document->created_at->format(setting('date_time_format', 'Y-m-d H:i')) }}</td>
                                                         <td>{{ $document->verifiedBy ? $document->verifiedBy->full_name : '-' }}
                                                         </td>
                                                         <td>{{ $document->admin_notes ?? '-' }}</td>

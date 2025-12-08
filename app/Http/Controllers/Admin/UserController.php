@@ -108,7 +108,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = $this->user->find($id);
-        
+
         $roles = $this->role->get();
         $promo_codes = $this->promo_code->get();
 
@@ -171,6 +171,7 @@ class UserController extends Controller
             $user->bookServices()->delete();
             $user->bookFields()->delete();
             $user->transactions()->delete();
+            $user->verificationDocuments()->delete();
             if ($user->delete()) {
                 return back()->with('success', 'Customer deleted successfully!');
             } else {
@@ -211,7 +212,7 @@ class UserController extends Controller
             $users[$k]['profile'] = "<img src='" . asset($profile_pic) . "' alt='Logo' width='50px'>";
             $users[$k]['name_link'] = !empty($val->full_name) ? '<a href=' . route('users.edit', $val->id) . '>' . $val->full_name . '</a>' : '-';
             $users[$k]['email_username'] = $email_username;
-            $users[$k]['created'] = date('Y-m-d', strtotime($val->created_at));
+            $users[$k]['created'] = \Carbon\Carbon::parse($val->created_at)->format(setting('date_format', 'Y-m-d'));
             $users[$k]['role'] = $role;
             $users[$k]['status_span'] = $val->status ? "<span class='badge badge-success'>Active</span>" : "<span class='badge badge-danger'>Inactive</span>";
             $users[$k]['action'] = view('admin.users.action')->with('user', $val)->with('role', $role)->render();

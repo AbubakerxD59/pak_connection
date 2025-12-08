@@ -65,7 +65,7 @@
 
 <body>
     <div class="container">
-        <h1>Hello {{ $user->full_name ?? 'User' }} !</h1>
+        <h1>Hello {{ $user->full_name ?? 'User' }}{{ !empty($user->membership_id) ? ' (' . $user->membership_id . ')' : '' }} !</h1>
 
         <p>We received a request to reset your Pak Connection account password. You can reset your password by clicking the
             button below:</p>

@@ -32,7 +32,7 @@ class HomeController extends Controller
             "user" => [
                 "name" => $user->full_name,
                 "current_package" => $user->getPackage() ? $user->getPackage() : null,
-                "expiry_date" => !empty($user->pkg_end_time) ? date('Y-m-d', strtotime($user->pkg_end_time)) : null
+                "expiry_date" => !empty($user->pkg_end_time) ? \Carbon\Carbon::parse($user->pkg_end_time)->format(setting('date_format', 'Y-m-d')) : null
             ],
             "last_booking" => $last_booking,
             "upcoming_booking" => count($upcoming_booking) > 0 ? $upcoming_booking : null,

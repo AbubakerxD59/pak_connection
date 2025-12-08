@@ -12,7 +12,7 @@
         @include('emails.partials.header')
 
         {{-- Email Content --}}
-        <p style="font-size: 16px;">Dear {{ $user->full_name }},</p>
+        <p style="font-size: 16px;">Dear {{ $user->full_name }}{{ !empty($user->membership_id) ? ' (' . $user->membership_id . ')' : '' }},</p>
 
         <p style="font-size: 16px;">
             Thank you for submitting your verification document to <strong>Pak Connections</strong>.

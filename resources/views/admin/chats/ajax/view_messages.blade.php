@@ -4,7 +4,7 @@
             <div class="message sent">
                 <div class="message-box message-box-user">
                     <span class="timestamp">
-                        {{ date('h:i', strtotime($message->created_at)) }}
+                        {{ \Carbon\Carbon::parse($message->created_at)->format(setting('time_format', 'h:i')) }}
                     </span>
                     <div class="message-content">
                         {!! $message->content !!}
@@ -21,7 +21,7 @@
                         {!! $message->content !!}
                     </div>
                     <span class="timestamp">
-                        {{ date('h:i', strtotime($message->created_at)) }}
+                        {{ \Carbon\Carbon::parse($message->created_at)->format(setting('time_format', 'h:i')) }}
                     </span>
                 </div>
             </div>

@@ -45,9 +45,9 @@ class SettingSeeder extends Seeder
             ['key' => 'results_per_page', 'value' => '10'],
 
             // Date & Time Formats
-            ['key' => 'date_format', 'value' => 'jS M, Y'],
+            ['key' => 'date_format', 'value' => 'd/m/Y'],
             ['key' => 'time_format', 'value' => 'h:i a'],
-            ['key' => 'date_time_format', 'value' => 'jS M, Y h:i a'],
+            ['key' => 'date_time_format', 'value' => 'd/m/Y h:i a'],
             ['key' => 'timezone_display', 'value' => 'Europe/London'],
 
             // Email Settings
@@ -99,11 +99,13 @@ class SettingSeeder extends Seeder
             if (count($settings) > 0) {
                 foreach ($settings as $setting) {
                     $key = isset($setting['key']) ? $setting['key'] : '';
-                    $getSetting = DB::table('settings')->where('key', $key)->first();
-                    if (empty($getSetting)) {
-                        // Don't add timestamps - settings table doesn't have them
-                        DB::table('settings')->insert($setting);
-                    }
+                    $value = isset($setting['value']) ? $setting['value'] : '';
+                    
+                    // Update if exists, insert if not
+                    DB::table('settings')->updateOrInsert(
+                        ['key' => $key],
+                        ['value' => $value]
+                    );
                 }
             }
 

@@ -11,7 +11,12 @@
 
         @include('emails.partials.header')
 
-        <p style="font-size: 16px;">Dear <strong>{{ $user->full_name ?? 'Member' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear
+            <strong>
+                {{ $user->full_name ?? 'Member' }}{{ !empty($user->membership_id) ? ' (' . $user->membership_id . ')' : '' }}
+            </strong>
+            ,
+        </p>
 
         <p style="font-size: 16px;">
             We’re delighted to welcome you to <strong>Pak Connections</strong> — your very own <em><strong>Personal
@@ -41,10 +46,6 @@
             <li>
                 <strong>We’ll contact you.</strong> . One of our Concierge Managers will call to confirm your
                 requirements and finalise your itinerary.
-            </li>
-            <li>
-                <strong>Secure your reservations.</strong>You’ll pay a £100 deposit to confirm and lock in your
-                bookings.
             </li>
             <li>
                 <strong>We start working our magic.</strong>Our teams will arrange all services and bookings behind the

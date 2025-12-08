@@ -113,7 +113,7 @@ class BookServiceController extends Controller
                 $services[$k]['membership_id'] = $val->user ? $val->user->membership_id : '-/-';
                 $services[$k]['service'] = $val->getService();
                 $services[$k]['status_view'] = service_book_status($val->status);
-                $services[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
+                $services[$k]['date'] = \Carbon\Carbon::parse($val->created_at)->format(setting('date_format', 'Y-m-d'));
                 $services[$k]['action'] = view('admin.booked-services.actions')->with('service', $val)->render();
                 $services[$k] = $val;
             }

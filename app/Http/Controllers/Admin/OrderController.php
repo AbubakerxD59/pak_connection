@@ -128,7 +128,7 @@ class OrderController extends Controller
             $orders[$k]['package_amount'] = $val->price ? '£' . $val->price->price : '-';
             $orders[$k]['discount_amount'] = $val->getDiscount();
             $orders[$k]['total_amount'] = $val->getTotal();
-            $orders[$k]['date'] = date("Y-m-d", strtotime($val->created_at));
+            $orders[$k]['date'] = \Carbon\Carbon::parse($val->created_at)->format(setting('date_format', 'Y-m-d'));
             $orders[$k]['action'] = view('admin.orders.action')->with('order', $val)->render();
             $orders[$k] = $val;
         }
