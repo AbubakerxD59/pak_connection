@@ -27,11 +27,6 @@
                                  on clarity, validity, or compliance with our verification
                                  standards.
                              </p>
-                             <p class="mb-0">
-                                 <strong>Proof of Address requirement:</strong> Only Utility bills or Bank statement
-                                 dated
-                                 within the last 3 months are accepted.
-                             </p>
                          </div>
 
                          <a href="javascript:void(0)" id="read-more-toggle" class="text-primary"
