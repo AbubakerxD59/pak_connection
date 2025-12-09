@@ -13,7 +13,7 @@
 
         <p style="font-size: 16px;">Dear
             <strong>
-                {{ $user->full_name ?? 'Member' }}{{ !empty($user->membership_id) ? ' (' . $user->membership_id . ')' : '' }}
+                {{ $user->full_name ?? 'Member' }}{{ !empty($user->membership_id) ? ' MID#' . $user->membership_id : '' }}
             </strong>
             ,
         </p>

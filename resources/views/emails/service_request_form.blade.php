@@ -11,7 +11,7 @@
 
         @include('emails.partials.header')
 
-        <p style="font-size: 16px;">Dear <strong>{{ $name ?? 'Member' }}{{ !empty($membership_id) ? ' (' . $membership_id . ')' : '' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear <strong>{{ $name ?? 'Member' }}{{ !empty($membership_id) ? ' MID#' . $membership_id : '' }}</strong>,</p>
 
         <p style="font-size: 16px;">
             Thank you for submitting your <strong>Pak Connections Services Request Order Form</strong> — we’re delighted

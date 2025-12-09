@@ -292,7 +292,7 @@
         }
 
         .package-features-small p {
-            font-size: 12px;
+            font-size: 16px;
             margin-bottom: 5px;
         }
 
@@ -319,7 +319,7 @@
         }
 
         .feature-list li {
-            font-size: 12px;
+            font-size: 16px;
             line-height: 1.8;
             padding: 3px 0;
         }
@@ -333,7 +333,7 @@
         }
 
         .additional-benefits li {
-            font-size: 12px;
+            font-size: 16px;
             ;
             line-height: 2;
         }
@@ -416,8 +416,8 @@
                         $(this).addClass('active');
 
                         // Update price display
-                        $('#price-amount').text(price.price.toLocaleString());
-                        $('#price-duration').text(price.type_text);
+                        $('#price-amount').text('€' + price.price.toLocaleString());
+                        $('#price-duration').text('/' + price.type_text);
 
                         // Update buy button
                         var buyUrl = '{{ route('frontend.buy_memebership', ':id') }}'.replace(':id', price

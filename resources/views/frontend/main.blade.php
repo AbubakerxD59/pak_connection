@@ -37,8 +37,9 @@
                                     </div>
                                     <div class="txtbox">
                                         <h3>
-                                            <a href="{{ route('frontend.member.profile') }}">{{ auth()->user()->full_name }}</a>
-                                            @if(auth()->user()->verification_status === 'verified')
+                                            <a
+                                                href="{{ route('frontend.member.profile') }}">{{ auth()->user()->full_name }}</a>
+                                            @if (auth()->user()->verification_status === 'verified')
                                                 <span class="badge badge-success ml-2" title="Verified Member">
                                                     <i class="fa fa-check-circle"></i> Verified
                                                 </span>
@@ -153,8 +154,8 @@
                         </div>
                         <div class="col-xl-6">
                             <ul class="footer-botton-nav privacy">
-                                <li><a href="{{ setting('privacy_policy_link') }}" target="_blank">Privacy Policy &
-                                        GDPR</a></li>
+                                <li><a href="{{ setting('privacy_policy_link') }}" target="_blank">Privacy Policy</a>
+                                </li>
                                 <li><a href="{{ setting('terms_and_conditions_link') }}" target="_blank">Terms &
                                         Conditions</a></li>
                             </ul>

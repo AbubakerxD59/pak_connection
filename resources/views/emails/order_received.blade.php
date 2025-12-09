@@ -12,7 +12,7 @@
         @include('emails.partials.header')
 
         <!-- Email Content -->
-        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}{{ !empty($bookedService->user?->membership_id) ? ' (' . $bookedService->user->membership_id . ')' : '' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}{{ !empty($bookedService->user?->membership_id) ? ' MID#' . $bookedService->user->membership_id : '' }}</strong>,</p>
 
         <p style="font-size: 16px; margin-bottom: 18px;">
             Thank you for submitting your <strong>Pak Connections Services Request Order Form</strong> — we’re delighted

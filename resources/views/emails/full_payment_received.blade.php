@@ -12,7 +12,7 @@
         @include('emails.partials.header')
 
         <!-- Email Content -->
-        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}{{ !empty($bookedService->user?->membership_id) ? ' (' . $bookedService->user->membership_id . ')' : '' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear <strong>{{ $bookedService->user?->full_name ?? 'Member' }}{{ !empty($bookedService->user?->membership_id) ? ' MID#' . $bookedService->user->membership_id : '' }}</strong>,</p>
 
         <p style="font-size: 16px;">
             We’re pleased to confirm that we have received your <strong>payment</strong> in full — thank you!

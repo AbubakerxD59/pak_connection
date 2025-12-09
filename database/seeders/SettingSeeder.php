@@ -27,7 +27,7 @@ class SettingSeeder extends Seeder
             ['key' => 'support_email', 'value' => 'support@pakconnections.com'],
             ['key' => 'support_phone', 'value' => '+44 203 375 3337'],
             ['key' => 'get_in_touch_phone', 'value' => '+44 203 375 3337'],
-            ['key' => 'get_in_touch_email   ', 'value' => 'info@pakconnections.co.uk'],
+            ['key' => 'get_in_touch_email', 'value' => 'info@pakconnections.co.uk'],
             ['key' => 'whatsapp_number', 'value' => '+92 320 5023407'],
             ['key' => '24/7_emergency_assistance_phone', 'value' => '+44 203 375 3337'],
             ['key' => '24/7_personal_request_line_phone', 'value' => '+44 203 375 3337'],

@@ -12,7 +12,7 @@
         @include('emails.partials.header')
 
         {{-- Email Content --}}
-        <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}{{ !empty($bookedService->user?->membership_id) ? ' (' . $bookedService->user->membership_id . ')' : '' }}</strong>,</p>
+        <p style="font-size: 16px;">Dear  <strong>{{ $bookedService->user?->full_name ?? 'Member' }}{{ !empty($bookedService->user?->membership_id) ? ' MID#' . $bookedService->user->membership_id : '' }}</strong>,</p>
 
         <p style="font-size: 16px;">
             Thank you once again for submitting your Services Request Form and confirming the details with our Concierge Team.

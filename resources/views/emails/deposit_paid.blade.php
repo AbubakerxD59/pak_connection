@@ -13,7 +13,7 @@
 
         {{-- Email Content --}}
         <p style="font-size: 16px;">Dear
-            {{ isset($bookedService->user) ? ' ' . $bookedService->user->full_name : 'Member' }}{{ isset($bookedService->user) && !empty($bookedService->user->membership_id) ? ' (' . $bookedService->user->membership_id . ')' : '' }},</p>
+            {{ isset($bookedService->user) ? ' ' . $bookedService->user->full_name : 'Member' }}{{ isset($bookedService->user) && !empty($bookedService->user->membership_id) ? ' MID#' . $bookedService->user->membership_id : '' }},</p>
 
         <p style="font-size: 16px;">
             We’re pleased to confirm that we have successfully received your <strong>£100 deposit payment</strong> —

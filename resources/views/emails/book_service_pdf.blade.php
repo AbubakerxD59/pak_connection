@@ -12,7 +12,7 @@
         @include('emails.partials.header')
 
          <p style="font-size: 16px;">Dear
-            {{ isset($bookedServicePdf->user) ? ' ' . $bookedServicePdf->user->full_name : 'Member' }}{{ isset($bookedServicePdf->user) && !empty($bookedServicePdf->user->membership_id) ? ' (' . $bookedServicePdf->user->membership_id . ')' : '' }},</p>
+            {{ isset($bookedServicePdf->user) ? ' ' . $bookedServicePdf->user->full_name : 'Member' }}{{ isset($bookedServicePdf->user) && !empty($bookedServicePdf->user->membership_id) ? ' MID#' . $bookedServicePdf->user->membership_id : '' }},</p>
 
 
         {{-- Email Content --}}
