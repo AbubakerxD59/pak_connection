@@ -195,6 +195,14 @@
 
                     // Check file type
                     const fileType = file.type;
+                    const fileName = file.name.toLowerCase();
+                    
+                    // Reject webp files
+                    if (fileType === 'image/webp' || fileName.endsWith('.webp')) {
+                        toastr.warning('WebP files are not supported. Supported document types: JPEG, PNG, JPG, PDF');
+                        return false;
+                    }
+
                     if (fileType === 'application/pdf') {
                         // Show PDF preview
                         const fileURL = URL.createObjectURL(file);

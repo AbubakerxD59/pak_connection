@@ -47,7 +47,7 @@ class SettingSeeder extends Seeder
             // Date & Time Formats
             ['key' => 'date_format', 'value' => 'd/m/Y'],
             ['key' => 'time_format', 'value' => 'h:i a'],
-            ['key' => 'date_time_format', 'value' => 'd/m/Y h:i a'],
+            ['key' => 'date_time_format', 'value' => 'd/m/Y'],
             ['key' => 'timezone_display', 'value' => 'Europe/London'],
 
             // Email Settings
