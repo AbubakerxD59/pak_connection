@@ -158,7 +158,7 @@
             // Check verification status and handle Order a Service button click
             orderServiceBtn.on('click', function(e) {
                 e.preventDefault();
-
+                verificationModal.modal('show');
                 $.ajax({
                     url: '{{ route('frontend.member.verification.status') }}',
                     type: 'GET',
@@ -175,8 +175,6 @@
                             if (response.documents) {
                                 updateModalWithDocumentStatuses(response.documents);
                             }
-
-                            verificationModal.modal('show');
                         }
                     },
                     error: function() {
