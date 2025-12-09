@@ -28,7 +28,8 @@
                                  standards.
                              </p>
                              <p class="mb-0">
-                                 <strong>Proof of Address requirement:</strong> Only Utility bills or Bank statement dated
+                                 <strong>Proof of Address requirement:</strong> Only Utility bills or Bank statement
+                                 dated
                                  within the last 3 months are accepted.
                              </p>
                          </div>
@@ -135,8 +136,8 @@
                                      Upload Proof of Address (JPEG, PNG, JPG, PDF - Max: 5MB)
                                  </small>
                                  <small class="form-text text-info d-block mt-1">
-                                     <i class="fa fa-info-circle"></i> <strong>Accepted documents:</strong> Utility
-                                     bill from the last 3 months or bank statement
+                                     <i class="fa fa-info-circle"></i> <strong>Accepted documents:</strong> Only
+                                     Utility bills or Bank statement dated within the last 3 months are accepted.
                                  </small>
                              </div>
 
