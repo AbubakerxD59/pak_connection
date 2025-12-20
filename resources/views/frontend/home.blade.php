@@ -42,7 +42,7 @@
                                             <div class="package-price mb-5">
                                                 <p class="text-center">
                                                     <span id="price-amount" class="h3 text-success font-weight-bold">
-                                                        €{{ $selectedPrice ? number_format($selectedPrice->price, 0) : '0' }}
+                                                        £{{ $selectedPrice ? number_format($selectedPrice->price, 0) : '0' }}
                                                     </span>
 
                                                     <span id="price-duration" class="h5 text-muted font-weight-bold">
@@ -416,7 +416,7 @@
                         $(this).addClass('active');
 
                         // Update price display
-                        $('#price-amount').text('€' + price.price.toLocaleString());
+                        $('#price-amount').text('£' + price.price.toLocaleString());
                         $('#price-duration').text('/' + price.type_text);
 
                         // Update buy button
