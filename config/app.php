@@ -60,6 +60,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Portal Domain
+    |--------------------------------------------------------------------------
+    |
+    | The domain used for the membership portal. Admin routes are not
+    | accessible on this domain (e.g. portal.pakconnections.co.uk).
+    |
+    */
+
+    'portal_domain' => env('PORTAL_DOMAIN', 'portal.pakconnections.co.uk'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

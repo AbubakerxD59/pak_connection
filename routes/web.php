@@ -35,7 +35,7 @@ use App\Http\Controllers\Frontend\VerificationController as FrontendVerification
 |
 */
 
-Route::group(['middleware' => 'guest'], function () {
+Route::group(['middleware' => ['block_admin_on_portal', 'guest']], function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
@@ -58,7 +58,7 @@ Route::prefix('password')->name('password.')->group(function () {
 
 
 
-Route::middleware(['auth', 'is_admin'])->group(function () {
+Route::middleware(['block_admin_on_portal', 'auth', 'is_admin'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
