@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="{{ csrf_token() }}" name="csrf-token">
     <title>Membership Portal</title>
+    <link rel="icon" href="{{ asset('assets/img/site_logo.jpg') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-icons.css') }}">
