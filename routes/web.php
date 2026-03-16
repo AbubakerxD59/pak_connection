@@ -19,13 +19,10 @@ use Illuminate\Http\Request;
 |
 */
 // Landing route
-Route::get('/', function(Request $request){
+Route::get('/', function (Request $request) {
     $portalDomain = config('app.portal_domain');
-    if($request->getHost() === $portalDomain){
-        return redirect()->route('showLogin');
-    }
-    else{
-        return redirect()->route('frontend.home');
+    if ($portalDomain && $request->getHost() === $portalDomain) {
+        return redirect()->to(rtrim(config('app.url'), '/') . '/login');
     }
 });
 
