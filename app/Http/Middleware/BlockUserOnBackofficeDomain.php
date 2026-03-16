@@ -10,15 +10,15 @@ class BlockUserOnBackofficeDomain
 {
     /**
      * Handle an incoming request.
-     * Blocks admin users from accessing the backoffice/portal domain.
+     * Blocks user routes from accessing the backoffice domain.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $backofficeDomain = config('app.backoffice_domain');
+        $portalDomain = config('app.portal_domain');
 
-        if ($backofficeDomain && $request->getHost() === $backofficeDomain) {
+        if ($portalDomain && $request->getHost() === $portalDomain) {
             return redirect()->to(rtrim(config('app.url'), '/'));
         }
 

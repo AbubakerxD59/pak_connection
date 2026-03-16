@@ -10,16 +10,16 @@ class BlockAdminOnPortalDomain
 {
     /**
      * Handle an incoming request.
-     * Blocks admin routes when accessed from the portal domain.
+     * Blocks admin routes when accessed from the backoffice domain.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $portalDomain = config('app.portal_domain');
+        $backofficeDomain = config('app.backoffice_domain');
 
-        if ($portalDomain && $request->getHost() === $portalDomain) {
-            return redirect()->to(rtrim(config('app.url'), '/') . '/dashboard');
+        if ($backofficeDomain && $request->getHost() === $backofficeDomain) {
+            return redirect()->to(rtrim(config('app.url'), '/'));
         }
 
         return $next($request);
