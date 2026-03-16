@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\BlockUserOnBackofficeDomain;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -69,7 +70,7 @@ class Kernel extends HttpKernel
         'is_member' => \App\Http\Middleware\IsMember::class,
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
         'block_admin_on_portal' => \App\Http\Middleware\BlockAdminOnPortalDomain::class,
-        'block_admin_on_backoffice' => \App\Http\Middleware\BlockAdminOnBackofficeDomain::class,
+        'block_user_on_backoffice' => BlockUserOnBackofficeDomain::class,
         'frontend' => \App\Http\Middleware\Frontend::class,
         'auth.sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         'verified_member' => \App\Http\Middleware\EnsureUserIsVerified::class,

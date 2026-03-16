@@ -19,7 +19,7 @@ class BlockAdminOnPortalDomain
         $portalDomain = config('app.portal_domain');
 
         if ($portalDomain && $request->getHost() === $portalDomain) {
-            abort(404);
+            return redirect()->to(rtrim(config('app.url'), '/') . '/dashboard');
         }
 
         return $next($request);

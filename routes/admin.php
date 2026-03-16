@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\RolesController;
-use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -26,12 +25,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['block_admin_on_backoffice', 'guest']], function () {
+Route::group(['middleware' => ['block_user_on_backoffice', 'guest']], function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
-Route::middleware(['block_admin_on_backoffice', 'auth', 'is_admin'])->group(function () {
+Route::middleware(['block_user_on_backoffice', 'auth', 'is_admin'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
