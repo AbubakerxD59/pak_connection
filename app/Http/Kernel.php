@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'is_member' => \App\Http\Middleware\IsMember::class,
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
         'block_admin_on_portal' => \App\Http\Middleware\BlockAdminOnPortalDomain::class,
+        'block_admin_on_backoffice' => \App\Http\Middleware\BlockAdminOnBackofficeDomain::class,
         'frontend' => \App\Http\Middleware\Frontend::class,
         'auth.sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         'verified_member' => \App\Http\Middleware\EnsureUserIsVerified::class,

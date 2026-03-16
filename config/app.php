@@ -69,6 +69,7 @@ return [
     */
 
     'portal_domain' => env('PORTAL_DOMAIN', 'portal.pakconnections.co.uk'),
+    'backoffice_domain' => env('BACKOFFICE_DOMAIN', 'backoffice.pakconnections.co.uk'),
 
     /*
     |--------------------------------------------------------------------------
