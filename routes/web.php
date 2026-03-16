@@ -20,8 +20,8 @@ use Illuminate\Http\Request;
 */
 // Landing route
 Route::get('/', function (Request $request) {
-    $portalDomain = config('app.portal_domain');
-    if ($portalDomain && $request->getHost() === $portalDomain) {
+    $backofficeDomain = config('app.backoffice_domain');
+    if ($backofficeDomain && $request->getHost() === $backofficeDomain) {
         return redirect()->to(rtrim(config('app.url'), '/') . '/login');
     }
 });
