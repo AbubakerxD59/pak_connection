@@ -17,11 +17,9 @@ class BlockAdminOnPortalDomain
     public function handle(Request $request, Closure $next): Response
     {
         $backofficeDomain = config('app.backoffice_domain');
-
         if ($backofficeDomain && $request->getHost() === $backofficeDomain) {
-            return redirect()->to(rtrim(config('app.url'), '/'));
+            return redirect()->to(rtrim(config('app.url'), '/') . '/login');
         }
-
         return $next($request);
     }
 }

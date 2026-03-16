@@ -17,11 +17,9 @@ class BlockUserOnBackofficeDomain
     public function handle(Request $request, Closure $next): Response
     {
         $portalDomain = config('app.portal_domain');
-
         if ($portalDomain && $request->getHost() === $portalDomain) {
             return redirect()->to(rtrim(config('app.url'), '/'));
         }
-
         return $next($request);
     }
 }
